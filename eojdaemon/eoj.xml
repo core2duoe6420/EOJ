@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<eoj>
+	<work_dir>/home/corei7/Project/eoj_files/work</work_dir>
+	<dest_dir>/home/corei7/Project/eoj_files/codes</dest_dir>
+	<input_dir>/home/corei7/Project/eoj_files/input</input_dir>
+	<answer_dir>/home/corei7/Project/eoj_files/answer</answer_dir>
+	<out_dir>/home/corei7/Project/eoj_files/tmp</out_dir>
+	<err_dir>/home/corei7/Project/eoj_files/err</err_dir>
+	<judge_exec>/home/corei7/Project/eojjudge/Debug/eojjudge</judge_exec>
+	<concurrency>50</concurrency>
+	<compiler>
+		<name>gcc</name>
+		<suffix>.c</suffix>
+		<execsuffix>.out</execsuffix>
+		<execfile>/usr/bin/gcc</execfile>
+		<param>-std=c99</param>
+		<param>-DEOJ</param>
+	</compiler>
+	<compiler>
+		<name>g++</name>
+		<suffix>.cpp</suffix>
+		<execsuffix>.out</execsuffix>
+		<execfile>/usr/bin/g++</execfile>
+	</compiler>
+	<database>
+		<host>127.0.0.1</host>
+		<username>eojapp</username>
+		<passwd>ecust</passwd>
+		<usedb>eojdb</usedb>
+		<getProLimit></getProLimit>
+		<storeRunResult></storeRunResult>
+	</database>
+</eoj>
