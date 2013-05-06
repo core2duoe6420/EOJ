@@ -26,7 +26,7 @@ enum result compare(struct request * req) {
 		if (execl("/usr/bin/diff", "diff", "-B", "-w", answer, result_file,
 				NULL ) == -1) {
 			eoj_log("exec %s fail : %s", "diff", strerror(errno));
-			return SYS_ERROR;
+			exit(1);
 		}
 	}
 

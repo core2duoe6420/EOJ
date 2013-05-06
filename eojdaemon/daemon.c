@@ -29,6 +29,7 @@
 #include <sys/file.h>
 #include <sys/wait.h>
 #include <sys/resource.h>
+#include <errno.h>
 
 #include "eoj.h"
 
@@ -173,7 +174,7 @@ static int move_file(const char * dest, const char * src) {
 		ret = execl("/bin/mv", "mv", src, dest, NULL );
 		if (ret == -1) {
 			eoj_log("exec fail");
-			return 1;
+			exit(1);
 		}
 	}
 	return 0;
@@ -219,8 +220,8 @@ static int run_request(struct run_request * req) {
 	pid = fork();
 	if (pid == 0) {
 		if (execv(judge_exec, argv) == -1) {
-			eoj_log("Run request fail");
-			return 1;
+			eoj_log("Run request fail : %s", strerror(errno));
+			exit(1);
 		}
 	}
 	return 0;
@@ -248,14 +249,15 @@ int eoj_daemon() {
 			}
 			if (reqfail) {
 				eoj_log("fill request %s fail", request.complete_src_file);
-				move_file(err_dir, request.complete_src_file);
+
 				continue;
 			}
 
 			p_semaphore(sem);
 			eoj_log("%s", request.complete_src_file);
 			move_file(request.complete_dest_file, request.complete_src_file);
-			run_request(&request);
+			if(run_request(&request) != 0)
+				move_file(err_dir, request.complete_src_file);
 		}
 		closedir(dir);
 		sleep(1);

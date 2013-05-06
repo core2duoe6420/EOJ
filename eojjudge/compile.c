@@ -33,7 +33,7 @@ enum result compile(struct request * req) {
 	if (pid == 0) {
 		if (execv(req->cpl->execfile, argv) == -1) {
 			eoj_log("exec %s fail : %s", req->cpl->execfile, strerror(errno));
-			return SYS_ERROR;
+			exit(1);
 		}
 	}
 

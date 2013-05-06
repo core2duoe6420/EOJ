@@ -42,7 +42,7 @@ static int check_syscall(long syscall) {
 	return 1;
 }
 
-static enum result check_mem_rusage(struct rusage * usage, struct rused * rused,
+static enum result check_mem_rusage(struct rusage * usage, struct run_result * rused,
 		unsigned int lmem) {
 	unsigned int time, mem;
 	time = (usage->ru_stime.tv_sec + usage->ru_utime.tv_sec) * 1000
@@ -92,7 +92,7 @@ static int set_limit(unsigned int ltime, unsigned int loutput) {
 	return 0;
 }
 
-enum result execute(struct request * req, struct rused * rused) {
+enum result execute(struct request * req, struct run_result * rused) {
 	pid_t pid;
 	char outfile[EOJ_PATH_MAX];
 	char complete_fname[EOJ_PATH_MAX];

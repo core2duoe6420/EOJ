@@ -49,6 +49,7 @@ struct config_set {
 #define COMPILER_MAX 8
 
 struct compiler {
+	int id;
 	char name[32];
 	char suffix[EOJ_SUFFIX_MAX];
 	char execfile[EOJ_PATH_MAX];
@@ -63,6 +64,7 @@ struct compiler_set {
 };
 
 struct db_config {
+	unsigned int timeout;
 	char host[16];
 	char username[ATTR_VALUE_MAX];
 	char passwd[ATTR_VALUE_MAX];
@@ -75,6 +77,8 @@ struct shared_config {
 	struct compiler_set compilers;
 	struct db_config db_config;
 };
+
+extern char * config_get_value(struct config_set * set, char * attrname);
 
 extern struct shared_config * configs;
 
@@ -132,9 +136,10 @@ enum result {
 	WRONG_ANSWER = 7,
 };
 
-struct rused {
+struct run_result {
 	unsigned int memory;	//kb
 	unsigned int time;		//ms
+	enum result result;
 };
 
 struct file_records {
@@ -143,7 +148,9 @@ struct file_records {
 };
 
 extern void add_file_records(struct file_records * fr, char * fname);
-
 extern struct file_records fcreat_record;
 
+//defined in mysql.c
+extern int eoj_mysqlcon_init();
+extern void eoj_mysqlcon_close();
 #endif // _EOJ_CONFIG_H

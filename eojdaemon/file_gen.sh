@@ -4,7 +4,7 @@
 #Last Edit date 23:03 5.2 2013
 WRITE_DIR=/home/corei7/Project/eoj_files/work/
 COUNT=50
-CPFILE=/home/corei7/Project/test/test.c
+CPFILE=/home/corei7/Project/eoj_files/sample/12-1-1.c
 BREAKPOINT=1
 i=1
 

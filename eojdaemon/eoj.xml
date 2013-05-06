@@ -6,9 +6,10 @@
 	<answer_dir>/home/corei7/Project/eoj_files/answer</answer_dir>
 	<out_dir>/home/corei7/Project/eoj_files/tmp</out_dir>
 	<err_dir>/home/corei7/Project/eoj_files/err</err_dir>
-	<judge_exec>/home/corei7/Project/eojjudge/Debug/eojjudge</judge_exec>
-	<concurrency>50</concurrency>
+	<judge_exec>/home/corei7/Project/EOJ/eojjudge/Debug/eojjudge</judge_exec>
+	<concurrency>12</concurrency>
 	<compiler>
+		<id>1</id>
 		<name>gcc</name>
 		<suffix>.c</suffix>
 		<execsuffix>.out</execsuffix>
@@ -17,6 +18,7 @@
 		<param>-DEOJ</param>
 	</compiler>
 	<compiler>
+		<id>2</id>
 		<name>g++</name>
 		<suffix>.cpp</suffix>
 		<execsuffix>.out</execsuffix>
@@ -25,9 +27,12 @@
 	<database>
 		<host>127.0.0.1</host>
 		<username>eojapp</username>
+		<timeout>10</timeout>
 		<passwd>ecust</passwd>
 		<usedb>eojdb</usedb>
 		<getProLimit></getProLimit>
-		<storeRunResult></storeRunResult>
+		<incProErr>UPDATE problem SET p_tsubmit=p_tsubmit+1 WHERE p_id=%d</incProErr>
+		<incProbAC>UPDATE problem SET p_tsubmit=p_tsubmit+1,p_acc=p_acc+1 WHERE p_id=%d</incProbAC>
+		<storeRunResult>UPDATE answerit SET ans_mcost=%d,ans_tcost=%d,ans_codeloc='%s',ans_codetype=%d,ans_codel=%d,ans_result=%d WHERE ans_id=%d</storeRunResult>
 	</database>
 </eoj>

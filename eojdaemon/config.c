@@ -102,6 +102,8 @@ static int compiler_add_param(struct compiler * cpl, char * param) {
 
 static int setup_database(struct db_config * db, struct config_set * set) {
 	int has_host = 0, has_user = 0, has_passwd = 0, has_db = 0;
+	//default;
+	db->timeout = 10;
 
 	for (int i = 0; i < set->config_nr; i++) {
 		struct attr * attr;
@@ -118,6 +120,8 @@ static int setup_database(struct db_config * db, struct config_set * set) {
 		} else if (strncmp(attr->name, "usedb", ATTR_NAME_MAX) == 0) {
 			strncpy(db->usedb, attr->value, sizeof(db->usedb));
 			has_db = 1;
+		} else if (strncmp(attr->name, "timeout", ATTR_NAME_MAX) == 0) {
+			db->timeout = atoi(attr->value);
 		} else {
 			config_set_add(&db->sqls, attr->name, attr->value);
 		}
@@ -135,7 +139,8 @@ static int setup_compiler(struct compiler_set * cpl_set,
 	if (cpl_set->count >= COMPILER_MAX)
 		return 1;
 
-	int has_name = 0, has_suffix = 0, has_exec = 0, has_exec_suf = 0;
+	int has_id = 0, has_name = 0, has_suffix = 0, has_exec = 0,
+			has_exec_suf = 0;
 
 	struct compiler * cpl;
 	cpl = &cpl_set->cpls[cpl_set->count];
@@ -143,7 +148,10 @@ static int setup_compiler(struct compiler_set * cpl_set,
 	for (int i = 0; i < set->config_nr; i++) {
 		struct attr * attr;
 		attr = set->attrs + i;
-		if (strncmp(attr->name, "name", ATTR_NAME_MAX) == 0) {
+		if (strncmp(attr->name, "id", ATTR_NAME_MAX) == 0) {
+			cpl->id = atoi(attr->value);
+			has_id = 1;
+		} else if (strncmp(attr->name, "name", ATTR_NAME_MAX) == 0) {
 			strncpy(cpl->name, attr->value, sizeof(cpl->name));
 			has_name = 1;
 		} else if (strncmp(attr->name, "suffix", ATTR_NAME_MAX) == 0) {
@@ -160,7 +168,7 @@ static int setup_compiler(struct compiler_set * cpl_set,
 		}
 	}
 
-	if (has_exec && has_suffix && has_exec && has_exec_suf) {
+	if (has_id && has_exec && has_suffix && has_exec && has_exec_suf) {
 		cpl_set->count++;
 		return 0;
 	} else {

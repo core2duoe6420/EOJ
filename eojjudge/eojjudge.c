@@ -112,8 +112,9 @@ static char * strresult(enum result result) {
 }
 
 extern enum result compile(struct request * req);
-extern enum result execute(struct request * req, struct rused * rused);
+extern enum result execute(struct request * req, struct run_result * rused);
 extern enum result compare(struct request * req);
+extern int update_database(struct request * req, struct run_result * rr);
 
 int main(int argc, char * argv[]) {
 	signal(SIGCHLD, SIG_DFL );
@@ -138,26 +139,31 @@ int main(int argc, char * argv[]) {
 		exit(1);
 	}
 
-	configs = (struct shared_config *) shm.addr;
 	struct request req;
+	struct run_result rr = { 0, 0, 0 };
+	configs = (struct shared_config *) shm.addr;
+
 	fill_request(&req, argv);
 
 	//in case the file is being moved
 	test_file_exist(req.complete_dest_file);
 
-	enum result result;
-	struct rused rused = { 0, 0 };
-
-	result = compile(&req);
-	if (result == RNORMAL) {
-		result = execute(&req, &rused);
-		if (result == RNORMAL)
-			result = compare(&req);
+	rr.result = compile(&req);
+	if (rr.result == RNORMAL) {
+		rr.result = execute(&req, &rr);
+		if (rr.result == RNORMAL)
+			rr.result = compare(&req);
 	}
 
-	eoj_log("run result : %s", strresult(result));
+	eoj_log("run result : %s", strresult(rr.result));
 
 	file_records_clean(&fcreat_record);
+
+	if (eoj_mysqlcon_init() == 0) {
+		update_database(&req, &rr);
+		eoj_mysqlcon_close();
+	}
+
 	shared_mem_dt(&shm);
 	sem_post(sem);
 	sem_close(sem);

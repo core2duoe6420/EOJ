@@ -50,6 +50,7 @@ struct config_set {
 #define COMPILER_MAX 8
 
 struct compiler {
+	int id;
 	char name[32];
 	char suffix[EOJ_SUFFIX_MAX];
 	char execfile[EOJ_PATH_MAX];
@@ -64,6 +65,7 @@ struct compiler_set {
 };
 
 struct db_config {
+	unsigned int timeout;
 	char host[16];
 	char username[ATTR_VALUE_MAX];
 	char passwd[ATTR_VALUE_MAX];
