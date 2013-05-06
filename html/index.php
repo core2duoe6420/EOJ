@@ -51,14 +51,14 @@
 		<ul>
 			<li id="login">
 				<h2><b class="text1">User</b></h2>
-				<form method="get" action="index.html">
+				<form method="post" action="logined.php">
 					<fieldset>
-                    User&nbsp;ID:<input type="text" id="s" name="s" value="" />
-                    Password:&nbsp;<input type="text" id="s" name="t" value="" />
-					<input type="submit" id="x" value="login" onclick=""/>
-					<input type="submit" id="o" value="Register" onclick="window.open('register.html')"/>
+						User&nbsp;ID:<input type="text" id="UserName" name="UserName" value="" size="15"/>
+                        Password:&nbsp;<input type="text" id="Password" name="Password" value="" size="15"/>
+                        <input type="submit" id="x" value="login" />
 					</fieldset>
 				</form>
+				<input type="submit" id="o" value="Register" onclick="window.open('register.html')"/>
 			</li>
 			<li>
 				

@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-<title>ECUST Judge Online System</title>
+<title>submit problem</title>
 <meta name="keywords" content="ECUST Judge Online" />
 <meta name="description" content="ECUST Judge Online" />
 <link href="default.css" rel="stylesheet" type="text/css" />
@@ -29,42 +29,28 @@
 
 <!-- start page -->
 <div id="page">
-	<!-- start content -->
-	<div id="content">
-		<div class="post">
-			<h2 class="title"><b>Welcome to </b>ECUST JudgeOnline </h2>
-            <p class="welcome">HI<b></b></p>
-			<div class="entry">
-				<p>Problem Set is the place where you can find large amount of problems from different programming contests.Online Judge System allows you to test your solution for every problem.
+	<div id="submit">
+		<div id="submittitle">
+			<h2 class="title"><a herf="#"><b>Submit Your Solition Via Web</b></a><h2>
+			<h3>Problem ID: <input type="text" id="s" name="s" value=""></h3>
+			<h3>Language:<select size=1 name=language>
+<option value=0>G++</option>
+<option value=1 selected>GCC</option>
+<option value=2>Java</option>
+<option value=3>Pascal</option>
+<option value=4>C++</option>
+<option value=5>C</option>
+<option value=6>Fortran</option>
+</select></h3>
 
-  First of all, read carefully Frequently Asked Questions.
-  Then, choose a problem, solve it and submit your solution.
+			<h3>sourse:</h3>
+			 <br>
+		<textarea rows=20 name=source cols=110></textarea><br>
+		<input type=submit value=Submit name=submit accesskey=s><input type=reset value=Reset name=reset>
 
-  If you want to publish your problems or setup your own online contest, just write to us.
- </p>
-			</div>
 		</div>
 	</div>
-	<!-- end content -->
-	<!-- start sidebar -->
-	<div id="sidebar">
-		<ul>
-			<li id="login">
-				<h2><b class="text1">User</b></h2>
-				<form method="get" action="index.html">
-					<fieldset>
-                    User&nbsp;ID:<input type="text" id="s" name="s" value="" />
-                    Password:&nbsp;<input type="text" id="s" name="t" value="" />
-					<input type="submit" id="x" value="login" onclick=""/>
-					<input type="submit" id="o" value="Register" onclick="window.open('register.html')"/>
-					</fieldset>
-				</form>
-			</li>
-			<li>
-				
-		</ul>
-	</div>
-	<!-- end sidebar -->
+	
 	<div style="clear: both;">&nbsp;</div>
 </div>
 <!-- end page -->

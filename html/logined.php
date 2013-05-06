@@ -1,5 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<?php
 
+?>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
@@ -51,14 +53,12 @@
 		<ul>
 			<li id="login">
 				<h2><b class="text1">User</b></h2>
-				<form method="get" action="index.html">
+				<form method="get" action="index.php">
 					<fieldset>
-                    User&nbsp;ID:<input type="text" id="s" name="s" value="" />
-                    Password:&nbsp;<input type="text" id="s" name="t" value="" />
-					<input type="submit" id="x" value="login" onclick=""/>
-					<input type="submit" id="o" value="Register" onclick="window.open('register.html')"/>
+						Welcome <?php echo $_POST["UserName"]; ?>
 					</fieldset>
 				</form>
+				<input type="submit" id="o" value="Register" onclick="window.open('register.html')"/>
 			</li>
 			<li>
 				
