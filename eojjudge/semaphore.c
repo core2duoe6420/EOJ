@@ -10,6 +10,7 @@
  */
 
 #include <errno.h>
+#include <string.h>
 #include "eojjudge.h"
 
 sem_t * create_semaphore(char * name,int value) {
@@ -39,7 +40,7 @@ sem_t * create_semaphore(char * name,int value) {
 sem_t * get_semaphore(char * name) {
 	sem_t * semid;
 	if((semid = sem_open(name,0)) == SEM_FAILED)
-		eoj_log("Get semaphore fail");
+		eoj_log("Get semaphore fail %s",strerror(errno));
 	return semid;
 }
 

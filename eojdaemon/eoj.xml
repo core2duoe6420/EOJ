@@ -7,7 +7,7 @@
 	<out_dir>/home/corei7/Project/eoj_files/tmp</out_dir>
 	<err_dir>/home/corei7/Project/eoj_files/err</err_dir>
 	<judge_exec>/home/corei7/Project/EOJ/eojjudge/Debug/eojjudge</judge_exec>
-	<concurrency>12</concurrency>
+	<concurrency>16</concurrency>
 	<compiler>
 		<id>1</id>
 		<name>gcc</name>

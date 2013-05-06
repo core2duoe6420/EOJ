@@ -31,7 +31,7 @@
 #define EOJ_PARAMS_MAX 32
 #define EOJ_CMD_MAX 64
 
-#define ATTR_MAX 128
+#define ATTR_MAX 32
 #define ATTR_NAME_MAX 128
 #define ATTR_VALUE_MAX 128
 #define COMPILER_MAX 8

@@ -33,7 +33,7 @@ extern char * global_config_get_value(char * attrname);
 extern void compilers_initial();
 extern struct compiler * get_compiler(char * suffix);
 
-#define ATTR_MAX 128
+#define ATTR_MAX 32
 #define ATTR_NAME_MAX 128
 #define ATTR_VALUE_MAX 128
 

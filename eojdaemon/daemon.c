@@ -33,6 +33,8 @@
 
 #include "eoj.h"
 
+volatile int restart = 0;
+
 struct run_request {
 	struct compiler * cpl;
 	char pro_id[16];
@@ -256,13 +258,40 @@ int eoj_daemon() {
 			p_semaphore(sem);
 			eoj_log("%s", request.complete_src_file);
 			move_file(request.complete_dest_file, request.complete_src_file);
-			if(run_request(&request) != 0)
+			if (run_request(&request) != 0)
 				move_file(err_dir, request.complete_src_file);
+
+			if(restart)
+				break;
 		}
 		closedir(dir);
 		sleep(1);
+		//receive SIGUSR1 and need to restart?
+		if (restart) {
+			int semv;
+			while (1) {
+				if (sem_getvalue(sem, &semv) != 0) {
+					eoj_log("can't get sem value.daemon restarting");
+					break;
+				}
+				if (semv < concurrency) {
+					eoj_log("%d judge process still running,wait",
+							concurrency - semv);
+					sleep(1);
+				} else {
+					break;
+				}
+			}
+			del_semaphore("eoj", sem);
+			eoj_log("daemon restarting");
+			return 2;
+		}
 	}
 	return 0;
+}
+
+static void sigusr1_handler(int sig) {
+	restart = 1;
 }
 
 //apue p343
@@ -298,6 +327,12 @@ void daemonize(char * cmd) {
 		printf("%s: can't ignore SIGCHLD\n", cmd);
 		exit(EXIT_FAILURE);
 	}
+	//send SIGUSR1 to restart daemon
+	sa.sa_handler = sigusr1_handler;
+	sigemptyset(&sa.sa_mask);
+	sa.sa_flags = 0;
+	if (sigaction(SIGUSR1, &sa, NULL ) < 0)
+		printf("%s: can't set SIGUSR1 daemon can't restart\n", cmd);
 
 	if ((pid = fork()) < 0) {
 		printf("%s : can't fork\n", cmd);

@@ -31,7 +31,7 @@ int shared_mem_get(struct shared_mem * shm, key_t key, size_t size) {
 	shm->size = size;
 	shm->key = key;
 	if ((shm->shmid = shmget(key, size, 0666)) == -1) {
-		eoj_log("Get shmid fail.");
+		eoj_log("Get shmid fail %s",strerror(errno));
 		return 1;
 	}
 	if ((shm->addr = shmat(shm->shmid, NULL, SHM_RDONLY)) == (void*) -1) {

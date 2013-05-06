@@ -68,12 +68,46 @@ static void config_set_clear(struct config_set * set) {
 	set->config_nr = 0;
 }
 
+static void compiler_set_clear(struct compiler_set * cps) {
+	for (int i = 0; i < cps->count; i++) {
+		struct compiler * cpl;
+		cpl = cps->cpls + i;
+		cpl->id = 0;
+		strcpy(cpl->execfile, "");
+		strcpy(cpl->execsuffix, "");
+		strcpy(cpl->name, "");
+		strcpy(cpl->suffix, "");
+		for (int j = 0; j < cpl->params_nr; j++)
+			strcpy(cpl->params[j], "");
+		cpl->params_nr = 0;
+	}
+	cps->count = 0;
+}
+
+static void db_config_clear(struct db_config * dbc) {
+	dbc->timeout = 0;
+	strcpy(dbc->host, "");
+	strcpy(dbc->passwd, "");
+	strcpy(dbc->usedb, "");
+	strcpy(dbc->username, "");
+	config_set_clear(&dbc->sqls);
+}
+
 static void _config_set_print(struct config_set * set) {
 	for (int i = 0; i < set->config_nr; i++) {
 		struct attr * attr_ptr;
 		attr_ptr = set->attrs + i;
 		eoj_log("%d %s = %s\n", i, attr_ptr->name, attr_ptr->value);
 	}
+}
+
+extern volatile int restart;
+
+void config_initial() {
+	restart = 0;
+	config_set_clear(&configs.global_config);
+	compiler_set_clear(&configs.compilers);
+	db_config_clear(&configs.db_config);
 }
 
 void config_set_print() {
@@ -102,7 +136,7 @@ static int compiler_add_param(struct compiler * cpl, char * param) {
 
 static int setup_database(struct db_config * db, struct config_set * set) {
 	int has_host = 0, has_user = 0, has_passwd = 0, has_db = 0;
-	//default;
+//default;
 	db->timeout = 10;
 
 	for (int i = 0; i < set->config_nr; i++) {

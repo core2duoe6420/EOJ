@@ -25,7 +25,11 @@
 static struct shared_mem shm_config;
 extern struct shared_config configs;
 
+//mark whether daemon is restarting or origin start
+static int firststart = 1;
+
 int shared_mem_create(struct shared_mem * shm, key_t key, size_t size) {
+	firststart = 0;
 	shm->size = size;
 	shm->key = key;
 	if ((shm->shmid = shmget(key, size, IPC_CREAT | 0666)) == -1) {
@@ -76,8 +80,13 @@ void shared_mem_read(struct shared_mem * shm, void * dest, size_t size) {
 }
 
 int configs_share() {
+	if (!firststart) {
+		shared_mem_dt(&shm_config);
+		shared_mem_remove(&shm_config);
+	}
 	if ((shared_mem_create(&shm_config, 10000, sizeof(struct shared_config))))
 		return 1;
+
 	shared_mem_write(&shm_config, &configs, sizeof(struct shared_config));
 	return 0;
 }
