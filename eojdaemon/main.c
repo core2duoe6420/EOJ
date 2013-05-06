@@ -11,7 +11,7 @@
 
 int main() {
 	daemonize("eoj");
-	if (xml_config("/home/corei7/Project/eojdaemon/eoj.xml"))
+	if (xml_config("/home/corei7/Project/EOJ/eojdaemon/eoj.xml"))
 		exit(1);
 	config_set_print();
 	param_initial();
