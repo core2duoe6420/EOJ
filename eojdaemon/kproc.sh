@@ -11,13 +11,13 @@ fi
 KILL_NAME=$1
 
 #get the cmd string and pid
-echo "`ps -ef | grep ${KILL_NAME}` " | grep -v "grep" | grep -v "bash" > test.tmp
-echo "`awk '{for(i=8;i<NF;i++) printf $i} {print $NF} ' test.tmp`" > pname.list
-echo "`awk '{print $2}' test.tmp`" > pid.list
+echo "`ps -ef | grep ${KILL_NAME}` " | grep -v "grep" | grep -v "bash" > /tmp/test.tmp
+echo "`awk '{for(i=8;i<NF;i++) printf $i} {print $NF} ' /tmp/test.tmp`" > /tmp/pname.list
+echo "`awk '{print $2}' /tmp/test.tmp`" > /tmp/pid.list
 
 #set array
 t=0
-for i in `cat pname.list`
+for i in `cat /tmp/pname.list`
 do
   arrt[$t]=$i;
   t=`expr $t + 1`
@@ -28,7 +28,7 @@ done
 
 t=0
 #try prompt user and kill it
-for p in `cat pid.list`
+for p in `cat /tmp/pid.list`
 do
     read -p "kill the [pid] $p [cmd] ${arrt[$t]}?[y/n] " check
     if [ ! -z $check ] && [ $check == "y" ]
@@ -47,7 +47,7 @@ do
 done
 
 #delete the temp file
-rm -f test.tmp pid.list pname.list
+rm -f /tmp/test.tmp /tmp/pid.list /tmp/pname.list
 
 #exit
 echo done..
