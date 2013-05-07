@@ -37,7 +37,7 @@ volatile int restart = 0;
 
 struct run_request {
 	struct compiler * cpl;
-	char pro_id[16];
+	char prob_id[16];
 	char run_id[16];
 	char user_id[16];
 	char suffix[EOJ_SUFFIX_MAX];
@@ -82,11 +82,11 @@ static int test_dir_create(char * c_dir) {
 		return 0;
 	}
 	//don't exist?
-	if (mkdir(c_dir, 0775) != 0)
-		//mk fail? might exist as a file
+	if (mkdir(c_dir, 0775) != 0) {
+		eoj_log("create dir %s fail: %s", c_dir, strerror(errno));
 		return 1;
-	else
-		return 0;
+	}
+	return 0;
 }
 
 /* truncate filename suffix to suffix array.
@@ -105,9 +105,13 @@ static int split_suffix(char * filename, char * suffix, int limit) {
 	return 1;
 }
 
-static int get_limit(struct run_request * req, int pro_id) {
-	snprintf(req->time_limit, sizeof(req->time_limit), "%d", 1000);
-	snprintf(req->mem_limit, sizeof(req->mem_limit), "%d", 1000);
+static int get_limit(struct run_request * req, int prob_id) {
+	struct prob_limit * limit;
+	limit = get_prob_limit(prob_id);
+	if (!limit)
+		return 1;
+	snprintf(req->time_limit, sizeof(req->time_limit), "%u", limit->time);
+	snprintf(req->mem_limit, sizeof(req->mem_limit), "%u", limit->memory);
 	return 0;
 }
 
@@ -136,7 +140,7 @@ static int fill_request(struct run_request * req, char * ori_filename) {
 	seg = strsep(&ptr, "-");
 	if (!seg)
 		return 1;
-	strncpy(req->pro_id, seg, sizeof(req->pro_id));
+	strncpy(req->prob_id, seg, sizeof(req->prob_id));
 
 	seg = strsep(&ptr, "-");
 	if (!seg)
@@ -145,7 +149,7 @@ static int fill_request(struct run_request * req, char * ori_filename) {
 
 	char dest_pro_dir[EOJ_PATH_MAX];
 	char dest_cpl_dir[EOJ_PATH_MAX];
-	snprintf(dest_pro_dir, EOJ_PATH_MAX, "%s%d/", dest_dir, atoi(req->pro_id));
+	snprintf(dest_pro_dir, EOJ_PATH_MAX, "%s%d/", dest_dir, atoi(req->prob_id));
 	snprintf(dest_cpl_dir, EOJ_PATH_MAX, "%s%s/", dest_pro_dir, req->cpl->name);
 
 	if (test_dir_create(dest_pro_dir)) {
@@ -160,8 +164,8 @@ static int fill_request(struct run_request * req, char * ori_filename) {
 	snprintf(req->complete_dest_file, EOJ_PATH_MAX, "%s%s%s", dest_cpl_dir,
 			req->fname_nosx, req->suffix);
 
-	if (get_limit(req, atoi(req->pro_id))) {
-		eoj_log("get problem %s limit fail", req->pro_id);
+	if (get_limit(req, atoi(req->prob_id))) {
+		eoj_log("get problem %s limit fail", req->prob_id);
 		return 1;
 	}
 
@@ -175,7 +179,7 @@ static int move_file(const char * dest, const char * src) {
 		int ret;
 		ret = execl("/bin/mv", "mv", src, dest, NULL );
 		if (ret == -1) {
-			eoj_log("exec fail");
+			eoj_log("move file %s: exec fail %s", src, strerror(errno));
 			exit(1);
 		}
 	}
@@ -210,7 +214,7 @@ static int run_request(struct run_request * req) {
 	pid_t pid;
 	char * argv[32];
 	argv[0] = "eojgcc";
-	argv[1] = req->pro_id;
+	argv[1] = req->prob_id;
 	argv[2] = req->run_id;
 	argv[3] = req->user_id;
 	argv[4] = req->fname_nosx;
@@ -222,7 +226,7 @@ static int run_request(struct run_request * req) {
 	pid = fork();
 	if (pid == 0) {
 		if (execv(judge_exec, argv) == -1) {
-			eoj_log("Run request fail : %s", strerror(errno));
+			eoj_log("run request fail: %s", strerror(errno));
 			exit(1);
 		}
 	}
@@ -251,12 +255,12 @@ int eoj_daemon() {
 			}
 			if (reqfail) {
 				eoj_log("fill request %s fail", request.complete_src_file);
-
+				move_file(err_dir, request.complete_src_file);
 				continue;
 			}
 
 			p_semaphore(sem);
-			eoj_log("%s", request.complete_src_file);
+			eoj_log("run ruquest: %s", request.complete_src_file);
 			move_file(request.complete_dest_file, request.complete_src_file);
 			if (run_request(&request) != 0)
 				move_file(err_dir, request.complete_src_file);
@@ -271,7 +275,7 @@ int eoj_daemon() {
 			int semv;
 			while (1) {
 				if (sem_getvalue(sem, &semv) != 0) {
-					eoj_log("can't get sem value.daemon restarting");
+					eoj_log("can't get sem value. daemon restarting");
 					break;
 				}
 				if (semv < concurrency) {
@@ -283,7 +287,7 @@ int eoj_daemon() {
 				}
 			}
 			del_semaphore("eoj", sem);
-			eoj_log("daemon restarting");
+			eoj_log("daemon is going to restart");
 			return 2;
 		}
 	}
@@ -384,7 +388,7 @@ int already_running() {
 	char buf[16];
 	fd = open("/var/run/eojdaemon.lock", O_RDWR | O_CREAT, LOCKMODE);
 	if (fd < 0) {
-		eoj_log("can't open eojdaemon.lock : %s", strerror(errno));
+		eoj_log("can't open eojdaemon.lock: %s", strerror(errno));
 		exit(1);
 	}
 	if (lockfile(fd) < 0) {
@@ -392,7 +396,7 @@ int already_running() {
 			close(fd);
 			return 1;
 		}
-		eoj_log("can't lock eojdaemon.lock : %s", strerror(errno));
+		eoj_log("can't lock eojdaemon.lock: %s", strerror(errno));
 		exit(1);
 	}
 	ftruncate(fd, 0);

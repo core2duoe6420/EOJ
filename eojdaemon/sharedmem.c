@@ -33,11 +33,11 @@ int shared_mem_create(struct shared_mem * shm, key_t key, size_t size) {
 	shm->size = size;
 	shm->key = key;
 	if ((shm->shmid = shmget(key, size, IPC_CREAT | 0666)) == -1) {
-		eoj_log("Create shmid fail.");
+		eoj_log("create shmid fail: %s", strerror(errno));
 		return 1;
 	}
 	if ((shm->addr = shmat(shm->shmid, NULL, 0)) == (void*) -1) {
-		eoj_log("shm attach fail.%s", strerror(errno));
+		eoj_log("shm attach fail: %s", strerror(errno));
 		return 1;
 	}
 	return 0;
@@ -47,11 +47,11 @@ int shared_mem_get(struct shared_mem * shm, key_t key, size_t size) {
 	shm->size = size;
 	shm->key = key;
 	if ((shm->shmid = shmget(key, size, 0666)) == -1) {
-		eoj_log("Get shmid fail.");
+		eoj_log("get shmid fail: %s", strerror(errno));
 		return 1;
 	}
 	if ((shm->addr = shmat(shm->shmid, NULL, SHM_RDONLY)) == (void*) -1) {
-		eoj_log("shm attach fail.%s", strerror(errno));
+		eoj_log("shm attach fail: %s", strerror(errno));
 		return 1;
 	}
 	return 0;
@@ -60,14 +60,14 @@ int shared_mem_get(struct shared_mem * shm, key_t key, size_t size) {
 int shared_mem_dt(struct shared_mem * shm) {
 	int retval = 0;
 	if ((retval = shmdt(shm->addr)) == -1)
-		eoj_log("shm detach fail.");
+		eoj_log("shm detach fail: %s", strerror(errno));
 	return retval;
 }
 
 int shared_mem_remove(struct shared_mem * shm) {
 	int retval = 0;
 	if ((retval = shmctl(shm->shmid, IPC_RMID, NULL )) == -1)
-		eoj_log("shm remove fail.");
+		eoj_log("shm remove fail: %s", strerror(errno));
 	return retval;
 }
 

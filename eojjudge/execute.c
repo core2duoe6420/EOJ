@@ -42,8 +42,8 @@ static int check_syscall(long syscall) {
 	return 1;
 }
 
-static enum result check_mem_rusage(struct rusage * usage, struct run_result * rused,
-		unsigned int lmem) {
+static enum result check_mem_rusage(struct rusage * usage,
+		struct run_result * rused, unsigned int lmem) {
 	unsigned int time, mem;
 	time = (usage->ru_stime.tv_sec + usage->ru_utime.tv_sec) * 1000
 			+ (usage->ru_stime.tv_usec + usage->ru_utime.tv_usec) / 1000;
@@ -111,17 +111,17 @@ enum result execute(struct request * req, struct run_result * rused) {
 	pid = fork();
 	if (pid == 0) {
 		if (set_limit(ltime, 1024)) {
-			eoj_log("set rlimit error");
+			eoj_log("set rlimit error: %s", strerror(errno));
 			exit(1);
 		}
 		if (io_redirect(fstdin, fstdout)) {
-			eoj_log("ioredirect error");
+			eoj_log("ioredirect error: %s", strerror(errno));
 			exit(1);
 		}
 
 		ptrace(PTRACE_TRACEME, 0, NULL, NULL );
 		if (execl(complete_fname, outfile, NULL ) == -1) {
-			eoj_log("exec fail : %s", strerror(errno));
+			eoj_log("exec fail: %s", strerror(errno));
 			exit(1);
 		}
 	}
@@ -131,7 +131,7 @@ enum result execute(struct request * req, struct run_result * rused) {
 	long orig_rax;
 	while (1) {
 		if (wait4(pid, &status, 0, &rusage) < 0) {
-			eoj_log("wait error");
+			eoj_log("wait error: %s", strerror(errno));
 			return SYS_ERROR;
 		}
 
@@ -193,13 +193,12 @@ enum result execute(struct request * req, struct run_result * rused) {
 			break;
 		}
 		if (ptrace(PTRACE_SYSCALL, pid, NULL, NULL ) < 0) {
-			//eoj_log("ptrace error");
+			eoj_log("ptrace error: %s", strerror(errno));
 			kill(pid, SIGKILL);
 			result = SYS_ERROR;
 			break;
 		}
-
 	}
-	eoj_log("mem : %u kb time : %u ms", rused->memory, rused->time);
+
 	return result;
 }

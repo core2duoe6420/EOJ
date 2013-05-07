@@ -30,7 +30,8 @@
 		<timeout>10</timeout>
 		<passwd>ecust</passwd>
 		<usedb>eojdb</usedb>
-		<getProLimit></getProLimit>
+		<getProLimitAll>SELECT p_id,p_tlimt,p_mlimt from problem</getProLimitAll>
+		<getProLimitById>SELECT p_tlimt,p_mlimt from problem WHERE p_id=%d</getProLimitById>
 		<incProErr>UPDATE problem SET p_tsubmit=p_tsubmit+1 WHERE p_id=%d</incProErr>
 		<incProbAC>UPDATE problem SET p_tsubmit=p_tsubmit+1,p_acc=p_acc+1 WHERE p_id=%d</incProbAC>
 		<storeRunResult>UPDATE answerit SET ans_mcost=%d,ans_tcost=%d,ans_codeloc='%s',ans_codetype=%d,ans_codel=%d,ans_result=%d WHERE ans_id=%d</storeRunResult>

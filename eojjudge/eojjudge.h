@@ -109,16 +109,20 @@ extern void shared_mem_read(struct shared_mem * shm, void * dest, size_t size);
 extern void shared_mem_write(struct shared_mem * shm, void * src, size_t size);
 extern int shared_mem_remove(struct shared_mem * shm);
 
+//1MB
+#define CODELEN_MAX (1024*1024)
+
 struct request {
 	struct compiler * cpl;
 	int pro_id;
 	int run_id;
 	int user_id;
+	off_t codelen;	//unit:kb
 	unsigned int time_limit;
 	unsigned int mem_limit;
 	char * fname_nosx;
 	char * suffix;
-	char * complete_dest_file;
+	char * src_fname_withdir;
 	const char * input_dir;
 	const char * answer_dir;
 	const char * out_dir;
@@ -134,6 +138,7 @@ enum result {
 	MEM_LIMIT_EXCEED = 5,
 	OUTPUT_LIMIT_EXCEED = 6,
 	WRONG_ANSWER = 7,
+	CODELEN_LIMIT_EXCEED =8,
 };
 
 struct run_result {

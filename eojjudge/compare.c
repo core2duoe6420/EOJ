@@ -25,14 +25,14 @@ enum result compare(struct request * req) {
 	if (pid == 0) {
 		if (execl("/usr/bin/diff", "diff", "-B", "-w", answer, result_file,
 				NULL ) == -1) {
-			eoj_log("exec %s fail : %s", "diff", strerror(errno));
+			eoj_log("exec %s fail: %s", "diff", strerror(errno));
 			exit(1);
 		}
 	}
 
 	int status;
 	if (waitpid(pid, &status, 0) != pid) {
-		eoj_log("wait pid %d fail", pid);
+		eoj_log("wait pid %d fail: %s", pid, strerror(errno));
 		return SYS_ERROR;
 	}
 

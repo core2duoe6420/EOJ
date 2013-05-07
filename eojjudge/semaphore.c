@@ -13,19 +13,19 @@
 #include <string.h>
 #include "eojjudge.h"
 
-sem_t * create_semaphore(char * name,int value) {
+sem_t * create_semaphore(char * name, int value) {
 	sem_t * semid;
 	if ((semid = sem_open(name, O_RDWR | O_CREAT | O_EXCL, 0666, value))
 			== SEM_FAILED ) {
 		//sem already exists
-		eoj_log("Create semaphore fail.Trying to unlink");
+		eoj_log("create semaphore fail: %s.Trying to unlink", strerror(errno));
 		int errsv = errno;
 		if (errsv == EEXIST) {
 			if (sem_unlink(name)) {
-				eoj_log("Unlink semahpore fail.exiting");
+				eoj_log("unlink semahpore fail: %s", strerror(errno));
 				return SEM_FAILED ;
 			} else {
-				eoj_log("Unlink semaphore succeed");
+				eoj_log("unlink semaphore succeed");
 			}
 		}
 		//OK sem already unlinked.create again.
@@ -33,14 +33,14 @@ sem_t * create_semaphore(char * name,int value) {
 		semid = sem_open(name, O_RDWR | O_CREAT | O_EXCL, 0666, value);
 	}
 	if (semid == SEM_FAILED )
-		eoj_log("Trying to get semahpore fail.daemon exiting");
+		eoj_log("trying to get semahpore fail: %s", strerror(errno));
 	return semid;
 }
 
 sem_t * get_semaphore(char * name) {
 	sem_t * semid;
-	if((semid = sem_open(name,0)) == SEM_FAILED)
-		eoj_log("Get semaphore fail %s",strerror(errno));
+	if ((semid = sem_open(name, 0)) == SEM_FAILED )
+		eoj_log("get semaphore fail: %s", strerror(errno));
 	return semid;
 }
 
@@ -52,7 +52,7 @@ void v_semaphore(sem_t * sem) {
 	sem_post(sem);
 }
 
-void del_semaphore(char * name,sem_t * sem) {
+void del_semaphore(char * name, sem_t * sem) {
 	sem_close(sem);
 	sem_unlink(name);
 }

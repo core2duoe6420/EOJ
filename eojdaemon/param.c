@@ -29,6 +29,8 @@
 #define CONCURRENCY_MAX 256
 #define CONCURRENCY_DEFAULT 32
 
+#define PROB_INCREMENT 5000
+
 const char * work_dir;
 const char * dest_dir;
 const char * input_dir;
@@ -37,6 +39,32 @@ const char * out_dir;
 const char * err_dir;
 const char * judge_exec;
 int concurrency;
+
+struct problems probs = { 0, 0, };
+
+struct prob_limit * get_prob_limit(int prob_id) {
+	if (prob_id >= probs.max || probs.limits[prob_id].exist == 0) {
+		if (update_prob_limit(&probs, prob_id)) {
+			eoj_log("get problem limitation fail");
+			return NULL ;
+		}
+	}
+	return probs.limits + prob_id;
+}
+
+int prob_alloc(struct problems * prob) {
+	int ori_max = prob->max;
+	prob->limits = realloc(prob->limits,
+			(prob->max + PROB_INCREMENT) * sizeof(struct prob_limit));
+	if (!prob->limits) {
+		eoj_log("alloc problems fail");
+		return 1;
+	}
+	prob->max += PROB_INCREMENT;
+	for (int i = ori_max; i < prob->max; i++)
+		prob->limits[i].exist = 0;
+	return 0;
+}
 
 char * check_dir(char * dir) {
 	struct stat statbuf;
@@ -55,17 +83,17 @@ char * check_dir(char * dir) {
 }
 
 /*
-static char * get_dir(char * buf, int limit, char * key, char * init) {
-	char * dir;
-	dir = global_config_get_value(key);
-	if (!dir)
-		dir = init;
+ static char * get_dir(char * buf, int limit, char * key, char * init) {
+ char * dir;
+ dir = global_config_get_value(key);
+ if (!dir)
+ dir = init;
 
-	strncpy(buf, dir, limit);
+ strncpy(buf, dir, limit);
 
-	return check_dir(buf);
-}
-*/
+ return check_dir(buf);
+ }
+ */
 static int get_concurrency() {
 	int con;
 	char * con_config;
@@ -96,12 +124,15 @@ void param_initial() {
 	value = global_config_get_value("judge_exec");
 	judge_exec = value ? value : JUDGE_EXEC_DEFAULT;
 	/*
-	get_dir(work_dir, EOJ_PATH_MAX, "work_dir", WORK_DIR_DEFAULT);
-	get_dir(dest_dir, EOJ_PATH_MAX, "dest_dir", DEST_DIR_DEFAULT);
-	get_dir(input_dir, EOJ_PATH_MAX, "input_dir", INPUT_DIR_DEFAULT);
-	get_dir(answer_dir, EOJ_PATH_MAX, "answer_dir", ANSWER_DIR_DEFAULT);
-	get_dir(out_dir, EOJ_PATH_MAX, "out_dir", OUT_DIR_DEFAULT);
-	get_dir(err_dir,EOJ_PATH_MAX,"err_dir",ERR_DIR_DEFAULT);
-	*/
+	 get_dir(work_dir, EOJ_PATH_MAX, "work_dir", WORK_DIR_DEFAULT);
+	 get_dir(dest_dir, EOJ_PATH_MAX, "dest_dir", DEST_DIR_DEFAULT);
+	 get_dir(input_dir, EOJ_PATH_MAX, "input_dir", INPUT_DIR_DEFAULT);
+	 get_dir(answer_dir, EOJ_PATH_MAX, "answer_dir", ANSWER_DIR_DEFAULT);
+	 get_dir(out_dir, EOJ_PATH_MAX, "out_dir", OUT_DIR_DEFAULT);
+	 get_dir(err_dir,EOJ_PATH_MAX,"err_dir",ERR_DIR_DEFAULT);
+	 */
 	concurrency = get_concurrency();
+
+	if (get_all_prob_limit(&probs))
+		exit(1);
 }

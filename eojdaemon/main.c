@@ -27,7 +27,7 @@ int main() {
 		if (configs_share())
 			exit(1);
 		if ((daemon_ret = eoj_daemon()) == 1) {
-			eoj_log("Daemon error\n");
+			eoj_log("daemon start error");
 			exit(1);
 		}
 	} while (daemon_ret == 2);

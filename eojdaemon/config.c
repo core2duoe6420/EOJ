@@ -102,9 +102,14 @@ static void _config_set_print(struct config_set * set) {
 }
 
 extern volatile int restart;
+extern struct problems probs;
 
 void config_initial() {
 	restart = 0;
+	/* free(probs->limits) is auto done
+	 * in prob_alloc() defined in param.c
+	 */
+	probs.max = 0;
 	config_set_clear(&configs.global_config);
 	compiler_set_clear(&configs.compilers);
 	db_config_clear(&configs.db_config);
@@ -136,7 +141,6 @@ static int compiler_add_param(struct compiler * cpl, char * param) {
 
 static int setup_database(struct db_config * db, struct config_set * set) {
 	int has_host = 0, has_user = 0, has_passwd = 0, has_db = 0;
-//default;
 	db->timeout = 10;
 
 	for (int i = 0; i < set->config_nr; i++) {
@@ -232,12 +236,12 @@ int xml_config(char * xmlfile) {
 	doc = xmlCtxtReadFile(ctxt, xmlfile, "UTF-8",
 			XML_PARSE_DTDATTR | XML_PARSE_NOERROR);
 	if (!doc) {
-		eoj_log("Can't parse the content: %s", xmlfile);
+		eoj_log("can't parse the content: %s", xmlfile);
 		return 1;
 	}
 	cur = xmlDocGetRootElement(doc);
 	if (!cur || xmlStrcmp(cur->name, BAD_CAST "eoj")) {
-		eoj_log("Can't get the root element: %s", xmlfile);
+		eoj_log("can't get the root element: %s", xmlfile);
 		xmlFreeDoc(doc);
 		xmlFreeParserCtxt(ctxt);
 		return 1;

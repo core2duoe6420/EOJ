@@ -23,7 +23,7 @@ struct shared_config * configs;
 
 void add_file_records(struct file_records * fr, char * fname) {
 	if (fr->nr >= 32) {
-		eoj_log("reach file uplimit");
+		eoj_log("add file records fail: reach file uplimit");
 		return;
 	}
 
@@ -39,7 +39,8 @@ void file_records_clean(struct file_records * fr) {
 		}
 
 		if (remove(fr->records[i]) != 0)
-			eoj_log("trying to delete file %s fail", fr->records[i]);
+			eoj_log("trying to delete file %s fail: %s", fr->records[i],
+					strerror(errno));
 
 	}
 }
@@ -66,7 +67,7 @@ static void fill_request(struct request * req, char * argv[]) {
 	req->user_id = atoi(argv[3]);
 	req->fname_nosx = argv[4];
 	req->suffix = argv[5];
-	req->complete_dest_file = argv[6];
+	req->src_fname_withdir = argv[6];
 	req->input_dir = config_get_value(&configs->global_config, "input_dir");
 	req->answer_dir = config_get_value(&configs->global_config, "answer_dir");
 	req->out_dir = config_get_value(&configs->global_config, "out_dir");
@@ -107,6 +108,8 @@ static char * strresult(enum result result) {
 		return "OUTPUT LIMIT EXCEEDED";
 	case WRONG_ANSWER:
 		return "WRONG ANSWER";
+	case CODELEN_LIMIT_EXCEED:
+		return "CODE LENGTH LIMIT EXCEED";
 	}
 	return NULL ;
 }
@@ -129,7 +132,7 @@ int main(int argc, char * argv[]) {
 
 	struct shared_mem shm;
 	if (shared_mem_get(&shm, 10000, sizeof(struct shared_config))) {
-		eoj_log("Get shared mem fail");
+		eoj_log("get shared mem fail");
 		exit(1);
 	}
 
@@ -146,16 +149,14 @@ int main(int argc, char * argv[]) {
 	fill_request(&req, argv);
 
 	//in case the file is being moved
-	test_file_exist(req.complete_dest_file);
+	test_file_exist(req.src_fname_withdir);
 
-	rr.result = compile(&req);
-	if (rr.result == RNORMAL) {
-		rr.result = execute(&req, &rr);
-		if (rr.result == RNORMAL)
+	if ((rr.result = compile(&req)) == RNORMAL)
+		if ((rr.result = execute(&req, &rr)) == RNORMAL)
 			rr.result = compare(&req);
-	}
 
-	eoj_log("run result : %s", strresult(rr.result));
+	eoj_log("mem: %ukb time: %ums result: %s", rr.memory, rr.time,
+			strresult(rr.result));
 
 	file_records_clean(&fcreat_record);
 

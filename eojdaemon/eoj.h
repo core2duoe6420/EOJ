@@ -26,13 +26,7 @@
 #define EOJ_PARAMS_MAX 32
 #define EOJ_CMD_MAX 64
 
-//defined in xml.c
-extern int xml_config(char * xmlfile);
-extern void config_set_print();
-extern char * global_config_get_value(char * attrname);
-extern void compilers_initial();
-extern struct compiler * get_compiler(char * suffix);
-
+//defined in config.c
 #define ATTR_MAX 32
 #define ATTR_NAME_MAX 128
 #define ATTR_VALUE_MAX 128
@@ -81,6 +75,13 @@ struct shared_config {
 
 extern struct shared_config configs;
 
+extern int xml_config(char * xmlfile);
+extern void config_set_print();
+extern char * config_get_value(struct config_set * set, char * attrname);
+extern char * global_config_get_value(char * attrname);
+extern void compilers_initial();
+extern struct compiler * get_compiler(char * suffix);
+
 //defined in param.c
 extern const char * work_dir;
 extern const char * dest_dir;
@@ -90,6 +91,24 @@ extern const char * out_dir;
 extern const char * err_dir;
 extern const char * judge_exec;
 extern int concurrency;
+extern int prob_max;
+
+struct prob_limit {
+	int exist;
+	unsigned int time;
+	unsigned int memory;
+};
+
+struct problems {
+	int max;
+	struct prob_limit * limits;
+};
+
+extern struct prob_limit * get_prob_limit(int prob_id);
+extern int prob_alloc(struct problems * prob);
+//defined in mysql.c
+extern int get_all_prob_limit(struct problems * probs);
+extern int update_prob_limit(struct problems * probs, int prob_id);
 extern void param_initial();
 
 //defined in log.c
