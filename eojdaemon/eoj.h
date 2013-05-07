@@ -100,6 +100,7 @@ extern void log_close();
 //defined in daemon.c
 extern void daemonize(char * cmd);
 extern int eoj_daemon();
+extern int already_running();
 
 //defined in semaphore.c
 extern sem_t * create_semaphore(char * name, int value);

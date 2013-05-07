@@ -13,6 +13,10 @@ extern void config_initial();
 
 int main() {
 	daemonize("eoj");
+	if(already_running()) {
+		eoj_log("eojdaemon already running");
+		exit(1);
+	}
 	int daemon_ret;
 	do {
 		config_initial();

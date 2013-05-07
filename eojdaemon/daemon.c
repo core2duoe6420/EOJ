@@ -261,7 +261,7 @@ int eoj_daemon() {
 			if (run_request(&request) != 0)
 				move_file(err_dir, request.complete_src_file);
 
-			if(restart)
+			if (restart)
 				break;
 		}
 		closedir(dir);
@@ -360,4 +360,43 @@ void daemonize(char * cmd) {
 		eoj_log("unexpected file descriptors %d %d %d", fd0, fd1, fd2);
 		exit(EXIT_FAILURE);
 	}
+}
+
+#define LOCKMODE (S_IRUSR|S_IWUSR|S_IRGRP|S_IROTH)
+
+//apue p365
+static int lockfile(int fd) {
+	struct flock fl;
+	fl.l_type = F_WRLCK;
+	fl.l_start = 0;
+	fl.l_whence = SEEK_SET;
+	fl.l_len = 0;
+	return fcntl(fd, F_SETLK, &fl);
+}
+
+//apue p349
+/* if the daemon is not started by root
+ * we need chmod /var/run/deojdaemon.lock
+ * to mode 646 to give the permission
+ */
+int already_running() {
+	int fd;
+	char buf[16];
+	fd = open("/var/run/eojdaemon.lock", O_RDWR | O_CREAT, LOCKMODE);
+	if (fd < 0) {
+		eoj_log("can't open eojdaemon.lock : %s", strerror(errno));
+		exit(1);
+	}
+	if (lockfile(fd) < 0) {
+		if (errno == EACCES || errno == EAGAIN) {
+			close(fd);
+			return 1;
+		}
+		eoj_log("can't lock eojdaemon.lock : %s", strerror(errno));
+		exit(1);
+	}
+	ftruncate(fd, 0);
+	sprintf(buf, "%ld", (long) getpid());
+	write(fd, buf, strlen(buf) + 1);
+	return 0;
 }
