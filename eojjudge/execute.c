@@ -26,20 +26,31 @@
 #include <string.h>
 #include <sys/time.h>
 #include <sys/resource.h>
+#include <limits.h>
 #include <asm/unistd_64.h>
 
 #include "eojjudge.h"
 
 static int check_syscall(long syscall) {
-	static long allows[] = { __NR_read, __NR_write, __NR_brk, __NR_exit,
-			__NR_execve, __NR_mmap, __NR_access, __NR_open, __NR_close,
-			__NR_fstat, __NR_mprotect, __NR_arch_prctl, __NR_munmap,
-			__NR_exit_group };
+	static long allows[] = { SYS_read, SYS_write, SYS_brk, SYS_exit, SYS_execve,
+			SYS_mmap, SYS_access, SYS_open, SYS_close, SYS_fstat, SYS_mprotect,
+			SYS_arch_prctl, SYS_munmap, SYS_exit_group };
+	static int times[312] = { 0, };
+	static int allowtime[312] = { [SYS_execve]=1, [SYS_open]=4 };
 
-	for (int i = 0; i < sizeof(allows) / sizeof(allows[0]); i++)
-		if (allows[i] == syscall)
-			return 0;
-	return 1;
+	if (syscall == -1) {
+		for (int i = 0; i < sizeof(allows) / sizeof(allows[0]); i++)
+			if (allowtime[allows[i]] == 0)
+				allowtime[allows[i]] = INT_MAX;
+		for (int i = 0; i < sizeof(times) / sizeof(times[0]); i++)
+			times[i] = 0;
+		return 1;
+	}
+	times[syscall]++;
+	if (times[syscall] > allowtime[syscall])
+		return 1;
+
+	return 0;
 }
 
 static enum result check_mem_rusage(struct rusage * usage,
@@ -71,19 +82,19 @@ static int io_redirect(char * c_stdin, char * c_stdout) {
 static int set_limit(unsigned int ltime, unsigned int loutput) {
 	struct rlimit limit;
 
-	//time
+//time
 	limit.rlim_max = (ltime + 999) / 1000 + 1;
 	limit.rlim_cur = (ltime + 999) / 1000;
 	if (setrlimit(RLIMIT_CPU, &limit) < 0)
 		return 1;
 
-	//stack
+//stack
 	limit.rlim_max = 4 * 1024 * 1024;
 	limit.rlim_cur = 4 * 1024 * 1024;
 	if (setrlimit(RLIMIT_STACK, &limit) < 0)
 		return 1;
 
-	//output
+//output
 	limit.rlim_max = loutput * 1024;
 	limit.rlim_cur = loutput * 1024;
 	if (setrlimit(RLIMIT_FSIZE, &limit) < 0)
@@ -99,6 +110,8 @@ enum result execute(struct request * req, struct run_result * rused) {
 	char fstdout[EOJ_PATH_MAX];
 	unsigned int ltime = req->time_limit, lmem = req->mem_limit;
 
+	//reset syscall times
+	check_syscall(-1);
 	snprintf(outfile, EOJ_PATH_MAX, "%s%s", req->fname_nosx,
 			req->cpl->execsuffix);
 	snprintf(complete_fname, EOJ_PATH_MAX, "%s%s", req->out_dir, outfile);
