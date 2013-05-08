@@ -96,17 +96,17 @@ enum result execute(struct request * req, struct run_result * rused) {
 	pid_t pid;
 	char outfile[EOJ_PATH_MAX];
 	char complete_fname[EOJ_PATH_MAX];
-	char fstdin[EOJ_PATH_MAX];
 	char fstdout[EOJ_PATH_MAX];
 	unsigned int ltime = req->time_limit, lmem = req->mem_limit;
 
 	snprintf(outfile, EOJ_PATH_MAX, "%s%s", req->fname_nosx,
 			req->cpl->execsuffix);
 	snprintf(complete_fname, EOJ_PATH_MAX, "%s%s", req->out_dir, outfile);
-	snprintf(fstdin, EOJ_PATH_MAX, "%s%d", req->input_dir, req->pro_id);
 	snprintf(fstdout, EOJ_PATH_MAX, "%s%s%s", req->out_dir, req->fname_nosx,
 			".result");
-	add_file_records(&fcreat_record, fstdout);
+	//add record only at first time
+	if (access(fstdout, F_OK))
+		add_file_records(&fcreat_record, fstdout);
 
 	pid = fork();
 	if (pid == 0) {
@@ -114,7 +114,7 @@ enum result execute(struct request * req, struct run_result * rused) {
 			eoj_log("set rlimit error: %s", strerror(errno));
 			exit(1);
 		}
-		if (io_redirect(fstdin, fstdout)) {
+		if (io_redirect(req->input_file, fstdout)) {
 			eoj_log("ioredirect error: %s", strerror(errno));
 			exit(1);
 		}

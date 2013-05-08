@@ -68,7 +68,7 @@ static int store_run_result(struct request * req, struct run_result * rr) {
 	tcost = rr->time;
 	codeloc = req->src_fname_withdir;
 	codetype = req->cpl->id;
-	codelen = req->codelen/1024;
+	codelen = req->codelen / 1024;
 	result = rr->result;
 	ans_id = req->run_id;
 

@@ -46,6 +46,7 @@ struct run_request {
 	char complete_src_file[EOJ_PATH_MAX];
 	char time_limit[16];
 	char mem_limit[16];
+	char spec[2];
 };
 
 /* on success return 0, error return 1 */
@@ -112,6 +113,7 @@ static int get_limit(struct run_request * req, int prob_id) {
 		return 1;
 	snprintf(req->time_limit, sizeof(req->time_limit), "%u", limit->time);
 	snprintf(req->mem_limit, sizeof(req->mem_limit), "%u", limit->memory);
+	snprintf(req->spec, sizeof(req->spec), "0");
 	return 0;
 }
 
@@ -222,7 +224,8 @@ static int run_request(struct run_request * req) {
 	argv[6] = req->complete_dest_file;
 	argv[7] = req->time_limit;
 	argv[8] = req->mem_limit;
-	argv[9] = NULL;
+	argv[9] = req->spec;
+	argv[10] = NULL;
 	pid = fork();
 	if (pid == 0) {
 		if (execv(judge_exec, argv) == -1) {
@@ -245,8 +248,8 @@ int eoj_daemon() {
 	while (1) {
 		dir = opendir(work_dir);
 		while ((dirent = readdir(dir)) != NULL ) {
-			if (strncmp(dirent->d_name, ".", EOJ_FILENAME_MAX) == 0
-					|| strncmp(dirent->d_name, "..", EOJ_FILENAME_MAX) == 0)
+			if (strncmp(dirent->d_name, ".", 2) == 0
+					|| strncmp(dirent->d_name, "..", 3) == 0)
 				continue;
 			int reqfail = fill_request(&request, dirent->d_name);
 			if (test_file_accessible(request.complete_src_file)) {

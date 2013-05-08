@@ -117,7 +117,8 @@ struct request {
 	int pro_id;
 	int run_id;
 	int user_id;
-	off_t codelen;	//unit:kb
+	int spec;
+	off_t codelen;	//unit:b
 	unsigned int time_limit;
 	unsigned int mem_limit;
 	char * fname_nosx;
@@ -126,6 +127,8 @@ struct request {
 	const char * input_dir;
 	const char * answer_dir;
 	const char * out_dir;
+	char input_file[EOJ_PATH_MAX];
+	char real_answer_dir[EOJ_PATH_MAX];
 };
 
 enum result {
@@ -138,7 +141,7 @@ enum result {
 	MEM_LIMIT_EXCEED = 5,
 	OUTPUT_LIMIT_EXCEED = 6,
 	WRONG_ANSWER = 7,
-	CODELEN_LIMIT_EXCEED =8,
+	CODELEN_LIMIT_EXCEED = 8,
 };
 
 struct run_result {

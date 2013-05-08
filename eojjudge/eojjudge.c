@@ -14,6 +14,7 @@
 #include <sys/wait.h>
 #include <errno.h>
 #include <string.h>
+#include <dirent.h>
 #include <sys/time.h>
 
 #include "eojjudge.h"
@@ -73,6 +74,7 @@ static void fill_request(struct request * req, char * argv[]) {
 	req->out_dir = config_get_value(&configs->global_config, "out_dir");
 	req->time_limit = atoi(argv[7]);
 	req->mem_limit = atoi(argv[8]);
+	req->spec = atoi(argv[9]);
 	req->cpl = get_compiler(req->suffix);
 }
 
@@ -114,6 +116,28 @@ static char * strresult(enum result result) {
 	return NULL ;
 }
 
+/* used for multi-test */
+static int get_next_run_file(struct request * req) {
+	static int idx = 1;
+	snprintf(req->input_file, sizeof(req->input_file), "%s%d/%d",
+			req->input_dir, req->pro_id, idx);
+	snprintf(req->real_answer_dir, sizeof(req->real_answer_dir), "%s%d/%d/",
+			req->answer_dir, req->pro_id, idx);
+
+	if (access(req->input_file, F_OK))
+		return 1;
+
+	DIR * dir;
+	dir = opendir(req->real_answer_dir);
+	if (dir == NULL ) {
+		eoj_log("can't open dir %s: %s", req->real_answer_dir, strerror(errno));
+		return 1;
+	}
+	closedir(dir);
+	idx++;
+	return 0;
+}
+
 extern enum result compile(struct request * req);
 extern enum result execute(struct request * req, struct run_result * rused);
 extern enum result compare(struct request * req);
@@ -122,7 +146,7 @@ extern int update_database(struct request * req, struct run_result * rr);
 int main(int argc, char * argv[]) {
 	signal(SIGCHLD, SIG_DFL );
 
-	if (argc != 9)
+	if (argc != 10)
 		exit(1);
 
 	char log_name[32];
@@ -151,9 +175,17 @@ int main(int argc, char * argv[]) {
 	//in case the file is being moved
 	test_file_exist(req.src_fname_withdir);
 
-	if ((rr.result = compile(&req)) == RNORMAL)
-		if ((rr.result = execute(&req, &rr)) == RNORMAL)
-			rr.result = compare(&req);
+	if ((rr.result = compile(&req)) == RNORMAL) {
+		while (get_next_run_file(&req) == 0) {
+			if ((rr.result = execute(&req, &rr)) == RNORMAL) {
+				rr.result = compare(&req);
+				if (rr.result != ACCEPT)
+					break;
+			} else {
+				break;
+			}
+		}
+	}
 
 	eoj_log("mem: %ukb time: %ums result: %s", rr.memory, rr.time,
 			strresult(rr.result));

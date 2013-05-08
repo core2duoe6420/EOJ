@@ -28,7 +28,7 @@ enum result compile(struct request * req) {
 	char dest_file[EOJ_PATH_MAX];
 
 	req->codelen = get_code_len(req->src_fname_withdir);
-	if(req->codelen > CODELEN_MAX)
+	if (req->codelen > CODELEN_MAX)
 		return CODELEN_LIMIT_EXCEED;
 
 	snprintf(dest_file, EOJ_PATH_MAX, "%s%s%s", req->out_dir, req->fname_nosx,

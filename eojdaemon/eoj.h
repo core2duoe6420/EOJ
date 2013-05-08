@@ -95,6 +95,7 @@ extern int prob_max;
 
 struct prob_limit {
 	int exist;
+	int spec;
 	unsigned int time;
 	unsigned int memory;
 };
