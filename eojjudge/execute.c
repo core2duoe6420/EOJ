@@ -82,19 +82,19 @@ static int io_redirect(char * c_stdin, char * c_stdout) {
 static int set_limit(unsigned int ltime, unsigned int loutput) {
 	struct rlimit limit;
 
-//time
+	//time
 	limit.rlim_max = (ltime + 999) / 1000 + 1;
 	limit.rlim_cur = (ltime + 999) / 1000;
 	if (setrlimit(RLIMIT_CPU, &limit) < 0)
 		return 1;
 
-//stack
+	//stack
 	limit.rlim_max = 4 * 1024 * 1024;
 	limit.rlim_cur = 4 * 1024 * 1024;
 	if (setrlimit(RLIMIT_STACK, &limit) < 0)
 		return 1;
 
-//output
+	//output
 	limit.rlim_max = loutput * 1024;
 	limit.rlim_cur = loutput * 1024;
 	if (setrlimit(RLIMIT_FSIZE, &limit) < 0)
