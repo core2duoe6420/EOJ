@@ -42,7 +42,8 @@ int concurrency;
 
 struct problems probs = { 0, 0, };
 
-struct prob_limit * get_prob_limit(int prob_id) {
+struct prob_limit * get_prob_limit(int prob_id)
+{
 	if (prob_id >= probs.max || probs.limits[prob_id].exist == 0) {
 		if (update_prob_limit(&probs, prob_id)) {
 			eoj_log("get problem limitation fail");
@@ -52,10 +53,11 @@ struct prob_limit * get_prob_limit(int prob_id) {
 	return probs.limits + prob_id;
 }
 
-int prob_alloc(struct problems * prob) {
+int prob_alloc(struct problems * prob)
+{
 	int ori_max = prob->max;
 	prob->limits = realloc(prob->limits,
-			(prob->max + PROB_INCREMENT) * sizeof(struct prob_limit));
+	                       (prob->max + PROB_INCREMENT) * sizeof(struct prob_limit));
 	if (!prob->limits) {
 		eoj_log("alloc problems fail");
 		return 1;
@@ -66,14 +68,15 @@ int prob_alloc(struct problems * prob) {
 	return 0;
 }
 
-char * check_dir(char * dir) {
+char * check_dir(char * dir)
+{
 	struct stat statbuf;
 	if (stat(dir, &statbuf))
 		return NULL ;
-
+		
 	if (!S_ISDIR(statbuf.st_mode))
 		return NULL ;
-
+		
 	int len = strlen(dir);
 	if (dir[len - 1] != '/') {
 		dir[len] = '/';
@@ -94,20 +97,22 @@ char * check_dir(char * dir) {
  return check_dir(buf);
  }
  */
-static int get_concurrency() {
+static int get_concurrency()
+{
 	int con;
 	char * con_config;
 	con_config = global_config_get_value("concurrency");
 	if (!con_config)
 		return CONCURRENCY_DEFAULT;
-
+		
 	con = atoi(con_config);
 	if (con > CONCURRENCY_MAX || con <= 0)
 		con = CONCURRENCY_MAX;
 	return con;
 }
 
-void param_initial() {
+void param_initial()
+{
 	const char * value;
 	value = global_config_get_value("work_dir");
 	work_dir = value ? value : WORK_DIR_DEFAULT;
@@ -132,7 +137,7 @@ void param_initial() {
 	 get_dir(err_dir,EOJ_PATH_MAX,"err_dir",ERR_DIR_DEFAULT);
 	 */
 	concurrency = get_concurrency();
-
+	
 	if (get_all_prob_limit(&probs))
 		exit(1);
 }

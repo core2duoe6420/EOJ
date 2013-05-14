@@ -11,7 +11,8 @@
 
 extern void config_initial();
 
-int main() {
+int main()
+{
 	daemonize("eoj");
 	if(already_running()) {
 		eoj_log("eojdaemon already running");

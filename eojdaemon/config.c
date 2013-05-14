@@ -29,7 +29,8 @@
 extern char * check_dir(char * dir);
 struct shared_config configs;
 
-static void config_set_check_dir(struct config_set * set) {
+static void config_set_check_dir(struct config_set * set)
+{
 	for (int i = 0; i < set->config_nr; i++) {
 		struct attr * attr = set->attrs + i;
 		if (strstr(attr->name, "dir"))
@@ -38,19 +39,22 @@ static void config_set_check_dir(struct config_set * set) {
 }
 
 static struct compiler * _get_compiler(struct compiler_set * compilers,
-		char * suffix) {
+                                       char * suffix)
+{
 	for (int i = 0; i < compilers->count; i++)
 		if (strncmp(compilers->cpls[i].suffix, suffix, EOJ_SUFFIX_MAX) == 0)
 			return &compilers->cpls[i];
 	return NULL ;
 }
 
-struct compiler * get_compiler(char * suffix) {
+struct compiler * get_compiler(char * suffix)
+{
 	return _get_compiler(&configs.compilers, suffix);
 }
 
 static int config_set_add(struct config_set * set, const char * name,
-		const char * value) {
+                          const char * value)
+{
 	struct attr * attr;
 	if (set->config_nr >= ATTR_MAX)
 		return 1;
@@ -60,7 +64,8 @@ static int config_set_add(struct config_set * set, const char * name,
 	return 0;
 }
 
-static void config_set_clear(struct config_set * set) {
+static void config_set_clear(struct config_set * set)
+{
 	for (int i = 0; i < set->config_nr; i++) {
 		strcpy(set->attrs[i].name, "");
 		strcpy(set->attrs[i].value, "");
@@ -68,7 +73,8 @@ static void config_set_clear(struct config_set * set) {
 	set->config_nr = 0;
 }
 
-static void compiler_set_clear(struct compiler_set * cps) {
+static void compiler_set_clear(struct compiler_set * cps)
+{
 	for (int i = 0; i < cps->count; i++) {
 		struct compiler * cpl;
 		cpl = cps->cpls + i;
@@ -84,7 +90,8 @@ static void compiler_set_clear(struct compiler_set * cps) {
 	cps->count = 0;
 }
 
-static void db_config_clear(struct db_config * dbc) {
+static void db_config_clear(struct db_config * dbc)
+{
 	dbc->timeout = 0;
 	strcpy(dbc->host, "");
 	strcpy(dbc->passwd, "");
@@ -93,7 +100,8 @@ static void db_config_clear(struct db_config * dbc) {
 	config_set_clear(&dbc->sqls);
 }
 
-static void _config_set_print(struct config_set * set) {
+static void _config_set_print(struct config_set * set)
+{
 	for (int i = 0; i < set->config_nr; i++) {
 		struct attr * attr_ptr;
 		attr_ptr = set->attrs + i;
@@ -104,7 +112,8 @@ static void _config_set_print(struct config_set * set) {
 extern volatile int restart;
 extern struct problems probs;
 
-void config_initial() {
+void config_initial()
+{
 	restart = 0;
 	/* free(probs->limits) is auto done
 	 * in prob_alloc() defined in param.c
@@ -115,11 +124,13 @@ void config_initial() {
 	db_config_clear(&configs.db_config);
 }
 
-void config_set_print() {
+void config_set_print()
+{
 	_config_set_print(&configs.global_config);
 }
 
-char * config_get_value(struct config_set * set, char * attrname) {
+char * config_get_value(struct config_set * set, char * attrname)
+{
 	for (int i = 0; i < set->config_nr; i++) {
 		if (strncmp(attrname, set->attrs[i].name, ATTR_NAME_MAX) == 0)
 			return set->attrs[i].value;
@@ -127,22 +138,25 @@ char * config_get_value(struct config_set * set, char * attrname) {
 	return NULL ;
 }
 
-char * global_config_get_value(char * attrname) {
+char * global_config_get_value(char * attrname)
+{
 	return config_get_value(&configs.global_config, attrname);
 }
 
-static int compiler_add_param(struct compiler * cpl, char * param) {
+static int compiler_add_param(struct compiler * cpl, char * param)
+{
 	if (cpl->params_nr >= EOJ_PARAMS_MAX)
 		return 1;
-
+		
 	strncpy(cpl->params[cpl->params_nr++], param, EOJ_CMD_MAX);
 	return 0;
 }
 
-static int setup_database(struct db_config * db, struct config_set * set) {
+static int setup_database(struct db_config * db, struct config_set * set)
+{
 	int has_host = 0, has_user = 0, has_passwd = 0, has_db = 0;
 	db->timeout = 10;
-
+	
 	for (int i = 0; i < set->config_nr; i++) {
 		struct attr * attr;
 		attr = set->attrs + i;
@@ -164,7 +178,7 @@ static int setup_database(struct db_config * db, struct config_set * set) {
 			config_set_add(&db->sqls, attr->name, attr->value);
 		}
 	}
-
+	
 	if (has_host && has_user && has_passwd && has_db)
 		return 0;
 	else
@@ -173,16 +187,17 @@ static int setup_database(struct db_config * db, struct config_set * set) {
 
 /* there may be several compilers */
 static int setup_compiler(struct compiler_set * cpl_set,
-		struct config_set * set) {
+                          struct config_set * set)
+{
 	if (cpl_set->count >= COMPILER_MAX)
 		return 1;
-
+		
 	int has_id = 0, has_name = 0, has_suffix = 0, has_exec = 0,
-			has_exec_suf = 0;
-
+	    has_exec_suf = 0;
+	    
 	struct compiler * cpl;
 	cpl = &cpl_set->cpls[cpl_set->count];
-
+	
 	for (int i = 0; i < set->config_nr; i++) {
 		struct attr * attr;
 		attr = set->attrs + i;
@@ -205,7 +220,7 @@ static int setup_compiler(struct compiler_set * cpl_set,
 			compiler_add_param(cpl, attr->value);
 		}
 	}
-
+	
 	if (has_id && has_exec && has_suffix && has_exec && has_exec_suf) {
 		cpl_set->count++;
 		return 0;
@@ -214,7 +229,8 @@ static int setup_compiler(struct compiler_set * cpl_set,
 	}
 }
 
-static void xml_get_children(xmlNodePtr node, struct config_set * set) {
+static void xml_get_children(xmlNodePtr node, struct config_set * set)
+{
 	xmlNodePtr gnode;
 	xmlChar * key;
 	gnode = node->xmlChildrenNode;
@@ -227,14 +243,15 @@ static void xml_get_children(xmlNodePtr node, struct config_set * set) {
 	_config_set_print(set);
 }
 
-int xml_config(char * xmlfile) {
+int xml_config(char * xmlfile)
+{
 	xmlParserCtxtPtr ctxt;
 	xmlDocPtr doc;
 	xmlNodePtr cur, l_cur;
 	xmlKeepBlanksDefault(0);
 	ctxt = xmlNewParserCtxt();
 	doc = xmlCtxtReadFile(ctxt, xmlfile, "UTF-8",
-			XML_PARSE_DTDATTR | XML_PARSE_NOERROR);
+	                      XML_PARSE_DTDATTR | XML_PARSE_NOERROR);
 	if (!doc) {
 		eoj_log("can't parse the content: %s", xmlfile);
 		return 1;
@@ -246,7 +263,7 @@ int xml_config(char * xmlfile) {
 		xmlFreeParserCtxt(ctxt);
 		return 1;
 	}
-
+	
 	int err = 0;
 	l_cur = cur->xmlChildrenNode;
 	while (l_cur) {
@@ -271,7 +288,7 @@ int xml_config(char * xmlfile) {
 		} else {
 			key = xmlNodeGetContent(l_cur);
 			config_set_add(&configs.global_config, (char *) l_cur->name,
-					(char *) key);
+			               (char *) key);
 			xmlFree(key);
 		}
 		l_cur = l_cur->next;

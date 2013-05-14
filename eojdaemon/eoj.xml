@@ -13,7 +13,7 @@
 		<name>gcc</name>
 		<suffix>.c</suffix>
 		<execsuffix>.out</execsuffix>
-		<execfile>/usr/bin/gcc</execfile>
+		<execfile>/usr/local/bin/gcc</execfile>
 		<param>-std=c99</param>
 		<param>-DEOJ</param>
 	</compiler>

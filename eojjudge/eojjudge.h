@@ -132,16 +132,16 @@ struct request {
 };
 
 enum result {
-	SYS_ERROR = -1,
-	RNORMAL = 0,
-	ACCEPT = 1,
-	COMPILE_ERR = 2,
-	RUN_TIME_ERR = 3,
-	TIME_LIMIT_EXCEED = 4,
-	MEM_LIMIT_EXCEED = 5,
-	OUTPUT_LIMIT_EXCEED = 6,
-	WRONG_ANSWER = 7,
-	CODELEN_LIMIT_EXCEED = 8,
+    SYS_ERROR = -1,
+    RNORMAL = 0,
+    ACCEPT = 1,
+    COMPILE_ERR = 2,
+    RUN_TIME_ERR = 3,
+    TIME_LIMIT_EXCEED = 4,
+    MEM_LIMIT_EXCEED = 5,
+    OUTPUT_LIMIT_EXCEED = 6,
+    WRONG_ANSWER = 7,
+    CODELEN_LIMIT_EXCEED = 8,
 };
 
 struct run_result {

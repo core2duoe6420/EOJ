@@ -22,31 +22,34 @@
 struct file_records fcreat_record;
 struct shared_config * configs;
 
-void add_file_records(struct file_records * fr, char * fname) {
+void add_file_records(struct file_records * fr, char * fname)
+{
 	if (fr->nr >= 32) {
 		eoj_log("add file records fail: reach file uplimit");
 		return;
 	}
-
+	
 	strncpy(fr->records[fr->nr], fname, EOJ_PATH_MAX);
 	fr->nr++;
 }
 
-void file_records_clean(struct file_records * fr) {
+void file_records_clean(struct file_records * fr)
+{
 	for (int i = 0; i < fr->nr; i++) {
 		if (access(fr->records[i], F_OK) != 0) {
 			eoj_log("clean error. file %s not exist", fr->records[i]);
 			continue;
 		}
-
+		
 		if (remove(fr->records[i]) != 0)
 			eoj_log("trying to delete file %s fail: %s", fr->records[i],
-					strerror(errno));
-
+			        strerror(errno));
+			        
 	}
 }
 
-char * config_get_value(struct config_set * set, char * attrname) {
+char * config_get_value(struct config_set * set, char * attrname)
+{
 	for (int i = 0; i < set->config_nr; i++) {
 		if (strncmp(attrname, set->attrs[i].name, ATTR_NAME_MAX) == 0)
 			return set->attrs[i].value;
@@ -54,15 +57,17 @@ char * config_get_value(struct config_set * set, char * attrname) {
 	return NULL ;
 }
 
-static struct compiler * get_compiler(char * suffix) {
+static struct compiler * get_compiler(char * suffix)
+{
 	for (int i = 0; i < configs->compilers.count; i++)
 		if (strncmp(configs->compilers.cpls[i].suffix, suffix, EOJ_SUFFIX_MAX)
-				== 0)
+		    == 0)
 			return &configs->compilers.cpls[i];
 	return NULL ;
 }
 
-static void fill_request(struct request * req, char * argv[]) {
+static void fill_request(struct request * req, char * argv[])
+{
 	req->pro_id = atoi(argv[1]);
 	req->run_id = atoi(argv[2]);
 	req->user_id = atoi(argv[3]);
@@ -78,7 +83,8 @@ static void fill_request(struct request * req, char * argv[]) {
 	req->cpl = get_compiler(req->suffix);
 }
 
-static void test_file_exist(char * fname) {
+static void test_file_exist(char * fname)
+{
 	int repeat = 16;
 	while (access(fname, F_OK) != 0) {
 		repeat--;
@@ -90,10 +96,11 @@ static void test_file_exist(char * fname) {
 	}
 }
 
-static char * strresult(enum result result) {
+static char * strresult(enum result result)
+{
 	switch (result) {
 	case SYS_ERROR:
-		return "SYS_ERROR";
+			return "SYS_ERROR";
 	case RNORMAL:
 		return "NORMAL";
 	case ACCEPT:
@@ -117,16 +124,17 @@ static char * strresult(enum result result) {
 }
 
 /* used for multi-test */
-static int get_next_run_file(struct request * req) {
+static int get_next_run_file(struct request * req)
+{
 	static int idx = 1;
 	snprintf(req->input_file, sizeof(req->input_file), "%s%d/%d",
-			req->input_dir, req->pro_id, idx);
+	         req->input_dir, req->pro_id, idx);
 	snprintf(req->real_answer_dir, sizeof(req->real_answer_dir), "%s%d/%d/",
-			req->answer_dir, req->pro_id, idx);
-
+	         req->answer_dir, req->pro_id, idx);
+	         
 	if (access(req->input_file, F_OK))
 		return 1;
-
+		
 	DIR * dir;
 	dir = opendir(req->real_answer_dir);
 	if (dir == NULL ) {
@@ -143,38 +151,39 @@ extern enum result execute(struct request * req, struct run_result * rused);
 extern enum result compare(struct request * req);
 extern int update_database(struct request * req, struct run_result * rr);
 
-int main(int argc, char * argv[]) {
+int main(int argc, char * argv[])
+{
 	signal(SIGCHLD, SIG_DFL );
-
+	
 	if (argc != 10)
 		exit(1);
-
+		
 	char log_name[32];
 	//argv[4] is fname_nosx,if argv changes,this must be changed.
 	snprintf(log_name, sizeof(log_name), "eojgcc %s", argv[4]);
 	log_initial(log_name);
-
+	
 	struct shared_mem shm;
 	if (shared_mem_get(&shm, 10000, sizeof(struct shared_config))) {
 		eoj_log("get shared mem fail");
 		exit(1);
 	}
-
+	
 	sem_t * sem;
 	if ((sem = get_semaphore("eoj")) == SEM_FAILED ) {
 		shared_mem_dt(&shm);
 		exit(1);
 	}
-
+	
 	struct request req;
 	struct run_result rr = { 0, 0, 0 };
 	configs = (struct shared_config *) shm.addr;
-
+	
 	fill_request(&req, argv);
-
+	
 	//in case the file is being moved
 	test_file_exist(req.src_fname_withdir);
-
+	
 	if ((rr.result = compile(&req)) == RNORMAL) {
 		while (get_next_run_file(&req) == 0) {
 			if ((rr.result = execute(&req, &rr)) == RNORMAL) {
@@ -186,17 +195,15 @@ int main(int argc, char * argv[]) {
 			}
 		}
 	}
-
+	
 	eoj_log("mem: %ukb time: %ums result: %s", rr.memory, rr.time,
-			strresult(rr.result));
-
+	        strresult(rr.result));
+	        
 	file_records_clean(&fcreat_record);
-
-	if (eoj_mysqlcon_init() == 0) {
-		update_database(&req, &rr);
-		eoj_mysqlcon_close();
-	}
-
+	
+	if(update_database(&req, &rr))
+		eoj_log("update database error");
+		
 	shared_mem_dt(&shm);
 	sem_post(sem);
 	sem_close(sem);

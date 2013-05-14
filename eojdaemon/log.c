@@ -14,23 +14,25 @@
 #include "eoj.h"
 
 
-int log_initial(char * cmd) {
-	openlog(cmd,LOG_CONS,0);
+int log_initial(char * cmd)
+{
+	openlog(cmd, LOG_CONS, 0);
 	return 0;
 }
 
-void eoj_log(const char * msg, ...) {
+void eoj_log(const char * msg, ...)
+{
 	char strbuf[1024];
-
+	
 	va_list ap;
 	va_start(ap, msg);
 	vsprintf(strbuf, msg, ap);
 	va_end(ap);
-
-	syslog(LOG_USER | LOG_DEBUG,"%s",strbuf);
+	
+	syslog(LOG_USER | LOG_DEBUG, "%s", strbuf);
 }
 
-void log_close() {
+void log_close()
+{
 	closelog();
 }
-

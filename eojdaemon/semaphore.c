@@ -20,10 +20,11 @@
 #include <string.h>
 #include "eoj.h"
 
-sem_t * create_semaphore(char * name, int value) {
+sem_t * create_semaphore(char * name, int value)
+{
 	sem_t * semid;
 	if ((semid = sem_open(name, O_RDWR | O_CREAT | O_EXCL, 0666, value))
-			== SEM_FAILED ) {
+	    == SEM_FAILED ) {
 		//sem already exists
 		eoj_log("create semaphore fail: %s.Trying to unlink", strerror(errno));
 		int errsv = errno;
@@ -44,22 +45,26 @@ sem_t * create_semaphore(char * name, int value) {
 	return semid;
 }
 
-sem_t * get_semaphore(char * name) {
+sem_t * get_semaphore(char * name)
+{
 	sem_t * semid;
 	if ((semid = sem_open(name, 0)) == SEM_FAILED )
 		eoj_log("get semaphore fail: %s", strerror(errno));
 	return semid;
 }
 
-void p_semaphore(sem_t * sem) {
+void p_semaphore(sem_t * sem)
+{
 	sem_wait(sem);
 }
 
-void v_semaphore(sem_t * sem) {
+void v_semaphore(sem_t * sem)
+{
 	sem_post(sem);
 }
 
-void del_semaphore(char * name, sem_t * sem) {
+void del_semaphore(char * name, sem_t * sem)
+{
 	sem_close(sem);
 	sem_unlink(name);
 }

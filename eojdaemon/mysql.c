@@ -25,46 +25,50 @@
 
 static MYSQL mysql_con;
 
-int eoj_mysqlcon_init() {
+int eoj_mysqlcon_init()
+{
 	struct db_config * dbc;
 	dbc = &configs.db_config;
-
+	
 	if (mysql_init(&mysql_con) == NULL ) {
 		eoj_log("mysql connection init fail");
 		return 1;
 	}
-
+	
 	if (mysql_options(&mysql_con, MYSQL_OPT_CONNECT_TIMEOUT,
-			(char *) &dbc->timeout)) {
+	                  (char *) &dbc->timeout)) {
 		eoj_log("mysql connection set timeout fail");
 		return 1;
 	}
-
+	
 	if (mysql_real_connect(&mysql_con, dbc->host, dbc->username, dbc->passwd,
-			dbc->usedb, 0, NULL, 0) == NULL ) {
+	                       dbc->usedb, 0, NULL, 0) == NULL ) {
 		eoj_log("mysql connection fail: %s", mysql_error(&mysql_con));
 		return 1;
 	}
-
+	
 	return 0;
 }
 
-void eoj_mysqlcon_close() {
+void eoj_mysqlcon_close()
+{
 	mysql_close(&mysql_con);
 }
 
-int query_sql(const char * sql, ...) {
+int query_sql(const char * sql, ...)
+{
 	char sqlbuf[1024];
-
+	
 	va_list ap;
 	va_start(ap, sql);
 	vsprintf(sqlbuf, sql, ap);
 	va_end(ap);
-
+	
 	return mysql_query(&mysql_con, sqlbuf);
 }
 
-int update_prob_limit(struct problems * probs, int prob_id) {
+int update_prob_limit(struct problems * probs, int prob_id)
+{
 	int success = 0;
 	if (eoj_mysqlcon_init()) {
 		eoj_log("can't connect with mysql");
@@ -103,7 +107,8 @@ int update_prob_limit(struct problems * probs, int prob_id) {
 		return 1;
 }
 
-int get_all_prob_limit(struct problems * probs) {
+int get_all_prob_limit(struct problems * probs)
+{
 	int prob_id;
 	if (eoj_mysqlcon_init()) {
 		eoj_log("can't connect with mysql");
@@ -138,4 +143,3 @@ int get_all_prob_limit(struct problems * probs) {
 	eoj_mysqlcon_close();
 	return 0;
 }
-
