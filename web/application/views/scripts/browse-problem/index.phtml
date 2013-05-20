@@ -1,0 +1,32 @@
+<div id="view-content">
+
+		<table cellpadding="1" cellspacing="1" bgcolor="#DCDCDC" border="0" align="center" width="100%">    
+		<tr>  
+			<td class="w80" bgcolor="#FFFFFF" style="text-align:center; height: 30px;" width="200">  题目ID  </td>
+			<td class="w80" bgcolor="#FFFFFF" style="text-align: center; height: 30px;"width="500">题目标题</td>
+			<td class="w80" bgcolor="#FFFFFF" style="text-align:center; height: 30px;"width="100">答题成功数 </td> 
+			<td class="w80" bgcolor="#FFFFFF" style="text-align:center; height: 30px;"width="100">答题尝试数</td>
+		</tr>  
+		<?php
+		foreach($this->Result as $row)
+		{
+			echo "<tr>";
+			foreach($row as $key=>$coloum)
+			{
+				if(is_integer($key))
+				{	
+					echo "<th>";
+					if($key==0)
+					{
+						echo '<a href="problemdetail.html?p_id=';
+						echo stripslashes($coloum).'">'.stripslashes($coloum).'</a>';
+					}
+					else
+						echo str_replace("\n","<br>",stripslashes($coloum));						
+					echo "</th>";
+				}
+			}
+			echo "</tr>";
+		}
+		?>
+</div>

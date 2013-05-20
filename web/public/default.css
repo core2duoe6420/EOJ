@@ -1,5 +1,4 @@
-
-    body{
+	    body{
         font-size:12px;
         margin:0px;
         padding:0px;
@@ -215,57 +214,87 @@ input, textarea, select {
 	width: 900px;
 	margin: 0 auto;
 	background: url(images/pagebackground.jpg) no-repeat left top;
+	
 }
-#problem title {
-	style="float:left;
+#problemtitle {
+	margin:auto;
 	width:900px; 
 	height:auto; 
 	margin-top:0px;
+	text-align:center;
 	}
+#problemtitle .title {
+	height: 52px;
+	padding-bottom: 5px;
+	color: #8BCB2F;
+}
+
+#problemtitle .title b {
+	font-weight: normal;
+	color: #0094E0;
+}
+
 #discription {
-	style="float:left;
 	width:900px; 
 	height:auto; 
 	margin-top:0px;
 	}
 
 #input {
-	style="float:left;
 	width:900px; 
 	height:auto; 
 	margin-top:0px;
 	}
 #output {
-	style="float:left;
 	width:900px; 
 	height:auto; 
 	margin-top:0px;
 	}
 #sample input {
-	style="float:left;
 	width:900px; 
 	height:auto; 
 	margin-top:0px;
 	}
 #sample output {
-	style="float:left;
 	width:900px; 
 	height:auto; 
 	margin-top:0px;
 	}
 #hint {
-	style="float:left;
 	width:900px; 
 	height:auto; 
 	margin-top:0px;
 	}
 #source {
-	style="float:left;
 	width:900px; 
 	height:auto; 
 	margin-top:0px;
 	}
+#submit{
+	float: center;
+	width: 900px;
+	padding-top: 20px;
+}
+#submittitle{
+	margin:auto;
+	width:900px; 
+	height:auto; 
+	margin-top:0px;
+	text-align:center;
+	}
+#submittitle .title {
+	height: 52px;
+	padding-bottom: 5px;
+	color: #8BCB2F;
+}
 
+#submittitle .title b {
+	font-weight: normal;
+	color: #0094E0;
+}
+textarea{
+	resize:none;
+}
 /* Content */
 
 #content {
@@ -324,7 +353,7 @@ input, textarea, select {
 #sidebar {
 	float: right;
 	width: 230px;
-	padding-right: 30px;
+	padding-right: 0px;
 	padding-top: 20px;
 }
 
@@ -396,6 +425,12 @@ input, textarea, select {
 	text-transform: lowercase;
 	font-size: 18px;
 	color: #4F4F4F;
+}
+#i{width: 30px;
+	margin-right: 5px;
+	padding: 3px;
+	border: 1px solid #F0F0F0
+
 }
 
 /* Footer */
