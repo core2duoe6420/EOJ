@@ -156,24 +156,27 @@ static int setup_database(struct db_config * db, struct config_set * set)
 {
 	int has_host = 0, has_user = 0, has_passwd = 0, has_db = 0;
 	db->timeout = 10;
+	db->port = 0;
 	
 	for (int i = 0; i < set->config_nr; i++) {
 		struct attr * attr;
 		attr = set->attrs + i;
-		if (strncmp(attr->name, "host", ATTR_NAME_MAX) == 0) {
+		if (strcmp(attr->name, "host") == 0) {
 			strncpy(db->host, attr->value, sizeof(db->host));
 			has_host = 1;
-		} else if (strncmp(attr->name, "username", ATTR_NAME_MAX) == 0) {
+		} else if (strcmp(attr->name, "username") == 0) {
 			strncpy(db->username, attr->value, sizeof(db->username));
 			has_user = 1;
-		} else if (strncmp(attr->name, "passwd", ATTR_NAME_MAX) == 0) {
+		} else if (strcmp(attr->name, "passwd") == 0) {
 			strncpy(db->passwd, attr->value, sizeof(db->passwd));
 			has_passwd = 1;
-		} else if (strncmp(attr->name, "usedb", ATTR_NAME_MAX) == 0) {
+		} else if (strcmp(attr->name, "usedb") == 0) {
 			strncpy(db->usedb, attr->value, sizeof(db->usedb));
 			has_db = 1;
-		} else if (strncmp(attr->name, "timeout", ATTR_NAME_MAX) == 0) {
+		} else if (strcmp(attr->name, "timeout") == 0) {
 			db->timeout = atoi(attr->value);
+		} else if (strcmp(attr->name, "port") == 0) {
+			db->port = atoi(attr->value);
 		} else {
 			config_set_add(&db->sqls, attr->name, attr->value);
 		}
@@ -201,22 +204,22 @@ static int setup_compiler(struct compiler_set * cpl_set,
 	for (int i = 0; i < set->config_nr; i++) {
 		struct attr * attr;
 		attr = set->attrs + i;
-		if (strncmp(attr->name, "id", ATTR_NAME_MAX) == 0) {
+		if (strcmp(attr->name, "id") == 0) {
 			cpl->id = atoi(attr->value);
 			has_id = 1;
-		} else if (strncmp(attr->name, "name", ATTR_NAME_MAX) == 0) {
+		} else if (strcmp(attr->name, "name") == 0) {
 			strncpy(cpl->name, attr->value, sizeof(cpl->name));
 			has_name = 1;
-		} else if (strncmp(attr->name, "suffix", ATTR_NAME_MAX) == 0) {
+		} else if (strcmp(attr->name, "suffix") == 0) {
 			strncpy(cpl->suffix, attr->value, sizeof(cpl->suffix));
 			has_suffix = 1;
-		} else if (strncmp(attr->name, "execfile", ATTR_NAME_MAX) == 0) {
+		} else if (strcmp(attr->name, "execfile") == 0) {
 			strncpy(cpl->execfile, attr->value, sizeof(cpl->execfile));
 			has_exec = 1;
-		} else if (strncmp(attr->name, "execsuffix", ATTR_NAME_MAX) == 0) {
+		} else if (strcmp(attr->name, "execsuffix") == 0) {
 			strncpy(cpl->execsuffix, attr->value, sizeof(cpl->execsuffix));
 			has_exec_suf = 1;
-		} else if (strncmp(attr->name, "param", ATTR_NAME_MAX) == 0) {
+		} else if (strcmp(attr->name, "param") == 0) {
 			compiler_add_param(cpl, attr->value);
 		}
 	}

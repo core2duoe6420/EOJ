@@ -60,7 +60,8 @@ struct compiler_set {
 
 struct db_config {
 	unsigned int timeout;
-	char host[16];
+	unsigned int port;
+	char host[ATTR_VALUE_MAX];
 	char username[ATTR_VALUE_MAX];
 	char passwd[ATTR_VALUE_MAX];
 	char usedb[ATTR_VALUE_MAX];

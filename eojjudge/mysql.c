@@ -37,7 +37,7 @@ int eoj_mysqlcon_init()
 	}
 	
 	if (mysql_real_connect(&mysql_con, dbc->host, dbc->username, dbc->passwd,
-	                       dbc->usedb, 0, NULL, 0) == NULL ) {
+	                       dbc->usedb, dbc->port, NULL, 0) == NULL ) {
 		eoj_log("mysql connection fail: %s", mysql_error(&mysql_con));
 		return 1;
 	}
