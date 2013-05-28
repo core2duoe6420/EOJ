@@ -1,32 +1,41 @@
 <div id="view-content">
 
-		<table cellpadding="1" cellspacing="1" bgcolor="#DCDCDC" border="0" align="center" width="100%">    
-		<tr>  
-			<td class="w80" bgcolor="#FFFFFF" style="text-align:center; height: 30px;" width="200">  题目ID  </td>
-			<td class="w80" bgcolor="#FFFFFF" style="text-align: center; height: 30px;"width="500">题目标题</td>
-			<td class="w80" bgcolor="#FFFFFF" style="text-align:center; height: 30px;"width="100">答题成功数 </td> 
-			<td class="w80" bgcolor="#FFFFFF" style="text-align:center; height: 30px;"width="100">答题尝试数</td>
-		</tr>  
+		<table cellpadding="1" cellspacing="1" bgcolor="#DCDCDC" border="0" align="center" width="100%" bordercolor=#ffffff>
+					<tr>
+						<td class="b" width=15%>
+							题目ID
+							<td class="b"width=45%>题目标题</td>
+							<td class="b" width=15%>答题成功数</td>
+							<td class="b" width=15%>答题尝试数</td>
+							<tr>
 		<?php
-		foreach($this->Result as $row)
+		if($this->Result)
 		{
-			echo "<tr>";
-			foreach($row as $key=>$coloum)
+			foreach($this->Result as $row)
 			{
-				if(is_integer($key))
-				{	
-					echo "<th>";
-					if($key==0)
-					{
-						echo '<a href="problemdetail.html?p_id=';
-						echo stripslashes($coloum).'">'.stripslashes($coloum).'</a>';
+				echo "<tr>";
+				foreach($row as $key=>$coloum)
+				{
+					if(is_integer($key))
+					{	
+						echo "<th class='b'>";
+						if($key==0)
+						{
+							echo '<a href="/Browse-Problem/Detail?p_id=';
+							echo stripslashes($coloum).'">'.stripslashes($coloum);
+							echo '</a>';
+						}
+						else
+							echo str_replace("\n","<br>",stripslashes($coloum));						
+						echo "</th>";
 					}
-					else
-						echo str_replace("\n","<br>",stripslashes($coloum));						
-					echo "</th>";
 				}
+				echo "</tr>";
 			}
-			echo "</tr>";
 		}
 		?>
+		</table>
 </div>
+<?php
+		echo $this->formProblem;
+?>

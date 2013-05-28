@@ -1,6 +1,6 @@
 <?php
 
-class Application_Model_Problem
+class EOJ_Model_Problem
 {
 	protected $problemName;
 	protected $timeLimit;
@@ -14,10 +14,6 @@ class Application_Model_Problem
 	protected $outputTips;
 	protected $hint;
 	protected $connection;
-	public function GetProblemList(){
-	}
-}
-class UncheckedProblem extends Application_Model_Problem{
 	public function GetProblemList(){
 	}
 }

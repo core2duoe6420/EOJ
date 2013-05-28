@@ -1,6 +1,6 @@
 <?php
 
-class Application_Model_CheckedProblem extends Application_Model_Problem
+class EOJ_Model_CheckedProblem extends EOJ_Model_Problem
 {
 	private $AnswerCount;
 	private $AcceptCount;

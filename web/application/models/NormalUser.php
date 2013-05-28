@@ -1,6 +1,6 @@
 <?php
 
-class Application_Model_NormalUser
+class EOJ_Model_NormalUser
 {
 
 	private $UserName;

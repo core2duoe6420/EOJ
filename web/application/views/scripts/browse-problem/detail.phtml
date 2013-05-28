@@ -1,0 +1,25 @@
+
+<div id="view-content">
+	<?php
+		if($this->Result)
+		{	foreach($this->Result as $key=>$value)
+			{
+				if(!is_integer($key))
+				{	
+					echo stripslashes($key);
+					echo '<br>';
+					echo stripslashes($value);
+					echo '<br><br>';
+				}
+			}
+			echo '
+				<form  action="/submit-code" method="get">
+					<input type="hidden" value="',$this->Result["ID"],'" name="p_id"/>
+					<input type="submit" value="Submit Code"/>
+				</form>
+			';
+		}
+		else
+			echo 'nothing';
+		?>
+</div>

@@ -1,0 +1,12 @@
+Debug
+*.o
+*.out
+*.d
+*~
+*.workspace*
+*.project
+*.mk
+*.tags
+Makefile
+eojdaemon/eojdaemon.txt
+eojjudge/eojjudge.txt

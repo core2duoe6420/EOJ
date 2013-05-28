@@ -437,7 +437,7 @@ textarea{
 
 #footer {
 	width: 850px;
-	background: url(images/pagebackground.jpg) no-repeat left top;
+	/*background: url(images/pagebackground.jpg) no-repeat left top;*/
 	margin: 0 auto;
 	padding: 10px 0 0 60px;
 	color: #353535;
@@ -480,4 +480,16 @@ textarea{
 
 #footer-menu .active a {
 	padding-left: 0;
+}
+
+th.b{
+	background-color: #FFFFFF;
+    text-align:center; 
+    height: 30px;
+}
+
+td.b{
+	background-color: #FFFFFF;
+    text-align:center; 
+    height: 30px;
 }

@@ -1,0 +1,66 @@
+
+<div id="view-content">
+
+	<form method=get>
+			Problem ID:
+			<input type=text name=problem_id size=8 value="">
+			User ID:
+			<input type=text name=user_id size=15 value="">
+			Result:
+			<select size=1 name=result>
+				<option value='' selected>All</option>
+				<option value=0>Accepted</option>
+				<option value=1>Presentation Error</option>
+				<option value=2>Time Limit Exceeded</option>
+				<option value=3>Memory Limit Exceeded</option>
+				<option value=4>Wrong Answer</option>
+				<option value=5>Runtime Error</option>
+				<option value=6>Output Limit Exceeded</option>
+				<option value=7>Compile Error</option>
+			</select>
+			Language:
+			<select size=1 name=language>
+				<option value=''  selected>All</option>
+				<option value=0>G++</option>
+				<option value=1>GCC</option>
+				<option value=2>Java</option>
+				<option value=3>Pascal</option>
+				<option value=4>C++</option>
+				<option value=5>C</option>
+				<option value=6>Fortran</option>
+			</select>
+			<input type=submit width=8 value=Go>
+		</form>
+			
+		<TABLE cellpadding="1" cellspacing="1"   bgcolor="#DCDCDC" width=100% border="0"  bordercolor=#FFFFFF align="center">
+			<tr class=in>
+				<td class="b" width=8%>Run ID</td>
+				<td class="b"width=10%>User</td>
+				<td class="b"width=6%>Problem</td>
+				<td class="b"width=20%>Result</td>
+				<td class="b"width=7%>Memory</td>
+				<td class="b"width=7%>Time</td>
+				<td class="b"width=7%>Language</td>
+				<td class="b"width=7%>Code Length</td>
+				<td class="b"width=17%>Submit Time</td>
+			</tr>
+		<?php
+		if($this->Result)
+		{
+			foreach($this->Result as $row)
+			{
+				echo "<tr>";
+				foreach($row as $key=>$coloum)
+				{
+						echo "<th class=b>";
+						
+							echo str_replace("\n","<br>",stripslashes($coloum));						
+						echo "</th>";
+				}
+				echo "</tr>";
+			}
+		}else
+		echo 'no';
+	?>
+	</table>
+</div>
