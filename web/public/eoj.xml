@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<eoj>
+	<work_dir>C:\Program Files (x86)\Apache Software Foundation\Apache2.2\htdocs\EOJ\public</work_dir>
+	<dest_dir>/home/corei7/Project/eoj_files/codes</dest_dir>
+	<input_dir>/home/corei7/Project/eoj_files/input</input_dir>
+	<answer_dir>/home/corei7/Project/eoj_files/answer</answer_dir>
+	<out_dir>/home/corei7/Project/eoj_files/tmp</out_dir>
+	<err_dir>/home/corei7/Project/eoj_files/err</err_dir>
+	<judge_exec>/home/corei7/Project/EOJ/eojjudge/Debug/eojjudge</judge_exec>
+	<concurrency>14</concurrency>
+	<compiler>
+		<id>1</id>
+		<name>gcc</name>
+		<suffix>.c</suffix>
+		<execsuffix>.out</execsuffix>
+		<execfile>/usr/local/bin/gcc</execfile>
+		<param>-std=c99</param>
+		<param>-DEOJ</param>
+	</compiler>
+	<compiler>
+		<id>2</id>
+		<name>g++</name>
+		<suffix>.cc</suffix>
+		<execsuffix>.out</execsuffix>
+		<execfile>/usr/bin/g++</execfile>
+	</compiler>
+	<database>
+		<host>127.0.0.1</host>
+		<username>eojapp</username>
+		<timeout>10</timeout>
+		<passwd>ecust</passwd>
+		<usedb>eojdb</usedb>
+		<getProLimitAll>SELECT p_id,p_tlimt,p_mlimt from problem</getProLimitAll>
+		<getProLimitById>SELECT p_tlimt,p_mlimt from problem WHERE p_id=%d</getProLimitById>
+		<storeResultRunProc>call UPDATEANS(%d,%d,%d,%d,%d,'%s',%d,%d,%d,@result)</storeResultRunProc>
+		<storeResultProcGetExitcode>SELECT @result</storeResultProcGetExitcode>
+	</database>
+</eoj>

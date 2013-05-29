@@ -52,11 +52,11 @@
     }
 
 body {
-	margin-top: 20px;
+	
 	padding: 0;
 	font-family: Arial, Helvetica, sans-serif;
 	font-size: 12px;
-	color: #6D6D6D;
+	color: #e8d098;
 }
 
 h1, h2, h3 {
@@ -198,7 +198,8 @@ input, textarea, select {
 	padding: 1px 10px;
 	text-decoration: none;
 	font-size: 12px;
-	color: #FFFFFF;
+	/*color: #000099;*/
+	color: #E6E8FA;
 }
 
 #menu a:hover {
@@ -213,7 +214,7 @@ input, textarea, select {
 #page {
 	width: 900px;
 	margin: 0 auto;
-	background: url(images/pagebackground.jpg) no-repeat left top;
+	/*background: url(images/pagebackground.jpg) no-repeat left top;*/
 	
 }
 #problemtitle {
@@ -300,6 +301,7 @@ textarea{
 #content {
 	float: left;
 	width: 570px;
+	height: 270px;
 	padding: 30px 0 0 30px;
 }
 
@@ -492,4 +494,89 @@ td.b{
 	background-color: #FFFFFF;
     text-align:center; 
     height: 30px;
+}
+
+body {
+ font: normal 11px auto "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
+ color: #4f6b72;
+ background: #E6EAE9;
+}
+
+a {
+ color: #c75f3e;
+}
+
+#mytable {
+ width: 100%;
+ padding: 0;
+ margin: auto;
+}
+
+caption {
+ padding: 0 0 5px 0;
+ width: 700px; 
+ font: italic 11px "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
+ text-align: right;
+}
+
+th {
+ font: bold 11px "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
+ color: #4f6b72;
+ border-right: 1px solid #C1DAD7;
+ border-bottom: 1px solid #C1DAD7;
+ border-top: 1px solid #C1DAD7;
+ letter-spacing: 2px;
+ text-transform: uppercase;
+ text-align: left;
+ padding: 6px 6px 6px 12px;
+ background: #CAE8EA url(images/bg_header.jpg) no-repeat;
+}
+
+
+td {
+ border-right: 1px solid #C1DAD7;
+ border-bottom: 1px solid #C1DAD7;
+ background: #fff;
+ font-size:11px;
+ padding: 6px 6px 6px 12px;
+ color: #4f6b72;
+}
+
+
+td.alt {
+ background: #F5FAFA;
+ color: #797268;
+}
+
+th.spec {
+ border-left: 1px solid #C1DAD7;
+ border-top: 0;
+ background: #fff  no-repeat;
+ font: bold 10px "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
+}
+
+th.specalt {
+ border-left: 1px solid #C1DAD7;
+ border-top: 0;
+ background: #f5fafa no-repeat;
+ font: bold 10px "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
+ color: #797268;
+}
+
+#ProblemID{
+	text-align: center;
+	vertical-align: middle;
+}
+
+#panel{
+    width: 900px;
+	height: 20px;
+	margin: 0 auto 0px auto;
+	padding-top: 0px;
+	
+}
+#panel-content{
+	margin: 0;
+	float: right;
+	padding-top: 0px;
 }

@@ -1,4 +1,20 @@
-<br /><br />
-<div id="view-content">
-	<p>View script for controller <b>User</b> and script/action name <b>panel</b></p>
+<div id="panel-content">
+	<?php
+		
+		if($this->panel_user_id)
+		{
+			echo "Welcome! ";
+			if($this->panel_user_power)
+				echo $this->panel_user_power,'   ';
+			echo $this->panel_user_id,"   ";
+			echo '<a href="/Logout">Log out</a>';
+		}
+		else
+		{
+			echo '<a href="/Login">Log in</a>    ';
+			
+			echo '<a href="/Register">Register</a>    ';
+			echo '<a href="/Adminlogin">Admin Login</a>';
+		}
+	?>
 </div>

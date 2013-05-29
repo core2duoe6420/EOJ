@@ -13,8 +13,24 @@ class OnlineStatusController extends Zend_Controller_Action
         // action body
 		$SubmitCode=new EOJ_Model_SubmitCode();
 		
-		//$Result=$SubmitCode->GetResult();
-		$this->view->Result=$SubmitCode;
+		$filter_problem_id=$this->_request->getParam('filter_problem_id');
+		if(!(isSet($filter_problem_id)and($filter_problem_id!=0)))
+			$filter_problem_id=0;
+			
+		$filter_user_id=$this->_request->getParam('filter_user_id');
+		if(!(isSet($filter_user_id)and($filter_user_id!=0)))
+			$filter_user_id=0;
+			
+		$filter_result=$this->_request->getParam('filter_result');
+		if(!isSet($filter_result))
+			$filter_result=0;
+			
+		$filter_language=$this->_request->getParam('filter_language');
+		if(!isSet($filter_language))
+			$filter_language=0;
+			
+		$this->view->Result=$SubmitCode->GetResult($filter_problem_id,$filter_user_id,$filter_result,$filter_language);
+		
     }
 
 

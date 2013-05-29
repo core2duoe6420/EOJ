@@ -22,7 +22,7 @@
 		<name>g++</name>
 		<suffix>.cc</suffix>
 		<execsuffix>.out</execsuffix>
-		<execfile>/usr/bin/g++</execfile>
+		<execfile>/usr/local/bin/g++</execfile>
 	</compiler>
 	<database>
 		<host>127.0.0.1</host>

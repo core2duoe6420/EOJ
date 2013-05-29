@@ -16,7 +16,9 @@ class UserController extends Zend_Controller_Action
     public function panelAction()
     {
         // action body
-		$user_id= $this->getRequest()->getCookie('user_id');
+		//$user_id=$this->getRequest()->getCookie('user_name');
+		if($user_name=$this->getRequest()->getCookie('user_name'))
+			$this->view->panel_user_id=$user_name;
     }
 
     

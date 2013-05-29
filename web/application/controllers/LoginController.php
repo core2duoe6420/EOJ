@@ -13,45 +13,45 @@ class LoginController extends Zend_Controller_Action
         // action body
 		if($this->getRequest()->getCookie('user_id'))
 		{
-			echo 'yes';
-			echo '<br>';
-			echo $this->getRequest()->getCookie('user_id');
-			echo '<br>';
-			
+			$this->view->result='You have Logged in as ID:'.$this->getRequest()->getCookie('user_id').'<br><a href="/Logout">Log out</a>';
 		}
-		if(!$this->getRequest()->isPost())
+		else if(!$this->getRequest()->isPost())
 		{
 			$form_user=new EOJ_Form_User();
-			$form_user->removeElement('UserID');
 			$form_user->removeElement('UserPassword2');
 			$this->view->formUser=$form_user;
 			
-			/*if(($this->getRequest()->isPost()))
-			{
-				if($form_user->isValid($_POST))
-				{
-					$data=$form_user->getValues();
-					foreach($data as $key=>$value)
-					{
-						echo $key,'->';
-						echo $value,'<br>';
-					}
-				}
-			}*/
 		}
 		else
 		{
-			//input the name and password to login return user_id
-			$user_id=1;
-			if(true)
+			$user_data=$this->getRequest()->getPost();
+			$normal_user=new EOJ_Model_NormalUser();
+			switch($user_id=$normal_user->Login($user_data['UserName'],$user_data['UserPassword']))
 			{
-				echo time(),'<br>';
-			//	$cookie = new Zend_Http_Cookie('user_id',$user_id,'eoj.org',NULL);
-			//	$this->getResponse()->setHeader('Set-Cookie',$cookie->__toString());
-			$cookie = new Zend_Http_Cookie('user_id',NULL,'eoj.org/',NULL,"/");
-				//$cookie = new Zend_Http_Cookie('user_id',3,'eoj.org');
-				$this->getResponse()->setHeader('Set-Cookie',$cookie->__toString());
-				echo 'set';
+				case -3:
+					$this->view->errormsg="Database Query False";
+					break;
+				case -2:
+					$this->view->errormsg="No Such User";
+					break;
+				case -1:
+					$this->view->errormsg="Wrong PassWord";
+					break;
+			}
+			//user_data
+			//$user_data['UserName']
+			//$user_data['UserPassword']
+			
+			//use the name and password to login return user_id
+			
+			if($user_id>0)
+			{
+				//$cookie = new Zend_Http_Cookie('user_id',NULL,'eoj.org/',NULL,"/");
+				$cookie_id = new Zend_Http_Cookie('user_id',$user_id,'eoj.org');
+				$cookie_name = new Zend_Http_Cookie('user_name',$user_data['UserName'],'eoj.org');
+				$this->getResponse()->setHeader('Set-Cookie',$cookie_id->__toString());
+				$this->getResponse()->setHeader('Set-Cookie',$cookie_name->__toString());
+				$this->_redirect("/");
 			}
 		}
     }

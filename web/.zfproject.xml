@@ -28,6 +28,15 @@
         <controllerFile controllerName="Login">
           <actionMethod actionName="index"/>
         </controllerFile>
+        <controllerFile controllerName="Logout">
+          <actionMethod actionName="index"/>
+        </controllerFile>
+        <controllerFile controllerName="Register">
+          <actionMethod actionName="index"/>
+        </controllerFile>
+        <controllerFile controllerName="SubmitProblem">
+          <actionMethod actionName="index"/>
+        </controllerFile>
       </controllersDirectory>
       <formsDirectory>
         <formFile formName="Problem"/>
@@ -74,6 +83,15 @@
             <viewScriptFile forActionName="panel"/>
           </viewControllerScriptsDirectory>
           <viewControllerScriptsDirectory forControllerName="Login">
+            <viewScriptFile forActionName="index"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Logout">
+            <viewScriptFile forActionName="index"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Register">
+            <viewScriptFile forActionName="index"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="SubmitProblem">
             <viewScriptFile forActionName="index"/>
           </viewControllerScriptsDirectory>
         </viewScriptsDirectory>

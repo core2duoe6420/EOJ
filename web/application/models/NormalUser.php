@@ -2,7 +2,6 @@
 
 class EOJ_Model_NormalUser
 {
-
 	private $UserName;
 	private $UserID;
 	private $PassWord;
@@ -10,45 +9,58 @@ class EOJ_Model_NormalUser
 	private $AcceptCount;
 //	private $db;
 	private $connection;
-	public function LinkDataBase($User,$PassWord){
-		$connection=mysql_connect("",$User,$PassWord)
+	private function LinkDataBase(){
+		$this->connection=mysql_connect("localhost","eojapp","ecust")
 		or die("Couldn't connect to server");
-		$db=mysql_select_db("eojdb",$connection)
+		$db=mysql_select_db("eojdb",$this->connection)
 		or die("Couldn't select database");
-		$UserName=$User;
-		$PassWord=$PassWord;
 	}
-	public function GetNormalUser(){
-		$result = mysql_query("select * from eojuser where user_name='$UserName'", $connection) or die("Query Invalid:".mysql_error());
+	public function Login($UserN,$Pass_Word){
+		$this->LinkDataBase();
+		$result = mysql_query("select * from eojuser where user_name='$UserN'", $this->connection) or die("Query Invalid:".mysql_error());
+		if($result==false){
+			return -3;//database query false
+		}
 		$row=mysql_fetch_array($result);
-		$UserID=$row['user_id'];
-		$SubmitCount=$row['user_tsubmit'];
-		$AcceptCount=$row['user_acc'];
+		if($row==false){
+			return -2;//No Such User
+		}
+		$PassWordBuff=$row['user_passwd'];
+		$this->PassWord=md5($Pass_Word);
+		if($PassWordBuff!=$this->PassWord){
+			return -1;//Wrong PassWord
+		}
+		$this->UserName=$UserN;
+		$this->UserID=$row['user_id'];
+		$this->SubmitCount=$row['user_tsubmit'];
+		$this->AcceptCount=$row['user_acc'];
+		return $this->UserID;
 	}
+	
 	public function ReturnUserName(){
-		return $UserName;
+		return $this->UserName;
 	}
 	public function ReturnUserID(){
-		return $UserID;
+		return $this->UserID;
 	}
 	public function ReturnAcceptRate(){
-		$rate=$AcceptCount/$SubmitCount;
+		$rate=$this->AcceptCount/$this->SubmitCount;
 		return $rate;
 	}
 	public function ReturnAcceptCount(){
-		return $AcceptCount;
+		return $this->AcceptCount;
 	}
 	public function ReturnSubmitCount(){
-		return $SubmitCount;
+		return $this->SubmitCount;
 	}
 	public function ReturnConnection(){
-		return $connection;
+		return $this->connection;
 	}
-	public _destruct(){
-		mysql_close($connection);
+	public function __destruct(){
+		mysql_close($this->connection);
 	}
 	public function ReturnAcceptedProblemList(){
-		$result = mysql_query("select run_pid from run where run_uid=$UserID and run_result=1", $connection) or die("Query Invalid:".mysql_error());
+		$result = mysql_query("select run_pid from run where run_uid=$UserID and run_result=1", $this->connection) or die("Query Invalid:".mysql_error());
 		$i=0;
 		while($row=mysql_fetch_array($result)){
 			$array[$i]=$row['run_pid'];
@@ -57,7 +69,7 @@ class EOJ_Model_NormalUser
 		return $array;
 	}
 	public function ReturnCode($pId,$language=1){
-		$result=mysql_query("select run_codeloc from run where run_pid=$pid and run_codetype=$language and run_uid=$UserID ",$connection) or die("Query Invalid:".mysql_error());
+		$result=mysql_query("select run_codeloc from run where run_pid=$pid and run_codetype=$language and run_uid=$UserID ",$this->connection) or die("Query Invalid:".mysql_error());
 		//$code="";
 		$row=mysql_fetch_array($result);
 		$path=$row['run_codeloc'];
@@ -66,6 +78,14 @@ class EOJ_Model_NormalUser
 		//fclose($handle);
 		return $code;
 	}
-
+	public function Register($UserN,$Pass_Word){
+		$this->LinkDataBase();
+		$pw=md5($Pass_Word);
+		$ID=0;
+		$res=0;
+		$sqlquery="call ADDEOJUSER('$UserN','$pw','$ID','$res')";
+		mysql_query($sqlquery,$this->connection) or die("Query Invalid:".mysql_error());
+		return $res;//0 success other error;
+	}
 }
 

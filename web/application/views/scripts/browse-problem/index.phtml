@@ -1,24 +1,37 @@
 <div id="view-content">
+	<?php
+		if($this->Page_Num)
+		{
+			for($i=1;$i<=$this->Page_Num;$i++)
+			{
+				echo '<a href="/Browse-Problem?page=',$i,'">',$i,'</a> ';
+			}
+		}
+	?>
+		
+			<table id="mytable" cellspacing="0" 	>
+				<caption></caption>
+				<tr>
+					<th scope="col" width=15% >题目ID</th>
 
-		<table cellpadding="1" cellspacing="1" bgcolor="#DCDCDC" border="0" align="center" width="100%" bordercolor=#ffffff>
-					<tr>
-						<td class="b" width=15%>
-							题目ID
-							<td class="b"width=45%>题目标题</td>
-							<td class="b" width=15%>答题成功数</td>
-							<td class="b" width=15%>答题尝试数</td>
-							<tr>
+					<th scope="col" width=45%>题目标题</th>
+					<th scope="col" width=15%>答题成功数</th>
+					<th scope="col" width=15%>答题尝试数</th>
+				</tr>
 		<?php
 		if($this->Result)
 		{
-			foreach($this->Result as $row)
+			foreach($this->Result as $key2=>$row)
 			{
 				echo "<tr>";
 				foreach($row as $key=>$coloum)
 				{
 					if(is_integer($key))
 					{	
-						echo "<th class='b'>";
+						if($key2%2)
+							echo '<th scope="row" class="spec">';
+						else
+							echo '<th scope="row" class="specspecalt">';
 						if($key==0)
 						{
 							echo '<a href="/Browse-Problem/Detail?p_id=';

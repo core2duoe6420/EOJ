@@ -14,6 +14,6 @@ class EOJ_Model_Problem
 	protected $outputTips;
 	protected $hint;
 	protected $connection;
-	public function GetProblemList(){
+	public function GetProblemList($StartID,$EndID){
 	}
 }

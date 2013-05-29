@@ -1,61 +1,63 @@
 
-<div id="view-content">
-
-	<form method=get>
+<div id="view-content"> <font size=4 color=#333399>Problem Status List</font>
+		</p>
+		<form method=get>
 			Problem ID:
-			<input type=text name=problem_id size=8 value="">
+			<input type=text name=filter_problem_id size=8 value="">
 			User ID:
-			<input type=text name=user_id size=15 value="">
+			<input type=text name=filter_user_id size=15 value="">
 			Result:
-			<select size=1 name=result>
-				<option value='' selected>All</option>
-				<option value=0>Accepted</option>
-				<option value=1>Presentation Error</option>
-				<option value=2>Time Limit Exceeded</option>
-				<option value=3>Memory Limit Exceeded</option>
-				<option value=4>Wrong Answer</option>
-				<option value=5>Runtime Error</option>
+			<select size=1 name=filter_result>
+				<option value=0>All</option>
+				<option value=1>Accepted</option>
+				<option value=2>Compile Error</option>
+				<option value=3>Runtime Error</option>
+				<option value=4>Time Limit Exceeded</option>
+				<option value=5>Memory Limit Exceeded</option>
 				<option value=6>Output Limit Exceeded</option>
-				<option value=7>Compile Error</option>
+				<option value=7>Wrong Answer</option>
+				<option value=8>Code Length Exceeded</option>
+				<option value=-1>System Error</option>
 			</select>
 			Language:
-			<select size=1 name=language>
-				<option value=''  selected>All</option>
-				<option value=0>G++</option>
-				<option value=1>GCC</option>
-				<option value=2>Java</option>
-				<option value=3>Pascal</option>
-				<option value=4>C++</option>
-				<option value=5>C</option>
-				<option value=6>Fortran</option>
+			<select size=1 name=filter_language>
+				<option value=0>All</option>
+				<option value=1>C</option>
+				<option value=2>C++</option>
 			</select>
-			<input type=submit width=8 value=Go>
-		</form>
+			<input type=submit width=8 value=Go></form>
 			
-		<TABLE cellpadding="1" cellspacing="1"   bgcolor="#DCDCDC" width=100% border="0"  bordercolor=#FFFFFF align="center">
-			<tr class=in>
-				<td class="b" width=8%>Run ID</td>
-				<td class="b"width=10%>User</td>
-				<td class="b"width=6%>Problem</td>
-				<td class="b"width=20%>Result</td>
-				<td class="b"width=7%>Memory</td>
-				<td class="b"width=7%>Time</td>
-				<td class="b"width=7%>Language</td>
-				<td class="b"width=7%>Code Length</td>
-				<td class="b"width=17%>Submit Time</td>
-			</tr>
+			<table id="mytable" cellspacing="0" 	>
+				<caption></caption>
+				<tr>
+					<th scope="col" width=8%>Run ID</th>
+					<th scope="col" width=10%>User</th>
+					<th scope="col" width=6%>Problem</th>
+					<th scope="col" width=20%>Result</th>
+					<th scope="col" width=7%>Memory</th>
+					<th scope="col" width=7%>Time</th>
+					<th scope="col" width=7%>Language</th>
+					<th scope="col" width=7%>Code Length</th>
+					<th scope="col" width=17%>Submit Time</th>
+				</tr>
 		<?php
 		if($this->Result)
 		{
-			foreach($this->Result as $row)
+			foreach($this->Result as $key2=>$row)
 			{
 				echo "<tr>";
 				foreach($row as $key=>$coloum)
 				{
-						echo "<th class=b>";
-						
-							echo str_replace("\n","<br>",stripslashes($coloum));						
+					if(!is_integer($key))
+					{
+						if($key2%2)
+							echo '<th scope="row" class="spec">';
+						else
+							echo '<th scope="row"  class="specalt">';
+							
+						echo str_replace("\n","<br>",stripslashes($coloum));						
 						echo "</th>";
+					}
 				}
 				echo "</tr>";
 			}
