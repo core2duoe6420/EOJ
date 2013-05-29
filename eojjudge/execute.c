@@ -33,9 +33,11 @@
 #ifdef __i386__
 #define WORDLEN 4
 #define SYSCALL_NR 348
+#define ORIG_AX ORIG_EAX
 #else
 #define WORDLEN 8
 #define SYSCALL_NR 312
+#define ORIG_AX ORIG_RAX
 #endif
 
 static int check_syscall(long syscall)
@@ -162,7 +164,7 @@ enum result execute(struct request * req, struct run_result * rused)
 	enum result result;
 	int status;
 	struct rusage rusage;
-	long orig_rax;
+	long orig_ax;
 	while (1) {
 		if (wait4(pid, &status, 0, &rusage) < 0) {
 			eoj_log("wait error: %s", strerror(errno));
@@ -219,9 +221,9 @@ enum result execute(struct request * req, struct run_result * rused)
 //			}
 //			break;
 //		}
-		orig_rax = ptrace(PTRACE_PEEKUSER, pid, WORDLEN * ORIG_RAX, NULL );
-		if (orig_rax >= 0 && check_syscall(orig_rax)) {
-			eoj_log("run illegal system call %ld", orig_rax);
+		orig_ax = ptrace(PTRACE_PEEKUSER, pid, WORDLEN * ORIG_AX, NULL );
+		if (orig_ax >= 0 && check_syscall(orig_ax)) {
+			eoj_log("run illegal system call %ld", orig_ax);
 			kill(pid, SIGKILL);
 			result = RUN_TIME_ERR;
 			break;
