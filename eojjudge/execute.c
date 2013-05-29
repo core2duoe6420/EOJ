@@ -45,7 +45,7 @@ static int check_syscall(long syscall)
 #ifdef __i386__
 	static long allows[] = { SYS_read, SYS_write, SYS_brk, SYS_exit, SYS_execve,
 	                         SYS_mmap2, SYS_access, SYS_open, SYS_close, SYS_fstat64, SYS_mprotect,
-	                         SYS_munmap, SYS_exit_group
+	                         SYS_set_thread_area, SYS_munmap, SYS_exit_group
 	                       };
 #else
 	static long allows[] = { SYS_read, SYS_write, SYS_brk, SYS_exit, SYS_execve,
