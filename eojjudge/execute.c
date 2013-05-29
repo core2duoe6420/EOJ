@@ -27,18 +27,33 @@
 #include <sys/time.h>
 #include <sys/resource.h>
 #include <limits.h>
-#include <asm/unistd_64.h>
 
 #include "eojjudge.h"
 
+#ifdef __i386__
+#define WORDLEN 4
+#define SYSCALL_NR 348
+#else
+#define WORDLEN 8
+#define SYSCALL_NR 312
+#endif
+
 static int check_syscall(long syscall)
 {
+#ifdef __i386__
+	static long allows[] = { SYS_read, SYS_write, SYS_brk, SYS_exit, SYS_execve,
+	                         SYS_mmap2, SYS_access, SYS_open, SYS_close, SYS_fstat64, SYS_mprotect,
+	                         SYS_munmap, SYS_exit_group
+	                       };
+#else
 	static long allows[] = { SYS_read, SYS_write, SYS_brk, SYS_exit, SYS_execve,
 	                         SYS_mmap, SYS_access, SYS_open, SYS_close, SYS_fstat, SYS_mprotect,
 	                         SYS_arch_prctl, SYS_munmap, SYS_exit_group
 	                       };
-	static int times[312] = { 0, };
-	static int allowtime[312] = { [SYS_execve] = 1, [SYS_open] = 4 };
+#endif
+	                       
+	static int times[SYSCALL_NR] = { 0, };
+	static int allowtime[SYSCALL_NR] = { [SYS_execve] = 1, [SYS_open] = 4 };
 	
 	if (syscall == -1) {
 		for (int i = 0; i < sizeof(allows) / sizeof(allows[0]); i++)
@@ -204,7 +219,7 @@ enum result execute(struct request * req, struct run_result * rused)
 //			}
 //			break;
 //		}
-		orig_rax = ptrace(PTRACE_PEEKUSER, pid, 8 * ORIG_RAX, NULL );
+		orig_rax = ptrace(PTRACE_PEEKUSER, pid, WORDLEN * ORIG_RAX, NULL );
 		if (orig_rax >= 0 && check_syscall(orig_rax)) {
 			eoj_log("run illegal system call %ld", orig_rax);
 			kill(pid, SIGKILL);
