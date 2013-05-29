@@ -36,6 +36,21 @@ VALUES(1000,65536,1);
 INSERT INTO problem(p_tlimt,p_mlimt,p_author)
 VALUES(1000,65536,1);
 
+insert into problem_multilang(p_id,p_lang,p_title)
+values(1,1,'A+B问题');
+
+insert into problem_multilang(p_id,p_lang,p_title)
+values(2,1,'求平均工资');
+
+insert into problem_multilang(p_id,p_lang,p_title)
+values(3,1,'字符串求和');
+
+insert into problem_multilang(p_id,p_lang,p_title)
+values(4,1,'最小公约数');
+
+insert into problem_multilang(p_id,p_lang,p_title)
+values(5,1,'测试问题');
+
 INSERT INTO run(run_uid,run_pid)
 VALUES(1,1);
 
