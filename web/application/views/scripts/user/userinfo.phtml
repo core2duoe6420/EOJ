@@ -1,5 +1,11 @@
 <div id="view-content">
 	<div>
+	<!-- errormsg -->
+	<?php
+		echo $this->errormsg;
+	?>
+	</div>
+	<div>
 	<!-- user_id -->
 	<?php
 		echo $this->user_id;
@@ -60,18 +66,7 @@
 						else
 							echo '<th scope="row"  class="specalt">';
 							
-						if($key=='run_id')
-						{
-							if($coloum!='NULL')
-							{
-								echo '<a href="/User/browsecode?run_id=';
-								echo str_replace("\n","<br>",stripslashes($coloum));
-								echo '">'.str_replace("\n","<br>",stripslashes($coloum)).'</a>';
-							}
-							else
-								echo $coloum;
-						}
-						else if($key =='user_name')
+						if($key =='user_name')
 						{
 							if($coloum!='NULL')
 							{
@@ -95,6 +90,7 @@
 						}
 						else
 							echo str_replace("\n","<br>",stripslashes($coloum));
+							
 						echo "</th>";
 					}
 				}
@@ -102,12 +98,18 @@
 				$line++;
 			}
 		}else
-		echo 'no';
+			echo '<tr>
+				<th scope="row" class="spec">NULL</th>
+				<th scope="row" class="spec">NULL</th>
+				<th scope="row" class="spec">NULL</th>
+				<th scope="row" class="spec">NULL</th>
+				<th scope="row" class="spec">NULL</th>
+				<th scope="row" class="spec">NULL</th>
+				<th scope="row" class="spec">NULL</th>
+				<th scope="row" class="spec">NULL</th>
+				<th scope="row" class="spec">NULL</th>
+				</tr>';
 	?>
 	</table>
-	</div>
-	<div>
-	<!-- change password link -->
-	<a href="/Change-Password?UserType=NormalUser">Change Password</a>
 	</div>
 </div>

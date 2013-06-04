@@ -1,0 +1,19 @@
+<div id="view-content">
+	<div>
+		<?php
+			if(isset($this->errormsg))
+				echo $this->errormsg;
+		?>
+	</div>
+	<div>
+		<!-- problem form start -->
+		<?php
+			if(isset($this->form_problem))
+			{
+				echo $this->form_problem;
+				echo '<a href="/Un-Checked-Problem">return</a>';
+			}
+		?>
+		<!-- problem form end -->
+	</div>
+</div>

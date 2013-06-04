@@ -4,8 +4,8 @@
 		<form method=get>
 			Problem ID:
 			<input type=text name=filter_problem_id size=8 value="">
-			User ID:
-			<input type=text name=filter_user_id size=15 value="">
+			User Name:
+			<input type=text name=filter_user_name size=15 value="">
 			Result:
 			<select size=1 name=filter_result>
 				<option value=0>All</option>
@@ -40,6 +40,7 @@
 					<th scope="col" width=7%>Code Length</th>
 					<th scope="col" width=17%>Submit Time</th>
 				</tr>
+		<!-- php start -->
 		<?php
 		if($this->Result)
 		{
@@ -48,6 +49,7 @@
 				echo "<tr>";
 				foreach($row as $key=>$coloum)
 				{
+					
 					if(!is_integer($key))
 					{
 						if($key2%2)
@@ -55,7 +57,21 @@
 						else
 							echo '<th scope="row"  class="specalt">';
 							
-						echo str_replace("\n","<br>",stripslashes($coloum));						
+						if($key =='user_name')
+						{
+							echo '<a href="/User/Userinfo?user_name=';
+							echo str_replace("\n","<br>",stripslashes($coloum));
+							echo '">'.str_replace("\n","<br>",stripslashes($coloum)).'</a>';
+						}
+						else if($key =='run_pid')
+						{
+							echo '<a href="/Browse-Problem/Detail?p_id=';
+							echo str_replace("\n","<br>",stripslashes($coloum));
+							echo '">'.str_replace("\n","<br>",stripslashes($coloum)).'</a>';
+						}
+						else
+							echo str_replace("\n","<br>",stripslashes($coloum));
+							
 						echo "</th>";
 					}
 				}
@@ -64,5 +80,6 @@
 		}else
 		echo 'no';
 	?>
+	<!-- php end -->
 	</table>
 </div>

@@ -1,12 +1,24 @@
 <br /><br />
 <div id="view-content">
-<?php
-	if(isSet($this->errormsg))
-	{
-		echo $this->errormsg,'<br>';
-		echo '<a href="/login">Return</a>';
-	}
-	else if(isSet($this->formUser))
-		echo $this->formUser;
-?>
+	<div>
+		<!-- error message start -->
+		<?php
+			if(isSet($this->errormsg))
+			{
+				echo $this->errormsg,'<br>';
+				echo '<a href="javascript:history.go(-1);">Return</a>';
+			}
+			if(isset($this->result))
+				echo $this->result;
+		?>
+		<!-- error message end -->
+	</div>
+	<div>
+		<!-- login form start -->
+		<?php	
+			if(isSet($this->formUser))
+				echo $this->formUser;
+		?>
+		<!-- login form end -->
+	</div>
 </div>

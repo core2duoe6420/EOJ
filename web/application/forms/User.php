@@ -29,6 +29,17 @@ class EOJ_Form_User extends Zend_Form
 		$user_passwd2->addErrorMessage('Passwords do not match');
 		$this->addElement($user_passwd2);
 		
+		$admin_type=$this->createElement('select','AdminType');
+		$admin_type->setlabel('Role');
+		$admin_type->addMultiOptions(
+			array(
+				'1'=>'Uploader',
+				'2'=>'Checker',
+				'255'=>'System Admin'
+			)
+		);
+		$this->addElement($admin_type);
+		
 		//user_tsubmit INT UNSIGNED NOT NULL DEFAULT 0 COMMENT '用户的总答题次数（一个问题重复答题分别计算）',
 		//user_acc INT UNSIGNED NOT NULL DEFAULT 0 COMMENT '用户的总通过次数',
 		//user_status TINYINT UNSIGNED DEFAULT 0 NOT NULL COMMENT '普通答题用户是否可用标志，默认0为可用，其余值分别代表一种用户状态',

@@ -1,11 +1,28 @@
 <div id="page">
 	<div id="submit">
 		<div id="submittitle">
-			<h2 class="title">
-				<a herf="#"><b>Submit Your Solition Via Web</b></a></h2>
+		<!-- code form start -->
 			<?php
-				echo $this->formCode;
-				?>
+				if(isset($this->errormsg))
+				{
+					echo $this->errormsg;
+					echo '<div>';
+					echo '<a href="/Browse-Problem">Return Problem List</a>   ';
+					echo '<div>';
+					echo '</div>';
+					echo '<a href="/Online-Status">Check Online Status</a>';
+					echo '</div>';
+					
+				}	
+				else
+				{
+					echo '<h2 class="title">
+							<a herf="#"><b>Submit Your Solition Via Web</b></a>
+							</h2>';
+					echo $this->formCode;
+				}
+			?>
+		<!-- code form end -->
 		</div>
 	</div>
 </div>

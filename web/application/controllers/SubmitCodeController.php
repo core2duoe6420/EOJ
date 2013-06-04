@@ -1,5 +1,4 @@
 <?php
-
 class SubmitCodeController extends Zend_Controller_Action
 {
 
@@ -11,6 +10,8 @@ class SubmitCodeController extends Zend_Controller_Action
     public function indexAction()
     {
         // action body
+		if(!$this->getRequest()->getCookie('user_id'))
+			$this->_redirect('/Login');
 		$form_code=new EOJ_Form_Code();
 		
 		if($p_id=$this->_request->getParam('p_id'))
@@ -21,34 +22,21 @@ class SubmitCodeController extends Zend_Controller_Action
 		{
 			@$form_code->getElement('ProblemID')->setAttrib('readonly');
 		}
-			
-		
 		if($this->getRequest()->isPost())
 		{
 			if($form_code->isValid($_POST))
 			{
 				$code_data=$form_code->getValues();
-				//index of code_data:
-				//$code_data['ProblemID'] 
-				//$code_data['CodeLanguage']
-				//$code_data['CodeSource']
 				
-				//upload code
 				$submit_code=new EOJ_Model_SubmitCode();
-				
 				$result=$submit_code->SubmitCode($code_data['CodeSource'],$this->getRequest()->getCookie('user_id'),$code_data['ProblemID'],$code_data['CodeLanguage']);
-				echo $result;
-				//$this->_redirect('/Online-Status');
+				
+				/*if($result=="Succeed")
+					$this->_redirect("/Online-Status");
+				else*/
+					$this->view->errormsg=$result;
 			}
 		}
-		
 		$this->view->formCode=$form_code;
-		
-		
     }
-
-
 }
-
-
-

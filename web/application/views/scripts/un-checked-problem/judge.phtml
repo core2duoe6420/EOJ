@@ -1,6 +1,5 @@
 
 <div id="view-content">
-
 	
 	<div>
 		<!-- errormsg -->
@@ -9,6 +8,22 @@
 				echo $this->errormsg;
 		?>
 		<!-- errormsg end -->
+	</div>
+	<div>
+		<!-- p_handoutstatus start -->
+		<?php 
+			if(isset($this->p_handoutstatus))
+				echo $this->p_handoutstatus;
+		?>
+		<!-- p_handoutstatus end -->
+	</div>
+	<div>
+		<!-- p_uploaderID start -->
+		<?php 
+			if(isset($this->p_uploaderID))
+				echo $this->p_uploaderID;
+		?>
+		<!-- p_uploaderID end -->
 	</div>
 	<div>
 		<!-- p_title start -->
@@ -92,14 +107,18 @@
 	</div>
 	<div>
 		<!-- submit start -->
-		<?php
-		if(!isset($this->errormsg))
-		echo '
-		<form  action="/Submit-Code" method="get">
-				<input type="hidden" value="',$this->p_id,'"name="p_id"/>
-				<input type="submit" value="Submit Code"/>
-		</form>';
+		<?
+		if(!$this->ifPP && !$this->ifjudge)
+		{
+			echo '<form  action="" method="post">
+					<input type="hidden" value="',$this->up_id,'"name="up_id"/>
+					<input type="submit" value="Accept" name="decision"/>
+					<input type="submit" value="Decline" name="decision"/>
+			</form>';
+		}
+		echo '<a href="/Un-Checked-Problem">Return</a>';
 		?>
+		
 		<!-- submit end -->
 	</div>
 </div>

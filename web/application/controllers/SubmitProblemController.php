@@ -14,7 +14,4 @@ class SubmitProblemController extends Zend_Controller_Action
 		$form_problem=new EOJ_Form_Problem();
 		$this->view->form_problem=$form_problem;
     }
-
-
 }
-

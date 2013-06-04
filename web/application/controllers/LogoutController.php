@@ -15,12 +15,13 @@ class LogoutController extends Zend_Controller_Action
 		$this->getResponse()->setHeader('Set-Cookie',$cookie_id->__toString());
 		$cookie_name= new Zend_Http_Cookie('user_name',NULL,'eoj.org');
 		$this->getResponse()->setHeader('Set-Cookie',$cookie_name->__toString());
+		$cookie_password= new Zend_Http_Cookie('user_password',NULL,'eoj.org');
+		$this->getResponse()->setHeader('Set-Cookie',$cookie_password->__toString());
+		$cookie_power= new Zend_Http_Cookie('user_power',NULL,'eoj.org');
+		$this->getResponse()->setHeader('Set-Cookie',$cookie_power->__toString());
 		$this->view->result='You have successfully Logged out';
 		
-		$this->_redirect("/");
-		
+		$this->_redirect("/");	
     }
-
-
 }
 

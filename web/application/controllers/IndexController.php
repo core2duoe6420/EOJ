@@ -23,12 +23,11 @@ class IndexController extends Zend_Controller_Action
 		{
 			$user_form=new EOJ_Form_User();
 			$user_form->removeElement('UserPassword2');
+			$user_form->removeElement('AdminType');
 			$user_form->setAction('/Login');
 			$this->view->result=$user_form;
 		}
     }
-
-
 }
 
 

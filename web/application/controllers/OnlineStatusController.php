@@ -17,9 +17,9 @@ class OnlineStatusController extends Zend_Controller_Action
 		if(!(isSet($filter_problem_id)and($filter_problem_id!=0)))
 			$filter_problem_id=0;
 			
-		$filter_user_id=$this->_request->getParam('filter_user_id');
-		if(!(isSet($filter_user_id)and($filter_user_id!=0)))
-			$filter_user_id=0;
+		$filter_user_name=$this->_request->getParam('filter_user_name');
+		if((empty($filter_user_name)))
+			$filter_user_name=0;
 			
 		$filter_result=$this->_request->getParam('filter_result');
 		if(!isSet($filter_result))
@@ -29,10 +29,7 @@ class OnlineStatusController extends Zend_Controller_Action
 		if(!isSet($filter_language))
 			$filter_language=0;
 			
-		$this->view->Result=$SubmitCode->GetResult($filter_problem_id,$filter_user_id,$filter_result,$filter_language);
-		
+		$this->view->Result=$SubmitCode->GetResult($filter_problem_id,$filter_user_name,$filter_result,$filter_language);
     }
-
-
 }
 

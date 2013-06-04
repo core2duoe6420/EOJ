@@ -3,11 +3,11 @@ CREATE PROCEDURE UPDATEANS(IN irun_id INT UNSIGNED,
 IN irun_pid INT UNSIGNED, IN irun_uid INT UNSIGNED,
 IN irun_mcost SMALLINT UNSIGNED, IN irun_tcost SMALLINT UNSIGNED, 
 IN irun_codeloc VARCHAR(256), IN irun_codetype TINYINT UNSIGNED,
-IN irun_codel SMALLINT UNSIGNED, IN irun_result SMALLINT,
-OUT oexitcode TINYINT)
+IN irun_codel SMALLINT UNSIGNED, IN irun_result SMALLINT)
 proc4: BEGIN
   -- this proc help the gcc daemon update the answer data to mysql eojdb
   DECLARE vrow_c INT;
+  DECLARE oexitcode TINYINT;
   
   /* start declare Exception Handlers */
   DECLARE EXIT HANDLER FOR SQLEXCEPTION,SQLWARNING,NOT FOUND
@@ -15,24 +15,25 @@ proc4: BEGIN
     -- rollback the error transaction
 	SET oexitcode=1;
 	ROLLBACK;
+	SELECT oexitcode;
 	
 	-- generate log
     INSERT INTO eojdb.EOJLOG(opcode, opmesg, op_tag)
-    VALUES(2,CONCAT('failed to update a answer that [run_id] ',irun_id, ' When meet a mysql sql error'),1);
+    VALUES(4,CONCAT('failed to update a answer that [run_id] ',irun_id, ' When meet a mysql sql error, exitcode 1'),1);
 	COMMIT;
   END;
   /* end declare Exception Handlers */
-  
   
   -- judge whether the value is NULL
   IF irun_id IS NULL or irun_pid IS NULL or irun_uid IS NULL
   THEN
     ROLLBACK;
     SET oexitcode=-1;
+	SELECT oexitcode;
 	
 	-- generate log
     INSERT INTO eojdb.EOJLOG(opcode, opmesg, op_tag)
-    VALUES(3,CONCAT('failed because of a null value input'),2);
+    VALUES(4,CONCAT('failed because of a null value input, exitcode -1'),2);
 	COMMIT;
 	
 	LEAVE proc4;
@@ -55,10 +56,11 @@ proc4: BEGIN
   THEN
     SET oexitcode=2;
 	ROLLBACK;
+	SELECT oexitcode;
 	
  	-- generate log
     INSERT INTO eojdb.EOJLOG(opcode, opmesg, op_tag)
-    VALUES(3,CONCAT('failed to update a answer record because of data not found, check whether the runid is correct and existed'),2);
+    VALUES(4,CONCAT('failed to update a run record because of data not found, check whether the [runid] ', irun_id ,' is correct and existed, exitcode 2'),2);
 	COMMIT;
 	
 	LEAVE proc4;
@@ -75,12 +77,13 @@ proc4: BEGIN
   SELECT ROW_COUNT() INTO vrow_c;
   IF vrow_c != 1
   THEN
-    SET oexitcode=2;
+    SET oexitcode=3;
 	ROLLBACK;
+	SELECT oexitcode;
 	
  	-- generate log
     INSERT INTO eojdb.EOJLOG(opcode, opmesg, op_tag)
-    VALUES(3,CONCAT('failed to update a answer record because of data not found, check whether the eojuser id is correct and existed'),2);
+    VALUES(4,CONCAT('failed to complete update answer while update a eojuser record error because of data not found, check whether the [eojuser id] ', irun_uid ,' is correct and existed'),2);
 	COMMIT;
 	
 	LEAVE proc4;
@@ -103,12 +106,13 @@ proc4: BEGIN
   SELECT ROW_COUNT() INTO vrow_c;
   IF vrow_c != 1
   THEN
-    SET oexitcode=2;
+    SET oexitcode=4;
 	ROLLBACK;
+	SELECT oexitcode;
 	
  	-- generate log
     INSERT INTO eojdb.EOJLOG(opcode, opmesg, op_tag)
-    VALUES(3,CONCAT('failed to update a answer record  because of data not found, check whether the problem id is correct and existed'),2);
+    VALUES(4,CONCAT('failed to complete a answer record while update problem submitnums error  because of data not found, check whether the [problem id] ', irun_pid ,' is correct and existed'),2);
 	COMMIT;
 	
 	LEAVE proc4;
@@ -123,10 +127,11 @@ proc4: BEGIN
   
   -- set exitcode to php user
   SET oexitcode=0;
+  SELECT oexitcode;
   
   -- generate log
   INSERT INTO eojdb.EOJLOG(opcode, opmesg, op_tag)
-  VALUES(1,CONCAT('successful update a run record that user[id] ',irun_uid,' answer problem[id] ',irun_pid),0);
+  VALUES(1,CONCAT('successful update a run record that user[id] ',irun_uid,' answer problem[id] ',irun_pid, ', exitcode 0'),0);
   COMMIT;
   /* end execution */
 END

@@ -68,6 +68,8 @@ class EOJ_Model_SubmitCode
 		fclose($handle);
 		return "Succeed";
 	}
+	
+	
 	public function GetResultNoPara(){
 		$result=mysql_query("select max(run_id) maxid from run",$this->connect) or  die("Query Invalid:".mysql_error());
 		$row=mysql_fetch_array($result);
@@ -108,17 +110,17 @@ class EOJ_Model_SubmitCode
 		return $array;
 	}
 	public function __destruct(){
-		mysql_close($this->connect);
+		@mysql_close($this->connect);
 	}
-	public function GetResult($ProblemID,$UserID,$Result,$language){
+	public function GetResult($ProblemID,$UserName,$Result,$language){
 		//
 		$run_pro_sql = "select run_id,user_name,run_pid,run_result,run_mcost,run_tcost,run_codetype,run_codel,run_submitt from run,eojuser where eojuser.user_id=run.run_uid ";//
 		//
 		if($ProblemID!=0){
 			$run_pro_sql=$run_pro_sql." and run_pid='$ProblemID'";
 		}
-		if ($UserID!=0) {
-			$run_pro_sql=$run_pro_sql." and run_uid='$UserID'";
+		if (!is_int($UserName)) {
+			$run_pro_sql=$run_pro_sql." and user_name='$UserName'";
 		}
 		if ($Result!=0) {
 			$run_pro_sql=$run_pro_sql." and run_result='$Result'";
@@ -126,10 +128,9 @@ class EOJ_Model_SubmitCode
 		if ($language!=0) {
 			$run_pro_sql=$run_pro_sql." and run_codetype='$language'";
 		}
-		 $run_pro_sql=$run_pro_sql." order by run_id desc";
+		$run_pro_sql=$run_pro_sql." order by run_id desc";
 		$result = mysql_query($run_pro_sql, $this->connect) or die("Query Invalid:".mysql_error());
 		
-		$array=array(array(null,null,null,null,null,null,null,null,null));
 		while($row=mysql_fetch_array($result)){
 			$array[$row['run_id']]=$row;
 			switch($array[$row['run_id']]['run_result']){
@@ -172,6 +173,9 @@ class EOJ_Model_SubmitCode
 					break;
 			}
 		}
+		if(!isset($array))
+		//select run_id,user_name,run_pid,run_result,run_mcost,run_tcost,run_codetype,run_codel,run_submitt from run,eojuser where eojuser.user_id=run.run_uid
+			$array=array('NULL'=>array('run_id'=>'NULL','user_name'=>'NULL','run_pid'=>'NULL','run_result'=>'NULL','run_mcost'=>'NULL','run_tcost'=>'NULL','run_codetype'=>'NULL','run_codel'=>'NULL','run_submitt'=>'NULL'));
 		return $array;
 	}
 }

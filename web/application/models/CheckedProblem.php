@@ -16,17 +16,23 @@ class EOJ_Model_CheckedProblem extends EOJ_Model_Problem
 		$result = mysql_query($run_pro_sql, $this->connection) or die("Query Invalid:".mysql_error());
 		$row=mysql_fetch_array($result);
 		//
-		$this->problemName=$row['p_title'];
-		$this->timeLimit=$row['p_tlimt'];
-		$this->memoryLimit=$row['p_mlimt'];
-		$this->discription=$row['p_desc'];
-		$this->sampleInput=$row['p_sampleinput'];
-		$this->sampleOutput=$row['p_sampleoutput'];
-		$this->source=$row['p_author'];
-		$this->inputTips=$row['p_input_tips'];
-		$this->output=$row['p_output_tips'];
-		$this->hint=$row['p_hint'];
-		mysql_close($this->connection);
+		if($row)
+		{
+			$this->problemName=$row['p_title'];
+			$this->timeLimit=$row['p_tlimt'];
+			$this->memoryLimit=$row['p_mlimt'];
+			$this->discription=$row['p_desc'];
+			$this->sampleInput=$row['p_sampleinput'];
+			$this->sampleOutput=$row['p_sampleoutput'];
+			$this->source=$row['p_author'];
+			$this->inputTips=$row['p_input_tips'];
+			$this->output=$row['p_output_tips'];
+			$this->hint=$row['p_hint'];
+			mysql_close($this->connection);
+			return true;
+		}
+		else
+			return false;
 	}
 	public function GetproblemName(){
 		return $this->problemName;

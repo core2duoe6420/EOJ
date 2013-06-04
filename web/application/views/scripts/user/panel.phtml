@@ -1,12 +1,16 @@
 <div id="panel-content">
 	<?php
 		
-		if($this->panel_user_id)
+		if($this->panel_user_name)
 		{
-			echo "Welcome! ";
+			echo "Welcome!  ";
 			if($this->panel_user_power)
-				echo $this->panel_user_power,'   ';
-			echo $this->panel_user_id,"   ";
+			{
+				echo '<a href="/'.$this->panel_user_power.'">'.$this->panel_user_power.'</a>   ' ;
+			}
+			else
+				echo '<a href="/User">NormalUser</a>   ';
+			echo $this->panel_user_name,'   ';
 			echo '<a href="/Logout">Log out</a>';
 		}
 		else
@@ -14,7 +18,7 @@
 			echo '<a href="/Login">Log in</a>    ';
 			
 			echo '<a href="/Register">Register</a>    ';
-			echo '<a href="/Adminlogin">Admin Login</a>';
+			echo '<a href="/Login?admin=true">Admin Login</a>';
 		}
 	?>
 </div>

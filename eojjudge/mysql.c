@@ -37,7 +37,7 @@ int eoj_mysqlcon_init()
 	}
 	
 	if (mysql_real_connect(&mysql_con, dbc->host, dbc->username, dbc->passwd,
-	                       dbc->usedb, dbc->port, NULL, 0) == NULL ) {
+	                       dbc->usedb, dbc->port, NULL, CLIENT_MULTI_STATEMENTS) == NULL ) {
 		eoj_log("mysql connection fail: %s", mysql_error(&mysql_con));
 		return 1;
 	}
@@ -97,13 +97,13 @@ static int store_run_result(struct request * req, struct run_result * rr)
 		eoj_log("run store procedure fail: %s", mysql_error(&mysql_con));
 		return 1;
 	}
-	
+	/*
 	sql = config_get_value(&configs->db_config.sqls, "storeResultProcGetExitcode");
 	if(query_sql(sql)) {
 		eoj_log("get store procedure result fail: %s", mysql_error(&mysql_con));
 		return 1;
 	}
-	
+	*/
 	MYSQL_RES * res_ptr;
 	MYSQL_ROW row;
 	int proc_ret = 1;

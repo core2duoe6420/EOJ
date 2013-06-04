@@ -29,47 +29,76 @@ class BrowseProblemController extends Zend_Controller_Action
 		
 		$this->view->Result=$Result;
 		$this->view->Page_Num=$page_num;
-	
-		/*//test
-		$form_problem=new EOJ_Form_Problem();
-		$this->view->formProblem=$form_problem;
-		if(($this->getRequest()->isPost()))
-		{
-			if($form_problem->isValid($_POST))
-			{
-				$data=$form_problem->getValues();
-				foreach($data as $value)
-				{
-					echo $value;
-				}
-			}
-		}*/
     }
 
     public function detailAction()
     {
         // action body
 		$p_id=$this->_request->getParam('p_id');
-		$Problem=new EOJ_Model_CheckedProblem();
-		$Problem->SetProblemID($p_id);
-		$Result=array(
-			'ID'=>$p_id,
-			'Title'=>$Problem->GetproblemName(),
-			'TimeLimit'=>$Problem->GettimeLimit(),
-			'MemoryLimit'=>$Problem->GetmemoryLimit(),
-			'Discription'=>$Problem->Getdiscription(),
-			'SampleInput'=>$Problem->GetsampleInput(),
-			'SampleOutput'=>$Problem->GetsampleOutput(),
-			'Source'=>$Problem->GetSource(),
-			'InputTips'=>$Problem->GetinputTips(),
-			'OutputTips'=>$Problem->GetoutputTips(),
-			'Hint'=>$Problem->GetHint()
-			);
-		$this->view->Result=$Result;
+		if(!isset($p_id))
+			$this->view->errormsg='No such problem';
+		else
+		{
+			$Problem=new EOJ_Model_CheckedProblem();
+			if($Problem->SetProblemID($p_id))
+			{
+			$this->view->p_id=$p_id;
+			$this->view->p_title=$Problem->GetproblemName();
+			$this->view->p_tlimt=$Problem->GettimeLimit();
+			$this->view->p_mlimt=$Problem->GetmemoryLimit();
+			$this->view->p_disc=$Problem->Getdiscription();
+			$this->view->p_sample_input=$Problem->GetsampleInput();
+			$this->view->p_sample_output=$Problem->GetsampleOutput();
+			$this->view->p_source=$Problem->GetSource();
+			$this->view->p_input_tips=$Problem->GetinputTips();
+			$this->view->p_output_tips=$Problem->GetoutputTips();
+			$this->view->p_hint=$Problem->GetHint();
+			}
+			else
+				$this->view->errormsg='No such problem';
+		}
+		
     }
 
-
+    public function uncheckedAction()
+    {
+        // action body
+		$user_power=$this->getRequest()->getCookie('user_power');
+		if(!isset($user_power))
+				$this->view->errormsg='Sorry, you do not have the permission to visit this page';
+		else
+		{
+			$problemList=new EOJ_Model_UnCheckedProblem();
+			switch($user_power)
+			{
+				case 1: 
+					$this->view->ifPP=true;
+					$this->view->Result=$problemList->PPGetProblemList($this->getRequest()->getCookie('user_id'));
+					break;
+				case 2:
+					$this->view->ifPP=false;
+					if($this->_request->getParam('page'))
+						$page=$this->_request->getParam('page');
+					else
+						$page=1;
+					$id_min=$problemList->PCGetMinProblemID();
+					$id_max=$problemList->PCGetMaxProblemID();
+					$page_num=ceil(($id_max-$id_min+1)/50);
+					$EndID=$id_max-($page-1)*50;
+					$StartID=max($EndID-49,$id_min);
+					
+					$this->view->Page_Num=$page_num;
+					$this->view->Result=$problemList->PCGetProblemList($StartID,$EndID);
+					break;
+				case 255:
+					break;
+				default:
+			}
+		}		
+    }
 }
+
+
 
 
 
