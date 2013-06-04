@@ -9,7 +9,7 @@ proc8: BEGIN
   DECLARE oexitcode TINYINT;
   
   /* start declare Exception Handlers */
-  /*DECLARE EXIT HANDLER FOR SQLEXCEPTION,SQLWARNING,NOT FOUND
+  DECLARE EXIT HANDLER FOR SQLEXCEPTION,SQLWARNING,NOT FOUND
   BEGIN
     -- Mysql SQL Run-time Error
 	SET oexitcode=1;
@@ -20,7 +20,7 @@ proc8: BEGIN
     INSERT INTO eojdb.EOJLOG(opcode, opmesg, op_tag)
     VALUES(8,CONCAT('failed update a uploadit record status ','When meet a mysql sql error'),1);
 	COMMIT;
-  END;*/
+  END;
   /* end declare Exception Handlers */
   
   -- judge whether exist null value
@@ -86,7 +86,7 @@ proc8: BEGIN
 		WHERE up_id=iup_id
 		AND handout_status<>0;
 	ELSE 
-		SET oexitcode=3
+		SET oexitcode=3;
 		SELECT oexitcode;
 		
 		-- generate log
