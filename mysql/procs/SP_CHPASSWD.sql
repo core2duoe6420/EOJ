@@ -61,12 +61,12 @@ proc2: BEGIN
   
   IF iselect = 1
   THEN
-	UPDATE eojdb.UPLOADER
+	UPDATE eojdb.uploader
 	SET user_passwd=ipasswd
 	WHERE uploader_id=iuser_id;
   ELSEIF iselect = 2
   THEN
-	UPDATE eojdb.EOJUSER
+	UPDATE eojdb.eojuser
 	SET user_passwd=ipasswd
 	WHERE user_id=iuser_id;
   END IF;
