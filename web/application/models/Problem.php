@@ -13,6 +13,8 @@ class EOJ_Model_Problem
 	protected $inputTips;
 	protected $outputTips;
 	protected $hint;
+	protected $specialJudge;
+	protected $language;
 	protected $connection;
 	public function GetProblemList($StartID,$EndID){
 	}

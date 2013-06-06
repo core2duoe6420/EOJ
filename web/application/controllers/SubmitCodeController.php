@@ -30,9 +30,13 @@ class SubmitCodeController extends Zend_Controller_Action
 				
 				$submit_code=new EOJ_Model_SubmitCode();
 				$result=$submit_code->SubmitCode($code_data['CodeSource'],$this->getRequest()->getCookie('user_id'),$code_data['ProblemID'],$code_data['CodeLanguage']);
-				
-				/*if($result=="Succeed")
-					$this->_redirect("/Online-Status");
+				//echo $result;
+				/*if($result=="Succeed") 
+				{
+					echo '2';
+					//echo '<script type="text/javascript">document.redirect(/Online-Status);</script>';
+				}
+					//$this->_redirect("Online-Status");
 				else*/
 					$this->view->errormsg=$result;
 			}

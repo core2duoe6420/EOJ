@@ -1,12 +1,12 @@
 
-<div id="view-content"> <font size=4 color=#333399>Problem Status List</font>
+<div id="view-content"> <font size=6 color=#333399>提交状态</font>
 		</p>
 		<form method=get>
-			Problem ID:
+			题目ID:
 			<input type=text name=filter_problem_id size=8 value="">
-			User Name:
+			用户名:
 			<input type=text name=filter_user_name size=15 value="">
-			Result:
+			结果:
 			<select size=1 name=filter_result>
 				<option value=0>All</option>
 				<option value=1>Accepted</option>
@@ -19,27 +19,40 @@
 				<option value=8>Code Length Exceeded</option>
 				<option value=-1>System Error</option>
 			</select>
-			Language:
+			语言:
 			<select size=1 name=filter_language>
 				<option value=0>All</option>
-				<option value=1>C</option>
-				<option value=2>C++</option>
+				<option value=1>GCC</option>
+				<option value=2>G++</option>
 			</select>
 			<input type=submit width=8 value=Go></form>
 			
 			<table id="mytable" cellspacing="0" 	>
 				<caption></caption>
 				<tr>
-					<th scope="col" width=8%>Run ID</th>
-					<th scope="col" width=10%>User</th>
-					<th scope="col" width=6%>Problem</th>
-					<th scope="col" width=20%>Result</th>
-					<th scope="col" width=7%>Memory</th>
-					<th scope="col" width=7%>Time</th>
-					<th scope="col" width=7%>Language</th>
-					<th scope="col" width=7%>Code Length</th>
-					<th scope="col" width=17%>Submit Time</th>
+				<th scope="col" width=8%>流水号</th>
+				<th scope="col" width=10%>用户名</th>
+				<th scope="col" width=10%>题目ID</th>
+				<th scope="col" width=11%>结果</th>
+				<th scope="col" width=10%>内存</th>
+				<th scope="col" width=10%>时间</th>
+				<th scope="col" width=7%>语言</th>
+				<th scope="col" width=10%>代码长度</th>
+				<th scope="col" width=13%>提交时间</th>
 				</tr>
+				
+			<!-- 页码 -->
+			<div>
+			<?php
+			if($this->Page_Num)
+			{
+				for($i=1;$i<=$this->Page_Num;$i++)
+				{
+					echo '<a href="/Online-Status?page=',$i,'">',$i,'</a> ';
+				}
+			}
+			?>
+			</div>	
 		<!-- php start -->
 		<?php
 		if($this->Result)
@@ -59,15 +72,55 @@
 							
 						if($key =='user_name')
 						{
-							echo '<a href="/User/Userinfo?user_name=';
-							echo str_replace("\n","<br>",stripslashes($coloum));
-							echo '">'.str_replace("\n","<br>",stripslashes($coloum)).'</a>';
+							if($coloum!='NULL')
+							{
+								echo '<a href="/User/Userinfo?user_name=';
+								echo str_replace("\n","<br>",stripslashes($coloum));
+								echo '">'.str_replace("\n","<br>",stripslashes($coloum)).'</a>';
+							}
+							else
+								echo $coloum;
 						}
 						else if($key =='run_pid')
 						{
-							echo '<a href="/Browse-Problem/Detail?p_id=';
-							echo str_replace("\n","<br>",stripslashes($coloum));
-							echo '">'.str_replace("\n","<br>",stripslashes($coloum)).'</a>';
+							if($coloum!='NULL')
+							{
+								echo '<a href="/Browse-Problem/Detail?p_id=';
+								echo str_replace("\n","<br>",stripslashes($coloum));
+								echo '">'.str_replace("\n","<br>",stripslashes($coloum)).'</a>';
+							}
+							else
+								echo $coloum;
+						}
+						else if($key =='run_mcost')
+						{
+							if($coloum!='NULL')
+							{
+								echo str_replace("\n","<br>",stripslashes($coloum));
+								echo ' KB';
+							}
+							else
+								echo $coloum;
+						}
+						else if($key =='run_tcost')
+						{
+							if($coloum!='NULL')
+							{
+								echo str_replace("\n","<br>",stripslashes($coloum));
+								echo ' MS';
+							}
+							else
+								echo $coloum;
+						}
+						else if($key =='run_codel')
+						{
+							if($coloum!='NULL')
+							{
+								echo str_replace("\n","<br>",stripslashes($coloum));
+								echo ' B';
+							}
+							else
+								echo $coloum;
 						}
 						else
 							echo str_replace("\n","<br>",stripslashes($coloum));
@@ -78,7 +131,17 @@
 				echo "</tr>";
 			}
 		}else
-		echo 'no';
+			echo '<tr>
+				<th scope="row" class="spec">NULL</th>
+				<th scope="row" class="spec">NULL</th>
+				<th scope="row" class="spec">NULL</th>
+				<th scope="row" class="spec">NULL</th>
+				<th scope="row" class="spec">NULL</th>
+				<th scope="row" class="spec">NULL</th>
+				<th scope="row" class="spec">NULL</th>
+				<th scope="row" class="spec">NULL</th>
+				<th scope="row" class="spec">NULL</th>
+				</tr>';
 	?>
 	<!-- php end -->
 	</table>

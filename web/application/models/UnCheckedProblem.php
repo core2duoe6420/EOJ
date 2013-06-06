@@ -15,7 +15,8 @@ class EOJ_Model_UnCheckedProblem extends EOJ_Model_Problem
 		//get problem all information
 		$run_pro_sql = "select p_title,p_tlimt,p_mlimt,user_name,up_time,
 		                p_desc,p_sampleinput,p_sampleoutput,handout_Status,
-		                p_input_tips,p_output_tips,p_hint,uploadit.uploader_id
+		                p_input_tips,p_output_tips,p_hint,uploadit.uploader_id,
+		                p_specjg,p_lang 
 		                from uploadit,uploader 
 		                where uploadit.uploader_id=uploader.uploader_id and up_id='$ID'";
 		$result = mysql_query($run_pro_sql, $this->connection) or die("Query Invalid:".mysql_error());
@@ -36,12 +37,20 @@ class EOJ_Model_UnCheckedProblem extends EOJ_Model_Problem
 			$this->uploaderID=$row['uploader_id'];//
 			$this->handoutStatus=$row['handout_Status'];//
 			$this->upTime=$row['up_time'];//
+			$this->specialJudge=$row['p_specjg'];
+			$this->language=$row['p_lang'];
 			mysql_close($this->connection);
 			//return $this->handoutStatus;
 			return true;
 		}
 		else
 			return false;
+	}
+	public function GetSpecialJudge(){
+		return $this->specialJudge;
+	}
+	public function Getlanguage(){
+		return $this->language;
 	}
 	public function GetUpTime(){
 		return $this->upTime;
@@ -98,7 +107,7 @@ class EOJ_Model_UnCheckedProblem extends EOJ_Model_Problem
 		return $minid;
 	}
 	public function PCGetMaxProblemID(){
-		$connection=mysql_connect("","eojapp","ecust")
+		$connection=mysql_connect("localhost","eojapp","ecust")
 		or die("Couldn't connect to server");
 		$db=mysql_select_db("eojdb",$connection)
 		or die("Couldn't select database");

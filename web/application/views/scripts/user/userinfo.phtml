@@ -5,50 +5,62 @@
 		echo $this->errormsg;
 	?>
 	</div>
-	<div>
-	<!-- user_id -->
-	<?php
-		echo $this->user_id;
-	?>
+	<h2 class="title">
+		<font size=6px color=#333399>用户信息</font>
+	</h2>
+	<div id="left">
+		<div>
+		<!-- user_id -->
+		用户ID:
+		<?php
+			echo $this->user_id;
+		?>
+		</div>
+		<div>
+		<!-- user_name -->
+		用户名:
+		<?php
+			echo $this->user_name;
+		?>
+		</div>
 	</div>
-	<div>
-	<!-- user_name -->
-	<?php
-		echo $this->user_name;
-	?>
-	</div>
-	<div>
-	<!-- user_acc_count -->
-	<?php
-		echo $this->user_acc_count;
-	?>
-	</div>
-	<div>
-	<!-- user_submit_count -->
-	<?php
-		echo $this->user_submit_count;
-	?>
-	</div>
-	<div>
-	<!-- user_acc_rate -->
-	<?php
-		echo $this->user_acc_rate;
-	?>
+	<div id="right">
+		<div>
+		<!-- user_acc_count -->
+		答题成功数:
+		<?php
+			echo $this->user_acc_count;
+		?>
+		</div>
+		<div>
+		答题尝试数:
+		<!-- user_submit_count -->
+		<?php
+			echo $this->user_submit_count;
+		?>
+		</div>
+		<div>
+		答题成功率:
+		<!-- user_acc_rate -->
+		<?php
+			echo $this->user_acc_rate;
+		?>
+		</div>
 	</div>
 	<div>
 	<!-- acc_code_list -->
 	<table id="mytable" cellspacing="0" 	>
 		<caption></caption>
 			<tr>
-				<th scope="col" width=8%>Run ID</th>
-				<th scope="col" width=10%>User</th>
-				<th scope="col" width=6%>Problem</th>
-				<th scope="col" width=20%>Result</th>
-				<th scope="col" width=7%>Memory</th>
-				<th scope="col" width=7%>Time</th>
-				<th scope="col" width=7%>Language</th>
-				<th scope="col" width=7%>Code Length</th>
-				<th scope="col" width=17%>Submit Time</th>
+				<th scope="col" width=8%>流水号</th>
+				<th scope="col" width=10%>用户名</th>
+				<th scope="col" width=10%>题目ID</th>
+				<th scope="col" width=11%>结果</th>
+				<th scope="col" width=10%>内存</th>
+				<th scope="col" width=10%>时间</th>
+				<th scope="col" width=7%>语言</th>
+				<th scope="col" width=10%>代码长度</th>
+				<th scope="col" width=13%>提交时间</th>
 			</tr>
 	<?php
 		if($this->acc_code_list)
@@ -84,6 +96,36 @@
 								echo '<a href="/Browse-Problem/Detail?p_id=';
 								echo str_replace("\n","<br>",stripslashes($coloum));
 								echo '">'.str_replace("\n","<br>",stripslashes($coloum)).'</a>';
+							}
+							else
+								echo $coloum;
+						}
+						else if($key =='run_mcost')
+						{
+							if($coloum!='NULL')
+							{
+								echo str_replace("\n","<br>",stripslashes($coloum));
+								echo ' KB';
+							}
+							else
+								echo $coloum;
+						}
+						else if($key =='run_tcost')
+						{
+							if($coloum!='NULL')
+							{
+								echo str_replace("\n","<br>",stripslashes($coloum));
+								echo ' MS';
+							}
+							else
+								echo $coloum;
+						}
+						else if($key =='run_codel')
+						{
+							if($coloum!='NULL')
+							{
+								echo str_replace("\n","<br>",stripslashes($coloum));
+								echo ' B';
 							}
 							else
 								echo $coloum;

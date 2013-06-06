@@ -13,7 +13,7 @@ class EOJ_Form_User extends Zend_Form
 		$user_name=$this->createElement('text','UserName');
 		$user_name->setAllowEmpty(false);
 		$user_name->addErrorMessage('User Name Empty');
-		$user_name->setLabel('User Name');
+		$user_name->setLabel('用户名:');
 		$this->addElement($user_name);
 		
 		//user_passwd CHAR(32) NOT NULL DEFAULT 'e10adc3949ba59abbe56e057f20f883e' COMMENT '普通答题用户的密码，默认初始为123456，采用md5加密',
@@ -21,16 +21,16 @@ class EOJ_Form_User extends Zend_Form
 		$user_passwd->setAllowEmpty(false);
 		$user_passwd->setRequired(true);
 		$user_passwd->addErrorMessage('Password Empty');
-		$user_passwd->setLabel('User Password');
+		$user_passwd->setLabel('用户密码:');
 		$this->addElement($user_passwd);
 		$user_passwd2=$this->createElement('password','UserPassword2');
-		$user_passwd2->setLabel('User Password2');
+		$user_passwd2->setLabel('再输一次:');
 		$user_passwd2->addValidator('identical',false,array('token'=>'UserPassword'));
 		$user_passwd2->addErrorMessage('Passwords do not match');
 		$this->addElement($user_passwd2);
 		
 		$admin_type=$this->createElement('select','AdminType');
-		$admin_type->setlabel('Role');
+		$admin_type->setlabel('用户角色:');
 		$admin_type->addMultiOptions(
 			array(
 				'1'=>'Uploader',

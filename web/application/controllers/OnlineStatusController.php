@@ -13,6 +13,7 @@ class OnlineStatusController extends Zend_Controller_Action
         // action body
 		$SubmitCode=new EOJ_Model_SubmitCode();
 		
+		
 		$filter_problem_id=$this->_request->getParam('filter_problem_id');
 		if(!(isSet($filter_problem_id)and($filter_problem_id!=0)))
 			$filter_problem_id=0;
@@ -29,7 +30,26 @@ class OnlineStatusController extends Zend_Controller_Action
 		if(!isSet($filter_language))
 			$filter_language=0;
 			
-		$this->view->Result=$SubmitCode->GetResult($filter_problem_id,$filter_user_name,$filter_result,$filter_language);
+		if($filter_problem_id==0 and $filter_user_name==0 and $filter_result==0 and $filter_language==0)
+		{
+			if($this->_request->getParam('page'))
+						$page=$this->_request->getParam('page');
+			else
+				$page=1;
+			$id_min=$SubmitCode->GetMinRunID();
+			$id_max=$SubmitCode->GetMaxRunID();
+			echo $id_min,'<br>',$id_max;
+			$page_num=ceil(($id_max-$id_min+1)/50);
+			$EndID=$id_max-($page-1)*50;
+			$StartID=max($EndID-49,$id_min);
+					
+			$this->view->Page_Num=$page_num;
+			$this->view->Result=$SubmitCode->GetResult($filter_problem_id,$filter_user_name,$filter_result,$filter_language,$EndID,$StartID);
+		}
+		else
+		{
+			$this->view->Result=$SubmitCode->GetResult($filter_problem_id,$filter_user_name,$filter_result,$filter_language);
+		}
     }
 }
 

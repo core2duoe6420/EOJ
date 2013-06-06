@@ -6,23 +6,43 @@
 				if(isset($this->errormsg))
 				{
 					echo $this->errormsg;
-					echo '<div>';
+					if($this->errormsg=="Succeed")
+						echo '<script type="text/javascript">window.location.href="Online-Status";</script>';
+					/*echo '<div>';
 					echo '<a href="/Browse-Problem">Return Problem List</a>   ';
+					echo '</div>';
 					echo '<div>';
-					echo '</div>';
 					echo '<a href="/Online-Status">Check Online Status</a>';
-					echo '</div>';
+					echo '</div>';*/
 					
 				}	
 				else
 				{
 					echo '<h2 class="title">
-							<a herf="#"><b>Submit Your Solition Via Web</b></a>
+							<a herf="#"><b>提交代码</b></a>
 							</h2>';
+					echo '</div>';
+					echo '<div>';
 					echo $this->formCode;
+					echo '</div>';
 				}
 			?>
 		<!-- code form end -->
 		</div>
+		<script type="text/javascript">
+var onTextareaKeydown = function(e){
+	if(e.keyCode == 9){
+		e.preventDefault();
+		var start = this.selectionStart, end = this.selectionEnd;
+		var text = this.value;
+		var tab = '    ';
+		text = text.substr(0, start) + tab + text.substr(start);
+		this.value = text;
+		this.selectionStart = start + tab.length;
+		this.selectionEnd = end + tab.length;
+	}
+}
+document.getElementById('CodeSource').onkeydown = onTextareaKeydown;
+</script>
 	</div>
 </div>

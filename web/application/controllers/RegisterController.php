@@ -13,7 +13,7 @@ class RegisterController extends Zend_Controller_Action
         // action body
 		if($this->getRequest()->getCookie('user_id'))
 		{
-			$this->view->result='You have Logged in as ID:'.$this->getRequest()->getCookie('user_id').'<br><a href="/Logout">Log out</a>';
+			$this->view->result='你已按ID:'.$this->getRequest()->getCookie('user_id').' 登录<br><a href="/Logout">Log out</a>';
 		}
 		else 
 		{
@@ -21,25 +21,27 @@ class RegisterController extends Zend_Controller_Action
 			$form_user->removeElement('AdminType');
 			$this->view->form_user=$form_user;
 			
+			if($this->getRequest()->isPost())
+			{
 			$user_data=$this->getRequest()->getPost();
 				
 			if(empty($user_data['UserName']))
-				$this->view->result="User Name can not be empty";
+				$this->view->result="用户名不能为空";
 				
 			else 
 			//check password
 			if(!preg_match("/^[a-zA-Z]\w{5,17}$/",$user_data['UserPassword']))
-				$this->view->result="Password do not match the requirement";
+				$this->view->result="密码格式不符合要求";
 				
 			else if($user_data['UserPassword']!=$user_data['UserPassword2'])
-				$this->view->result='Two Password not match.';
+				$this->view->result='两次密码输入不匹配';
 				
 			else
 			//start register
 			{
 				$normal_user=new EOJ_Model_NormalUser();
-				if($normal_user->Register($user_data['UserName'],$user_data['UserPassword']))
-					$this->view->result='Same User Name exists';
+				if(!$normal_user->Register($user_data['UserName'],$user_data['UserPassword']))
+					$this->view->result='已存在同名用户';
 				else
 				{	
 					echo $user_data['UserName'],'<br>';
@@ -49,9 +51,9 @@ class RegisterController extends Zend_Controller_Action
 						
 						if($user_id>0)
 						{
-							$cookie_id = new Zend_Http_Cookie('user_id',$user_id,'eoj.org');
-							$cookie_name = new Zend_Http_Cookie('user_name',$user_data['UserName'],'eoj.org');
-							$cookie_password = new Zend_Http_Cookie('user_password',md5($user_data['UserPassword']),'eoj.org');
+							$cookie_id = new Zend_Http_Cookie('user_id',$user_id,'www.ecustoj.info');
+							$cookie_name = new Zend_Http_Cookie('user_name',$user_data['UserName'],'www.ecustoj.info');
+							$cookie_password = new Zend_Http_Cookie('user_password',md5($user_data['UserPassword']),'www.ecustoj.info');
 							$this->getResponse()->setHeader('Set-Cookie',$cookie_id->__toString());
 							$this->getResponse()->setHeader('Set-Cookie',$cookie_name->__toString());
 							$this->getResponse()->setHeader('Set-Cookie',$cookie_password->__toString());
@@ -59,7 +61,7 @@ class RegisterController extends Zend_Controller_Action
 						}
 				}
 			}
-			
+			}
 			
 			
 		}

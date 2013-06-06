@@ -128,23 +128,28 @@ input, textarea, select {
 	font-size: 13px;
 	color: #333333;
 }
-
+textarea{
+	font-family: "Consolas", Arial, Helvetica, sans-serif;
+	font-size: 20px;
+	color: #333333;
+	width: 100%;
+}
 
 /* Header */
 
 #header {
 	width: 900px;
-	height: 180px;
+	height: 80px;
 	margin: 0 auto 20px auto;
-	padding-top: 10px;
 	background-image:url(images/banner.jpg);
+	background-repeat:no-repeat;
 }
 
 #logo {
 	margin:0;
 	float: right;
 	height: 90px;
-	width:400;
+	width:300;
 }
 
 #logo h1 {
@@ -176,8 +181,9 @@ input, textarea, select {
 
 #menu {
 	float: left;
-	padding-top: 152px;
-	width:auto;
+	padding-top: 20px;
+	width:900px;
+	margin: 0 auto 20px auto;
 }
 
 #menu ul {
@@ -499,7 +505,7 @@ td.b{
 body {
  font: normal 11px auto "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
  color: #4f6b72;
- background: #E6EAE9;
+ background: #FFFFFF;
 }
 
 a {
@@ -579,4 +585,74 @@ th.specalt {
 	margin: 0;
 	float: right;
 	padding-top: 0px;
+}
+
+
+#view-content{
+	font-size: 20px;
+	color: #0094E0;	
+	margin:auto;
+	width:900px; 
+	height:auto; 
+	margin-top:0px;
+	
+	}
+#view-content .title {
+	height: 52px;
+	padding-bottom: 5px;
+	color: #333399;
+	text-align:center;
+}
+
+#view-content .title b {
+	font-weight: normal;
+	color: #333399;/*标题颜色*/
+}
+#left{
+	width: 450px;
+	height: auto;
+	padding-top: 10px;
+	float: left;
+}
+#right{
+	width: 450px;
+	height: auto;
+	padding-top: 10px;
+	color: #0094E0;
+	float: right;
+}
+#password{
+	width: 300px;
+	float: right;
+	height: 200px;
+	text-align:center;
+}
+#top{
+	width: 900px;
+	text-align: center;
+}
+#timelimit{
+	width: 440px;
+	text-align: right;
+	float: left;
+	color: #000000;
+}
+#timelimit a{
+	font-weight: bold;
+	color: #000000;
+	font-size: 15px;
+}
+#memorylimit{
+	width: 450px;
+	text-align: left;
+	float: right;
+	color: #000000;
+}
+#memorylimit a{
+	font-weight: bold;
+	color: #000000;
+	font-size: 15px;
+}
+#error{
+	color: #ff0000;
 }

@@ -34,10 +34,10 @@
 							echo '<th scope="row" class="spec">';
 						else
 							echo '<th scope="row" class="specspecalt">';
-						if($key==0)
+						if($key==1)
 						{
 							echo '<a href="/Browse-Problem/Detail?p_id=';
-							echo stripslashes($coloum).'">'.stripslashes($coloum);
+							echo $row['p_id'].'">'.stripslashes($coloum);
 							echo '</a>';
 						}
 						else

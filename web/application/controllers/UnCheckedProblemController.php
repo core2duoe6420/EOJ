@@ -62,8 +62,8 @@ class UnCheckedProblemController extends Zend_Controller_Action
 			$form_problem->removeElement('ProblemID');
 			$form_problem->removeElement('ProblemInputFile');
 			$form_problem->removeElement('ProblemOutputFile');
-			$form_problem->removeElement('ProblemLang');
-			$form_problem->removeElement('ProblemSpecJudge');
+		//	$form_problem->removeElement('ProblemLang');
+		//	$form_problem->removeElement('ProblemSpecJudge');
 				
 			$up_id=$this->_request->getParam('up_id');
 			if(!isset($up_id))
@@ -84,6 +84,8 @@ class UnCheckedProblemController extends Zend_Controller_Action
 					$form_problem->getElement('ProblemInputSample')->setValue($problem->GetsampleInput());
 					$form_problem->getElement('ProblemOutputSample')->setValue($problem->GetsampleOutput());
 					$form_problem->getElement('ProblemHint')->setValue($problem->GetHint());
+					$form_problem->getElement('ProblemLang')->setValue($problem->Getlanguage());
+					$form_problem->getElement('ProblemSpecJudge')->setValue($problem->GetSpecialJudge());
 					
 	/*return info by SetUploadID list 
 	GetUpTime()
@@ -108,16 +110,15 @@ class UnCheckedProblemController extends Zend_Controller_Action
 						{
 							$problem_data=$form_problem->getValues();
 					
-							echo '................';
-							UpdateUploadedProblem($iuploader_id,$ip_title,$ip_desc,$ip_lang,$ip_tlimt,$ip_mlimt,$ip_input_tips,$ip_output_tips,$ip_sampleinput,$ip_sampleoutput,$ip_hint,$ip_specjg);
 							//update problem cannot get enough information from SetUploadID
 						
-							/*$uploader=new EOJ_Model_ProblemPublisher();
+							$uploader=new EOJ_Model_ProblemPublisher();
 					
-							$iuploader_id=$this->getRequest()->getCookie('user_id');
+							//$iuploader_id=$this->getRequest()->getCookie('user_id');
+							$up_id=$this->getRequest()->getParam('up_id');
 							$ip_title=$problem_data['ProblemTitle'];
 							$ip_desc=$problem_data['ProblemDesc'];
-							//$ip_lang=$problem_data['ProblemLang'];
+							$ip_lang=$problem_data['ProblemLang'];
 							$ip_tlimt=$problem_data['ProblemTimelimit'];
 							$ip_mlimt=$problem_data['ProblemMemorylimit'];
 							$ip_input_tips=$problem_data['ProblemInputTips'];
@@ -126,22 +127,29 @@ class UnCheckedProblemController extends Zend_Controller_Action
 							$ip_sampleoutput=$problem_data['ProblemOutputSample'];
 							$ip_hint=$problem_data['ProblemHint'];
 							$ip_specjg=$problem_data['ProblemSpecJudge'];
-				
-							$result=$uploader->uploadproblem($iuploader_id,$ip_title,$ip_desc,$ip_lang,$ip_tlimt,$ip_mlimt,$ip_input_tips,$ip_output_tips,	$ip_sampleinput,$ip_sampleoutput,$ip_hint,$ip_specjg);
-					
-						echo $result;
+							//proc requires up_id not uploader_id
+							//
+							$result=$uploader->UpdateUploadedProblem($up_id,$ip_title,$ip_desc,$ip_lang,$ip_tlimt,$ip_mlimt,$ip_input_tips,$ip_output_tips,$ip_sampleinput,$ip_sampleoutput,$ip_hint,$ip_specjg);
+							
 							switch($result)
 							{
 								case 0:
-									$this->view->errormsg='Database Error';
+									$this->view->errormsg='Update Success';
 									break;
-								case -2:
-									$this->view->errormsg='Same Title Exists';
+								case 1:
+									$this->view->errormsg='Sql Error';
 									break;
-								default:
-									$this->_redirect("/Un-Checked-Problem");
+								case -1:
+									$this->view->errormsg='Null Value';
+									break;
+								case 2:
+									$this->view->errormsg='Same title exists';
+									break;
+								case 3:
+									$this->view->errormsg='Update error';
+									break;
 							}
-						*/
+						
 						}
 					}
 				$this->view->form_problem=$form_problem;

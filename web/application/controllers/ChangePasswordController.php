@@ -44,7 +44,7 @@ class ChangePasswordController extends Zend_Controller_Action
 					else
 					{
 						$this->view->errorMessage="Password Change Success";
-						$cookie_password = new Zend_Http_Cookie('user_password',md5($NewPassword1),'eoj.org');
+						$cookie_password = new Zend_Http_Cookie('user_password',md5($NewPassword1),'www.ecustoj.info');
 						$this->getResponse()->setHeader('Set-Cookie',$cookie_password->__toString());
 					}
 				}

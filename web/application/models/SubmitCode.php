@@ -8,7 +8,7 @@ class EOJ_Model_SubmitCode
 	private $dom;
 	private function GetPara(){
 		$this->dom=new DOMDocument;
-		$this->dom->load("/home/corei7/Project/EOJ/eojdaemon/eoj.xml");
+		$this->dom->load("/eoj_files/eoj.xml");
 		//$this->xeoj=$dom->getElementsByTagName("eoj");
 		$this->WorkDirectionary=$this->dom->getElementsByTagName("work_dir")->item(0)->nodeValue;
 	}
@@ -112,7 +112,7 @@ class EOJ_Model_SubmitCode
 	public function __destruct(){
 		@mysql_close($this->connect);
 	}
-	public function GetResult($ProblemID,$UserName,$Result,$language){
+	public function GetResult($ProblemID,$UserName,$Result,$language,$upbound=-1,$lowbound=-1){
 		//
 		$run_pro_sql = "select run_id,user_name,run_pid,run_result,run_mcost,run_tcost,run_codetype,run_codel,run_submitt from run,eojuser where eojuser.user_id=run.run_uid ";//
 		//
@@ -127,6 +127,9 @@ class EOJ_Model_SubmitCode
 		}
 		if ($language!=0) {
 			$run_pro_sql=$run_pro_sql." and run_codetype='$language'";
+		}
+		if($upbound!=-1 && $lowbound!=-1){
+			$run_pro_sql=$run_pro_sql." and run_id>='$lowbound' and run_id<='$upbound '";
 		}
 		$run_pro_sql=$run_pro_sql." order by run_id desc";
 		$result = mysql_query($run_pro_sql, $this->connect) or die("Query Invalid:".mysql_error());
@@ -177,5 +180,28 @@ class EOJ_Model_SubmitCode
 		//select run_id,user_name,run_pid,run_result,run_mcost,run_tcost,run_codetype,run_codel,run_submitt from run,eojuser where eojuser.user_id=run.run_uid
 			$array=array('NULL'=>array('run_id'=>'NULL','user_name'=>'NULL','run_pid'=>'NULL','run_result'=>'NULL','run_mcost'=>'NULL','run_tcost'=>'NULL','run_codetype'=>'NULL','run_codel'=>'NULL','run_submitt'=>'NULL'));
 		return $array;
+	}
+	
+	public function GetMaxRunID(){
+		$connection=mysql_connect("localhost","eojapp","ecust")
+		or die("Couldn't connect to server");
+		$db=mysql_select_db("eojdb",$connection)
+		or die("Couldn't select database");
+		$result=mysql_query("select max(run_id) maxid from run",$connection)or die("Query Invalid:".mysql_error());
+		mysql_close($connection);
+		$row=mysql_fetch_array($result);
+		$maxid=$row['maxid'];
+		return $maxid;
+	}
+	public function GetMinRunID(){
+		$connection=mysql_connect("localhost","eojapp","ecust")
+		or die("Couldn't connect to server");
+		$db=mysql_select_db("eojdb",$connection)
+		or die("Couldn't select database");
+		$result=mysql_query("select min(run_id) minid from run",$connection)or die("Query Invalid:".mysql_error());
+		mysql_close($connection);
+		$row=mysql_fetch_array($result);
+		$minid=$row['minid'];
+		return $minid;
 	}
 }

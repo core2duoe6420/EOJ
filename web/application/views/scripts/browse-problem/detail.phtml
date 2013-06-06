@@ -10,29 +10,41 @@
 		?>
 		<!-- errormsg end -->
 	</div>
-	<div>
+	<div><h2 class="title">
+		<a herf="#"> 
+		<b>
 		<!-- p_title start -->
 		<?php 
 			if(isset($this->p_title))
 				echo $this->p_title;
 		?>
 		<!-- p_title end -->
+		</b>
+		</a>
+	</h2>
 	</div>
-	<div>
+	<div id="top">
+	<div id="timelimit">
+		<a>时间限制: </a>
 		<!-- p_tlimt start -->
 		<?php 
 			if(isset($this->p_tlimt))
 				echo $this->p_tlimt;
 		?>
+		<a>ms</a>
 		<!-- p_tlimt end -->
 	</div>
-	<div>
+	<div id="memorylimit">
+		<a>内存限制:</a>
 		<!-- p_mlimt start -->
+		
 		<?php 
 			if(isset($this->p_mlimt))
 				echo $this->p_mlimt;
 		?>
+		<a>KB</a>
 		<!-- p_mlimt end -->
+	</div>
 	</div>
 	<div>
 		<!-- p_disc start -->
@@ -97,7 +109,7 @@
 		echo '
 		<form  action="/Submit-Code" method="get">
 				<input type="hidden" value="',$this->p_id,'"name="p_id"/>
-				<input type="submit" value="Submit Code"/>
+				<input type="submit" value="提交代码"/>
 		</form>';
 		?>
 		<!-- submit end -->

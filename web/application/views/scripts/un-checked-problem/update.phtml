@@ -3,13 +3,16 @@
 		<?php
 			if(isset($this->errormsg))
 				echo $this->errormsg;
+			echo '<br><a href="/Un-Checked-Problem">Return</a>';
 		?>
 	</div>
 	<div>
 		<!-- problem form start -->
 		<?php
 			if(isset($this->form_problem))
+			{
 				echo $this->form_problem;
+			}
 		?>
 		<!-- problem form end -->
 	</div>

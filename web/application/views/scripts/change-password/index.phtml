@@ -3,7 +3,10 @@
 		<!-- error message start -->
 		<?php
 			if(isset($this->errorMessage))
+			{
 				echo $this->errorMessage;
+				echo '  <a href="/User">return</a>';
+			}
 		?>
 		<!-- error message end -->
 	</div>

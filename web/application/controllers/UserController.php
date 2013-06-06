@@ -23,7 +23,7 @@ class UserController extends Zend_Controller_Action
 		
 		$user_acc_count=$user->ReturnAcceptCount();
 		$user_submit_count=$user->ReturnSubmitCount();
-		$user_acc_rate=$user_submit_count?($user_acc_count/$user_submit_count):'NaN';
+		$user_acc_rate=$user_submit_count?($user_acc_count/$user_submit_count):'0';
 		
 		$acc_submit_code=new EOJ_Model_SubmitCode();
 		$acc_code_list=$acc_submit_code->GetResult(0,$user_name,1,0);
@@ -124,7 +124,7 @@ class UserController extends Zend_Controller_Action
 					else
 					{
 						$this->view->errorMassage="Password Change Success";
-						$cookie_password = new Zend_Http_Cookie('user_password',md5($NewPassword1),'eoj.org');
+						$cookie_password = new Zend_Http_Cookie('user_password',md5($NewPassword1),'www.ecustoj.info');
 						$this->getResponse()->setHeader('Set-Cookie',$cookie_password->__toString());
 					}
 				}
@@ -135,11 +135,15 @@ class UserController extends Zend_Controller_Action
     public function browsecodeAction()
     {
         // action body
+		//$this->getHelper('layout')->disableLayout();
+
 		$run_id=$this->_request->getParam('run_id');
 		$user= new EOJ_Model_NormalUser();
 		$code=$user-> ReturnCode($run_id);
 		
-		//$code='#include<stdio.h>\nvoid main(){\nint a,b;\nscanf("%d%d"),&a,&b);\nprintf("%d",a+b);';
+		$code=str_replace("&","&amp;",$code);
+		$code=str_replace("<","&lt;",$code);
+		$code=str_replace(">","&gt;",$code);
 		
 		$this->view->codeReturn=$code;
     }

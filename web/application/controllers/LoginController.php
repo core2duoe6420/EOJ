@@ -48,9 +48,9 @@ class LoginController extends Zend_Controller_Action
 						if($user_id>0)
 						{
 						//$cookie = new Zend_Http_Cookie('user_id',NULL,'eoj.org/',NULL,"/");
-							$cookie_id = new Zend_Http_Cookie('user_id',$user_id,'eoj.org');
-							$cookie_name = new Zend_Http_Cookie('user_name',$user_data['UserName'],'eoj.org');
-							$cookie_password = new Zend_Http_Cookie('user_password',md5($user_data['UserPassword']),'eoj.org');
+							$cookie_id = new Zend_Http_Cookie('user_id',$user_id,'www.ecustoj.info');
+							$cookie_name = new Zend_Http_Cookie('user_name',$user_data['UserName'],'www.ecustoj.info');
+							$cookie_password = new Zend_Http_Cookie('user_password',md5($user_data['UserPassword']),'www.ecustoj.info');
 							$this->getResponse()->setHeader('Set-Cookie',$cookie_id->__toString());
 							$this->getResponse()->setHeader('Set-Cookie',$cookie_name->__toString());
 							$this->getResponse()->setHeader('Set-Cookie',$cookie_password->__toString());

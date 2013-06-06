@@ -109,9 +109,23 @@ class EOJ_Model_NormalUser
 		$ID=0;
 		$res=0;
 		$sqlquery="call ADDEOJUSER('$UserN','$pw')";
-		mysql_query($sqlquery,$this->connection) or die("Query Invalid:".mysql_error());
-		mysql_close($this->connection);
-		return $res;//0 success other error;
+		$result= mysql_query($sqlquery,$this->connection) or die("Query Invalid:".mysql_error());
+		$row=mysql_fetch_array($result);
+		$ID=$row['ouser_id'];
+		$res=$row['oexitcode'];
+		mysql_close($this->connection) or die("daodiyoumeiyouyong:".mysql_error());
+		switch($res)
+		{
+			case 0:
+				return true;
+				break;
+			case 1:
+				return false;
+				break;
+			case -1:
+				return false;
+				break;
+		}
 	}
 	
 	public function ChangePassword($ID,$newPW){

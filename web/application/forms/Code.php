@@ -10,14 +10,16 @@ class EOJ_Form_Code extends Zend_Form
 		//$this->setDisableLoadDefaultDecorators(true);
 		//Problem ID
 		$p_id=$this->createElement('text','ProblemID');
-		$p_id->setLabel('Problem ID')
+		$p_id->setRequired(true);
+		$p_id->addErrorMessage("题目编号不能为空");
+		$p_id->setLabel('题目编号:')
 			->setAttrib('readonly','readonly')
 			;
 		$p_id->setDisableLoadDefaultDecorators(true);
 		$this->addElement($p_id);	
 		//Code Language
 		$code_lang=$this->createElement('select','CodeLanguage');
-		$code_lang->setLabel('Language');
+		$code_lang->setLabel('编程语言:');
 		$code_lang->addMultiOptions(array(
 			1=>'GCC',
 			2=>'G++'
@@ -27,8 +29,8 @@ class EOJ_Form_Code extends Zend_Form
 		//Source Code
 		$code_src=$this->createElement('textarea','CodeSource');
 		$code_src->setRequired(true);
-		$code_src->addErrorMessage("Are you sure you want to upload EMPTY source code?");
-		$code_src->setLabel('Source:')
+		$code_src->addErrorMessage("请认真地回答题目");
+		$code_src->setLabel('代码:')
 				->setAttrib('COLS', '110')
 				->setAttrib('ROWS', '18');
 		/*$code_src->setDisableLoadDefaultDecorators(true);
