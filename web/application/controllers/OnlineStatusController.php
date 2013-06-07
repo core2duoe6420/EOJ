@@ -38,10 +38,9 @@ class OnlineStatusController extends Zend_Controller_Action
 				$page=1;
 			$id_min=$SubmitCode->GetMinRunID();
 			$id_max=$SubmitCode->GetMaxRunID();
-			echo $id_min,'<br>',$id_max;
-			$page_num=ceil(($id_max-$id_min+1)/50);
-			$EndID=$id_max-($page-1)*50;
-			$StartID=max($EndID-49,$id_min);
+			$page_num=ceil(($id_max-$id_min+1)/20);
+			$EndID=$id_max-($page-1)*20;
+			$StartID=max($EndID-19,$id_min);
 					
 			$this->view->Page_Num=$page_num;
 			$this->view->Result=$SubmitCode->GetResult($filter_problem_id,$filter_user_name,$filter_result,$filter_language,$EndID,$StartID);

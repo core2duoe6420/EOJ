@@ -1,58 +1,35 @@
-<div id="view-content">
-	<div id="title"><h2 class="title">
-		<font size=6px color=#333399>用户信息</font>
-	</h2></div>
-	<div id="abc"></div>
-	<div>
-	<!-- errormsg -->
-	<?php
-		echo $this->errormsg;
-	?>
-	</div>
-	<div id="left">
-		<div>
-		<!-- user_id -->
-		用户ID:
-		<?php
-			echo $this->user_id;
-		?>
-		</div>
-		<div>
-		<!-- user_name -->
-		用户名:
-		<?php
-			echo $this->user_name;
-		?>
-		</div>
-	</div>
-	<div id="right">
-		<div>
-		<!-- user_acc_count -->
-		答题成功数:
-		<?php
-			echo $this->user_acc_count;
-		?>
-		</div>
-		<div>
-		答题尝试数:
-		<!-- user_submit_count -->
-		<?php
-			echo $this->user_submit_count;
-		?>
-		</div>
-		<div>
-		答题成功率:
-		<!-- user_acc_rate -->
-		<?php
-			echo $this->user_acc_rate;
-		?>
-		</div>
-	</div>
-	<div>
-	<!-- acc_code_list -->
-	<table id="mytable" cellspacing="0" 	>
-		<caption></caption>
-			<tr>
+
+<div id="view-content"> <font size=6 color=#333399>提交状态</font>
+		</p>
+		<form method=get>
+			题目ID:
+			<input type=text name=filter_problem_id size=8 value="">
+			用户名:
+			<input type=text name=filter_user_name size=15 value="">
+			结果:
+			<select size=1 name=filter_result>
+				<option value=0>All</option>
+				<option value=1>Accepted</option>
+				<option value=2>Compile Error</option>
+				<option value=3>Runtime Error</option>
+				<option value=4>Time Limit Exceeded</option>
+				<option value=5>Memory Limit Exceeded</option>
+				<option value=6>Output Limit Exceeded</option>
+				<option value=7>Wrong Answer</option>
+				<option value=8>Code Length Exceeded</option>
+				<option value=-1>System Error</option>
+			</select>
+			语言:
+			<select size=1 name=filter_language>
+				<option value=0>All</option>
+				<option value=1>GCC</option>
+				<option value=2>G++</option>
+			</select>
+			<input type=submit width=8 value=Go></form>
+			
+			<table id="mytable" cellspacing="0" 	>
+				<caption></caption>
+				<tr>
 				<th scope="col" width=8%>流水号</th>
 				<th scope="col" width=10%>用户名</th>
 				<th scope="col" width=10%>题目ID</th>
@@ -62,19 +39,33 @@
 				<th scope="col" width=7%>语言</th>
 				<th scope="col" width=10%>代码长度</th>
 				<th scope="col" width=13%>提交时间</th>
-			</tr>
-	<?php
-		if($this->acc_code_list)
+				</tr>
+				
+			<!-- 页码 -->
+			<div>
+			<?php
+			if($this->Page_Num)
+			{
+				for($i=1;$i<=$this->Page_Num;$i++)
+				{
+					echo '<a href="/Online-Status?page=',$i,'">',$i,'</a> ';
+				}
+			}
+			?>
+			</div>	
+		<!-- php start -->
+		<?php
+		if($this->Result)
 		{
-			$line=1;
-			foreach($this->acc_code_list as $key2=>$row)
+			foreach($this->Result as $key2=>$row)
 			{
 				echo "<tr>";
 				foreach($row as $key=>$coloum)
 				{
+					
 					if(!is_integer($key))
 					{
-						if($line%2)
+						if($key2%2)
 							echo '<th scope="row" class="spec">';
 						else
 							echo '<th scope="row"  class="specalt">';
@@ -138,7 +129,6 @@
 					}
 				}
 				echo "</tr>";
-				$line++;
 			}
 		}else
 			echo '<tr>
@@ -153,6 +143,6 @@
 				<th scope="row" class="spec">NULL</th>
 				</tr>';
 	?>
+	<!-- php end -->
 	</table>
-	</div>
 </div>

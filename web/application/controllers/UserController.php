@@ -47,13 +47,13 @@ class UserController extends Zend_Controller_Action
 			switch($user_power)
 			{
 				case 1:
-					$this->view->panel_user_power="ProblemUploader";
+					$this->view->panel_user_power="题目上传者";
 					break;
 				case 2:
-					$this->view->panel_user_power="ProblemChecker";
+					$this->view->panel_user_power="题目审核者";
 					break;
 				case 255:
-					$this->view->panel_user_power="SystemAdmin";
+					$this->view->panel_user_power="系统管理员";
 					break;
 			}
 		}
@@ -65,7 +65,7 @@ class UserController extends Zend_Controller_Action
         // action body
 		$user_name=$this->_request->getParam('user_name');
 		if(!$user_name)
-			$this->view->errormsg='No such user';
+			$this->view->errormsg='无此用户';
 		else
 		{
 			$user=new EOJ_Model_NormalUser();
@@ -87,50 +87,10 @@ class UserController extends Zend_Controller_Action
 				$this->view->acc_code_list=$acc_code_list;
 			}
 			else
-				$this->view->errormsg='No such user';
+				$this->view->errormsg='无此用户';
 		}
     }
 
-    public function changePasswordAction()
-    {
-        // action body
-		if(!$user_id=$this->getRequest()->getCookie('user_id'))
-			$this->_redirect('/Login');
-		$user_name=$this->getRequest()->getCookie('user_name');
-		if($this->getRequest()->isPost())
-		{
-			if($changeData=$this->getRequest()->getPost())
-			{
-				$OriginPassword=$changeData['OriginPassword'];
-				$NewPassword1=$changeData['NewPassword1'];
-				$NewPassword2=$changeData['NewPassword2'];
-				
-				echo $OriginPassword,'<br>',$NewPassword1,'<br>',$NewPassword2,'<br>';
-				
-				if(md5($OriginPassword)!=$this->getRequest()->getCookie('user_password'))
-					$this->view->errorMessage="Origin Password Error";
-				else
-				
-				if($NewPassword1!=$NewPassword2)
-					$this->view->errorMessage="Password do not match";
-				else
-				{
-					$user= new EOJ_Model_NormalUser();
-					//change password
-					$errorcode=$user->ChangePassword($user_id,$NewPassword1);
-					echo $errorcode;
-					if(0!=$errorcode)
-						$this->view->errorMassage=$errorcode;
-					else
-					{
-						$this->view->errorMassage="Password Change Success";
-						$cookie_password = new Zend_Http_Cookie('user_password',md5($NewPassword1),'www.ecustoj.info');
-						$this->getResponse()->setHeader('Set-Cookie',$cookie_password->__toString());
-					}
-				}
-			}
-		}
-    }
 
     public function browsecodeAction()
     {

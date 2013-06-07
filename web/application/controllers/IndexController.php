@@ -13,11 +13,24 @@ class IndexController extends Zend_Controller_Action
         // action body
 		if($this->getRequest()->getCookie('user_id'))
 		{
-			$this->view->result='You have Logged in as <br>ID:'
+			$result='<br>ID:'
 			.$this->getRequest()->getCookie('user_id')
-			.'   Name:'
+			.'<br>登录名:'
 			.$this->getRequest()->getCookie('user_name')
 			.'<br><a href="/Logout">Log out</a>';
+			switch($this->getRequest()->getCookie('user_power'))
+			{
+				case 1:
+					$result='题目上传者'.$result;
+					break;
+				case 2:
+					$result='题目审核者'.$result;
+					break;
+				case 255:
+					$result='系统管理员'.$result;
+					break;
+			}
+			$this->view->result=$result;
 		}
 		else
 		{

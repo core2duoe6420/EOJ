@@ -29,6 +29,12 @@ class EOJ_Model_SubmitCode
 		//mysql_query("SET @b=".$ProblemID,$this->connect);
 		//mysql_query("SET @c=".$RunID,$this->connect);
 		//mysql_query("SET @d=".$QueryResult,$this->connect);
+		$run_pro_sql= "select count(*) from problem where p_id='$ProblemID'";
+		$result=mysql_query($run_pro_sql, $this->connect) or die("Query Invalid:".mysql_error());
+		$row=mysql_fetch_array($result);
+		if($row[0]==0)
+			return "No such problem";
+		
 		$run_pro_sql = "CALL ADDANS('$UserID','$ProblemID');";//have error
 		//$result = 
 		$result= mysql_query($run_pro_sql, $this->connect) or die("Query Invalid:".mysql_error());

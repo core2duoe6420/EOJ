@@ -12,6 +12,10 @@ class SubmitCodeController extends Zend_Controller_Action
         // action body
 		if(!$this->getRequest()->getCookie('user_id'))
 			$this->_redirect('/Login');
+		if($this->getRequest()->getCookie('user_power'))
+			$this->view->errormsg='作为一个管理员用户，您不能答题';
+		else
+		{
 		$form_code=new EOJ_Form_Code();
 		
 		if($p_id=$this->_request->getParam('p_id'))
@@ -42,5 +46,6 @@ class SubmitCodeController extends Zend_Controller_Action
 			}
 		}
 		$this->view->formCode=$form_code;
+		}
     }
 }

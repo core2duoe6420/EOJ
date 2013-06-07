@@ -1,4 +1,9 @@
 <div id="view-content">
+	<div id="title"><h2 class="title">
+		<font size=6px color=#333399>题目列表</font>
+	</h2></div>
+	<div id="abc"></div>
+	
 	<div>
 	<!-- 页码 -->
 	<?php
@@ -6,7 +11,8 @@
 		{
 			for($i=1;$i<=$this->Page_Num;$i++)
 			{
-				echo '<a href="/Browse-Problem?page=',$i,'">',$i,'</a> ';
+				echo '<a class="ui-base-button" href="/Browse-Problem?page=',$i,'"> <span>第',$i,'页</span> </a>';
+				//echo '<a href="/Browse-Problem?page=',$i,'">',$i,'</a> ';
 			}
 		}
 	?>
@@ -23,6 +29,7 @@
 	<?php
 		if($this->Result)
 		{
+			$line=1;
 			foreach($this->Result as $key2=>$row)
 			{
 				echo "<tr>";
@@ -30,15 +37,20 @@
 				{
 					if(is_integer($key))
 					{	
-						if($key2%2)
+						if($line%2)
 							echo '<th scope="row" class="spec">';
 						else
 							echo '<th scope="row" class="specspecalt">';
 						if($key==1)
 						{
-							echo '<a href="/Browse-Problem/Detail?p_id=';
-							echo $row['p_id'].'">'.stripslashes($coloum);
-							echo '</a>';
+							if($coloum!='NULL')
+							{
+								echo '<a href="/Browse-Problem/Detail?p_id=';
+								echo $row['p_id'].'">'.stripslashes($coloum);
+								echo '</a>';
+							}
+							else
+								echo 'NULL';
 						}
 						else
 							echo str_replace("\n","<br>",stripslashes($coloum));						
@@ -46,6 +58,7 @@
 					}
 				}
 				echo "</tr>";
+				$line++;
 			}
 		}
 	?>

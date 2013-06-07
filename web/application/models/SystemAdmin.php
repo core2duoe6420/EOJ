@@ -10,7 +10,7 @@ class EOJ_Model_SystemAdmin extends EOJ_Model_Adminstrator
 		or die("Couldn't select database");
 		//
 		$pw=md5($passWord);
-		$callsql="call ADDUPER('$userName','$pw')";
+		$callsql="call ADDUPER('$userName','$pw','$userInformation','$power')";
 		$result = mysql_query($callsql, $connection) or die("daodiyoumeiyouyong:".mysql_error());
 		$row=mysql_fetch_array($result);
 		$id=$row['ouploader_id'];

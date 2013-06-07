@@ -1,28 +1,39 @@
 <div id="view-content">
+	<div id="title"><h2 class="title">
+		<font size=6px color=#333399>更改密码</font>
+	</h2></div>
+	<div id="abc"></div>
 	<div>
 		<!-- error message start -->
 		<?php
 			if(isset($this->errorMessage))
 			{
 				echo $this->errorMessage;
-				echo '  <a href="/User">return</a>';
+				echo '&nbsp&nbsp<a href="/User">return</a>';
+				//echo '<br>';
 			}
 		?>
 		<!-- error message end -->
 	</div>
-	<div>
-		Password initial must be charactor, not shorter than 6 letters and not longer than 18 letters 
+	<div id="password">
+			温馨提示：密码首字母必须是字母，长度在6到18个字符之间 
 	</div>
 	<div>
 		<!-- form start -->
 		<form method=post >
-			<label>OriginPassword</label>
+			<label>原密码</label>
+			<br>
 			<input type ="password" name ="OriginPassword">
-			<label>NewPassword1</label>
+			<br>
+			<label>新密码</label>
+			<br>
 			<input type ="password" name ="NewPassword1">
-			<label>NewPassword2</label>
+			<br>
+			<label>重复一遍</label>
+			<br>
 			<input type ="password" name ="NewPassword2">
-			<input type ="submit" name="submit" value="submit">
+			<br>
+			<input type ="submit" name="submit" value="提交">
 		</form>
 		<!-- form end  -->
 	</div>

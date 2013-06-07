@@ -13,7 +13,7 @@ class LoginController extends Zend_Controller_Action
         // action body
 		if($this->getRequest()->getCookie('user_id'))
 		{
-			$this->view->result='You have Logged in as ID:'.$this->getRequest()->getCookie('user_id').'<br><a href="/Logout">Log out</a>';
+			$this->view->result='您已按<br>ID:'.$this->getRequest()->getCookie('user_id').'<br>登录<a href="/Logout">Log out</a>';
 		}
 		else 	
 		{
@@ -36,18 +36,18 @@ class LoginController extends Zend_Controller_Action
 						switch($user_id=$normal_user->Login($user_data['UserName'],md5($user_data['UserPassword'])))
 						{
 							case -3:
-								$this->view->errormsg="Database Query False";
+								$this->view->errormsg="数据库查询出错";
 								break;
 							case -2:
-								$this->view->errormsg="No Such User";
+								$this->view->errormsg="无此用户";
 								break;
 							case -1:
-								$this->view->errormsg="Wrong Password";
+								$this->view->errormsg="密码错误";
 								break;
 						}
 						if($user_id>0)
 						{
-						//$cookie = new Zend_Http_Cookie('user_id',NULL,'eoj.org/',NULL,"/");
+						//$cookie = new Zend_Http_Cookie('user_id',NULL,'www.ecustoj.info/',NULL,"/");
 							$cookie_id = new Zend_Http_Cookie('user_id',$user_id,'www.ecustoj.info');
 							$cookie_name = new Zend_Http_Cookie('user_name',$user_data['UserName'],'www.ecustoj.info');
 							$cookie_password = new Zend_Http_Cookie('user_password',md5($user_data['UserPassword']),'www.ecustoj.info');
@@ -58,7 +58,7 @@ class LoginController extends Zend_Controller_Action
 						}
 					}
 					else
-						$this->view->errormsg="User Name Empty";
+						$this->view->errormsg="用户名不能为空";
 				}
 			}
 			else
@@ -86,17 +86,17 @@ class LoginController extends Zend_Controller_Action
 						{
 							case -3:
 							case -2:
-								$this->view->errormsg="No Such User";
+								$this->view->errormsg="无此用户";
 								break;
 							case -1:
-								$this->view->errormsg="Password Error";
+								$this->view->errormsg="密码错误";
 								break;
 							default:
-							//$cookie = new Zend_Http_Cookie('user_id',NULL,'eoj.org/',NULL,"/");
-								$cookie_id = new Zend_Http_Cookie('user_id',$admin_id,'eoj.org');
-								$cookie_name = new Zend_Http_Cookie('user_name',$user_data['UserName'],'eoj.org');
-								$cookie_password = new Zend_Http_Cookie('user_password',md5($user_data['UserPassword']),'eoj.org');
-								$cookie_power= new Zend_Http_Cookie('user_power',$user_data['AdminType'],'eoj.org');
+							//$cookie = new Zend_Http_Cookie('user_id',NULL,'www.ecustoj.info/',NULL,"/");
+								$cookie_id = new Zend_Http_Cookie('user_id',$admin_id,'www.ecustoj.info');
+								$cookie_name = new Zend_Http_Cookie('user_name',$user_data['UserName'],'www.ecustoj.info');
+								$cookie_password = new Zend_Http_Cookie('user_password',md5($user_data['UserPassword']),'www.ecustoj.info');
+								$cookie_power= new Zend_Http_Cookie('user_power',$user_data['AdminType'],'www.ecustoj.info');
 								$this->getResponse()->setHeader('Set-Cookie',$cookie_id->__toString());
 								$this->getResponse()->setHeader('Set-Cookie',$cookie_name->__toString());
 								$this->getResponse()->setHeader('Set-Cookie',$cookie_password->__toString());
@@ -105,7 +105,7 @@ class LoginController extends Zend_Controller_Action
 						}
 					}	
 					else
-						$this->view->errormsg="User Name Empty";
+						$this->view->errormsg="用户名不能为空";
 				}
 			}
 		}

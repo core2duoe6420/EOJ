@@ -19,7 +19,7 @@ class LogoutController extends Zend_Controller_Action
 		$this->getResponse()->setHeader('Set-Cookie',$cookie_password->__toString());
 		$cookie_power= new Zend_Http_Cookie('user_power',NULL,'www.ecustoj.info');
 		$this->getResponse()->setHeader('Set-Cookie',$cookie_power->__toString());
-		$this->view->result='You have successfully Logged out';
+		$this->view->result='您已成功登出';
 		
 		$this->_redirect("/");	
     }

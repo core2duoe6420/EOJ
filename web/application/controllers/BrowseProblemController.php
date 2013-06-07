@@ -21,9 +21,9 @@ class BrowseProblemController extends Zend_Controller_Action
 		
 		$id_min=$CheckedProblem->GetMinProblemID();
 		$id_max=$CheckedProblem->GetMaxProblemID();
-		$page_num=ceil(($id_max-$id_min+1)/50);
-		$StartID=$id_min+($page-1)*50;
-		$EndID=min($StartID+49,$id_max);
+		$page_num=ceil(($id_max-$id_min+1)/20);
+		$StartID=$id_min+($page-1)*20;
+		$EndID=min($StartID+19,$id_max);
 		
 		$Result=$CheckedProblem->GetProblemList($StartID,$EndID);
 		
@@ -36,7 +36,7 @@ class BrowseProblemController extends Zend_Controller_Action
         // action body
 		$p_id=$this->_request->getParam('p_id');
 		if(!isset($p_id))
-			$this->view->errormsg='No such problem';
+			$this->view->errormsg='无此道题目';
 		else
 		{
 			$Problem=new EOJ_Model_CheckedProblem();
@@ -55,7 +55,7 @@ class BrowseProblemController extends Zend_Controller_Action
 			$this->view->p_hint=$Problem->GetHint();
 			}
 			else
-				$this->view->errormsg='No such problem';
+				$this->view->errormsg='无此道题目';
 		}
 		
     }
@@ -65,7 +65,7 @@ class BrowseProblemController extends Zend_Controller_Action
         // action body
 		$user_power=$this->getRequest()->getCookie('user_power');
 		if(!isset($user_power))
-				$this->view->errormsg='Sorry, you do not have the permission to visit this page';
+				$this->view->errormsg='对不起，您没有访问此页面的权限';
 		else
 		{
 			$problemList=new EOJ_Model_UnCheckedProblem();
@@ -83,9 +83,9 @@ class BrowseProblemController extends Zend_Controller_Action
 						$page=1;
 					$id_min=$problemList->PCGetMinProblemID();
 					$id_max=$problemList->PCGetMaxProblemID();
-					$page_num=ceil(($id_max-$id_min+1)/50);
-					$EndID=$id_max-($page-1)*50;
-					$StartID=max($EndID-49,$id_min);
+					$page_num=ceil(($id_max-$id_min+1)/20);
+					$EndID=$id_max-($page-1)*20;
+					$StartID=max($EndID-19,$id_min);
 					
 					$this->view->Page_Num=$page_num;
 					$this->view->Result=$problemList->PCGetProblemList($StartID,$EndID);

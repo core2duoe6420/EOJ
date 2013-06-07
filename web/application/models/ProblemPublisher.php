@@ -9,6 +9,12 @@ class EOJ_Model_ProblemPublisher extends EOJ_Model_Adminstrator
 		$db=mysql_select_db("eojdb",$connection)
 		or die("Couldn't select database");
 		//
+		if($ip_tlimt==null){
+			$ip_tlimt=2000;
+		}
+		if($ip_mlimt==null){
+			$ip_mlimt=65536;
+		}
 		$callsql="call UPLOAD('$iuploader_id','$ip_title','$ip_desc','$ip_lang','$ip_tlimt','$ip_mlimt','$ip_input_tips','$ip_output_tips','$ip_sampleinput','$ip_sampleoutput','$ip_hint','$ip_specjg')";
 		$result = mysql_query($callsql, $connection) or die("daodiyoumeiyouyong:".mysql_error());
 		$row=mysql_fetch_array($result);
@@ -30,6 +36,12 @@ class EOJ_Model_ProblemPublisher extends EOJ_Model_Adminstrator
 		$db=mysql_select_db("eojdb",$connection)
 		or die("Couldn't select database");
 		//
+		if($ip_tlimt==null){
+			$ip_tlimt=2000;
+		}
+		if($ip_mlimt==null){
+			$ip_mlimt=65536;
+		}
 		$callsql="call UPDATEUP('$up_id','$ip_title','$ip_desc','$ip_lang','$ip_tlimt','$ip_mlimt','$ip_input_tips','$ip_output_tips','$ip_sampleinput','$ip_sampleoutput','$ip_hint','$ip_specjg')";
 		$result = mysql_query($callsql, $connection) or die("daodiyoumeiyouyong:".mysql_error());
 		$row=mysql_fetch_array($result);

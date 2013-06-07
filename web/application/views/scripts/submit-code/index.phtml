@@ -1,13 +1,21 @@
-<div id="page">
+<div id="view-content">
+	<div id="title"><h2 class="title">
+		<font size=6px color=#333399>上传代码</font>
+	</h2></div>
+	<div id="abc"></div>
 	<div id="submit">
 		<div id="submittitle">
 		<!-- code form start -->
 			<?php
 				if(isset($this->errormsg))
 				{
-					echo $this->errormsg;
 					if($this->errormsg=="Succeed")
 						echo '<script type="text/javascript">window.location.href="Online-Status";</script>';
+					else
+					{
+						echo $this->errormsg;
+						echo '<br><a href="javascript:history.go(-1);">return</a>';
+					}
 					/*echo '<div>';
 					echo '<a href="/Browse-Problem">Return Problem List</a>   ';
 					echo '</div>';
@@ -18,9 +26,6 @@
 				}	
 				else
 				{
-					echo '<h2 class="title">
-							<a herf="#"><b>提交代码</b></a>
-							</h2>';
 					echo '</div>';
 					echo '<div>';
 					echo $this->formCode;

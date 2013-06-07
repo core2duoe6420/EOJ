@@ -124,7 +124,7 @@ fieldset {
 
 
 input, textarea, select {
-	font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+	font-family: "Consolas", Arial, Helvetica, sans-serif;
 	font-size: 13px;
 	color: #333333;
 }
@@ -324,6 +324,7 @@ textarea{
 	border-bottom: 1px dashed #D1D1D1;
 	background: url(images/img04.gif) no-repeat left top;
 	color: #8BCB2F;
+	font-size:30px;
 }
 
 .post .title b {
@@ -369,6 +370,9 @@ textarea{
 	margin: 0;
 	padding: 10px 0 0 0;
 	list-style: none;
+	font-size:20px;
+	color:#000000;
+	font-weight:bold;
 }
 
 #sidebar li {
@@ -389,11 +393,11 @@ textarea{
 	padding-left: 15px;
 }
 
-#sidebar h2 {
+#sidebar h2  b{
 	padding-bottom: 5px;
-	font-size: 18px;
+	font-size: 24;
 	font-weight: normal;
-	color: #0094E0;
+	color: #00aaaa;/*user颜色*/
 }
 
 #sidebar strong, #sidebar b {
@@ -526,13 +530,13 @@ caption {
 }
 
 th {
- font: bold 11px "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
+ font: bold 11px "Consolas", Verdana, Arial, Helvetica, sans-serif;
  color: #4f6b72;
  border-right: 1px solid #C1DAD7;
  border-bottom: 1px solid #C1DAD7;
  border-top: 1px solid #C1DAD7;
  letter-spacing: 2px;
- text-transform: uppercase;
+ /*text-transform: uppercase;*/
  text-align: left;
  padding: 6px 6px 6px 12px;
  background: #CAE8EA url(images/bg_header.jpg) no-repeat;
@@ -582,9 +586,11 @@ th.specalt {
 	
 }
 #panel-content{
+	font-size:15px;
 	margin: 0;
 	float: right;
 	padding-top: 0px;
+	color: #000099;
 }
 
 
@@ -632,7 +638,7 @@ th.specalt {
 	text-align: center;
 }
 #timelimit{
-	width: 440px;
+	width: 450px;
 	text-align: right;
 	float: left;
 	color: #000000;
@@ -655,4 +661,47 @@ th.specalt {
 }
 #error{
 	color: #ff0000;
+}
+#abc{
+	height:40px;
+	width:"900px";
+}
+#discription{
+	width: 900px;
+	text-align:left;
+	color: #0094E0;
+}
+#discription-content{
+	width: 900px;
+	text-align:left;
+	font-size: 15px;
+	color: #000000;
+}
+a:link { 
+
+text-decoration: none; 
+} 
+.ui-base-button { 
+background-image: url("/images/a-bg.png"); 
+background-position: right top; 
+background-repeat: no-repeat; 
+font-size: 12px; 
+color: #414241; 
+font-family: "宋体","Arial","Helvetica","Verdana","sans-serif"; 
+padding-right:9px; 
+padding-top:5px; 
+padding-bottom:6px; 
+} 
+.ui-base-button span { 
+background-image: url("/images/a.png"); 
+background-position: left top; 
+background-repeat: no-repeat; 
+padding-left:9px; 
+padding-top:5px; 
+padding-bottom:6px; 
+} 
+.entry{
+	font-size:25px;
+	color:#000099;
+	font-weight:bold;
 }

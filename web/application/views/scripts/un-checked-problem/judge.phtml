@@ -1,5 +1,9 @@
 
 <div id="view-content">
+	<div id="title"><h2 class="title">
+		<font size=6px color=#333399>题目信息</font>
+	</h2></div>
+	<div id="abc"></div>
 	
 	<div>
 		<!-- errormsg -->
@@ -9,7 +13,8 @@
 		?>
 		<!-- errormsg end -->
 	</div>
-	<div>
+	<div id="discription"><h2>题目状态:</h2></div>
+	<div id="discription-content">
 		<!-- p_handoutstatus start -->
 		<?php 
 			if(isset($this->p_handoutstatus))
@@ -17,39 +22,45 @@
 		?>
 		<!-- p_handoutstatus end -->
 	</div>
-	<div>
-		<!-- p_uploaderID start -->
-		<?php 
-			if(isset($this->p_uploaderID))
-				echo $this->p_uploaderID;
-		?>
-		<!-- p_uploaderID end -->
-	</div>
-	<div>
+	<div id="abc"></div>
+	<div><h2 class="title">
+		<a herf="#"> 
+		<b>标题：
 		<!-- p_title start -->
 		<?php 
 			if(isset($this->p_title))
 				echo $this->p_title;
 		?>
 		<!-- p_title end -->
+		</b>
+		</a>
+	</h2>
 	</div>
-	<div>
+	<div id="top">
+	<div id="timelimit">
+		<a>时间限制: </a>
 		<!-- p_tlimt start -->
 		<?php 
 			if(isset($this->p_tlimt))
 				echo $this->p_tlimt;
 		?>
+		<a>ms</a>
 		<!-- p_tlimt end -->
 	</div>
-	<div>
+	<div id="memorylimit">
+		<a>&nbsp内存限制:</a>
 		<!-- p_mlimt start -->
+		
 		<?php 
 			if(isset($this->p_mlimt))
 				echo $this->p_mlimt;
 		?>
+		<a>KB</a>
 		<!-- p_mlimt end -->
 	</div>
-	<div>
+	</div>
+	<div id="discription"><h2>题目描述:</h2></div>
+	<div id="discription-content">
 		<!-- p_disc start -->
 		<?php 
 			if(isset($this->p_disc))
@@ -57,31 +68,10 @@
 		?>
 		<!-- p_disc end -->
 	</div>
-	<div>
-		<!-- p_sample_input start -->
-		<?php 
-			if(isset($this->p_sample_input))
-				echo $this->p_sample_input;
-		?>
-		<!-- p_sample_input end -->
-	</div>
-	<div>
-		<!-- p_sample_output start -->
-		<?php 
-			if(isset($this->p_sample_output))
-				echo $this->p_sample_output;
-		?>
-		<!-- p_sample_output end -->
-	</div>
-	<div>
-		<!-- p_source start -->
-		<?php 
-			if(isset($this->p_source))
-				echo $this->p_source;
-		?>
-		<!-- p_source end -->
-	</div>
-	<div>
+	
+	<div id="abc"></div>
+	<div id="discription"><h2>输入格式:</h2></div>
+	<div id="discription-content">
 		<!-- p_input_tips start -->
 		<?php 
 			if(isset($this->p_input_tips))
@@ -89,7 +79,10 @@
 		?>
 		<!-- p_input_tips end -->
 	</div>
-	<div>
+	
+	<div id="abc"></div>
+	<div id="discription"><h2>输出格式:</h2></div>
+	<div id="discription-content">
 		<!-- p_output_tips start -->
 		<?php 
 			if(isset($this->p_output_tips))
@@ -97,7 +90,40 @@
 		?>
 		<!-- p_output_tips end -->
 	</div>
-	<div>
+	<div id="abc"></div>
+	<div id="discription"><h2>输入样例:</h2></div>
+	<div id="discription-content">
+		<!-- p_sample_input start -->
+		<?php 
+			if(isset($this->p_sample_input))
+				echo $this->p_sample_input;
+		?>
+		<!-- p_sample_input end -->
+	</div>
+	<div id="abc"></div>
+	<div id="discription"><h2>输出样例:</h2></div>
+	<div id="discription-content">
+		<!-- p_sample_output start -->
+		<?php 
+			if(isset($this->p_sample_output))
+				echo $this->p_sample_output;
+		?>
+		<!-- p_sample_output end -->
+	</div>
+	
+	<div id="abc"></div>
+	<div id="discription"><h2>题目来源:</h2></div>
+	<div id="discription-content">
+		<!-- p_source start -->
+		<?php 
+			if(isset($this->p_source))
+				echo $this->p_source;
+		?>
+		<!-- p_source end -->
+	</div>
+	<div id="abc"></div>
+	<div id="discription"><h2>题目提示:</h2></div>
+	<div id="discription-content">
 		<!-- p_hint start -->
 		<?php 
 			if(isset($this->p_hint))
@@ -105,6 +131,7 @@
 		?>
 		<!-- p_hint end -->
 	</div>
+	<div id="abc"></div>
 	<div>
 		<!-- submit start -->
 		<?

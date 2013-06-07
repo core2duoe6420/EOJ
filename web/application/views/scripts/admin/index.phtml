@@ -1,0 +1,16 @@
+<div id="view-content">
+	<div id="title"><h2 class="title">
+		<font size=6px color=#333399>指派管理员</font>
+	</h2></div>
+	<div id="abc"></div>
+<?php
+	if(isset($this->errormsg))
+		echo $this->errormsg;
+	else if(isset($this->adminform))
+	{
+		if(isset($this->result))
+			echo $this->result;
+		echo $this->adminform;
+	}
+?>
+</div>

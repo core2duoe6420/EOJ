@@ -27,7 +27,6 @@
           <actionMethod actionName="panel"/>
           <actionMethod actionName="browsecode"/>
           <actionMethod actionName="userinfo"/>
-          <actionMethod actionName="changePassword"/>
         </controllerFile>
         <controllerFile controllerName="Login">
           <actionMethod actionName="index"/>
@@ -49,6 +48,9 @@
           <actionMethod actionName="update"/>
           <actionMethod actionName="submit"/>
           <actionMethod actionName="judge"/>
+        </controllerFile>
+        <controllerFile controllerName="Admin">
+          <actionMethod actionName="index"/>
         </controllerFile>
       </controllersDirectory>
       <formsDirectory>
@@ -117,9 +119,6 @@
           <viewControllerScriptsDirectory forControllerName="User">
             <viewScriptFile forActionName="userinfo"/>
           </viewControllerScriptsDirectory>
-          <viewControllerScriptsDirectory forControllerName="User">
-            <viewScriptFile forActionName="changePassword"/>
-          </viewControllerScriptsDirectory>
           <viewControllerScriptsDirectory forControllerName="BrowseProblem">
             <viewScriptFile forActionName="unchecked"/>
           </viewControllerScriptsDirectory>
@@ -137,6 +136,9 @@
           </viewControllerScriptsDirectory>
           <viewControllerScriptsDirectory forControllerName="UnCheckedProblem">
             <viewScriptFile forActionName="judge"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Admin">
+            <viewScriptFile forActionName="index"/>
           </viewControllerScriptsDirectory>
         </viewScriptsDirectory>
         <viewHelpersDirectory/>

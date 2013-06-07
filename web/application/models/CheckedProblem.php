@@ -77,6 +77,8 @@ class EOJ_Model_CheckedProblem extends EOJ_Model_Problem
 			//$i=$i+1;
 		}
 		mysql_close($connection);
+		if(!isset($array))
+			$array=array('NULL'=>array('NULL','NULL','NULL','NULL'));
 		return $array;
 	}
 	public function GetMinProblemID(){

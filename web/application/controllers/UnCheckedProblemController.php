@@ -13,7 +13,7 @@ class UnCheckedProblemController extends Zend_Controller_Action
         // action body
 		$user_power=$this->getRequest()->getCookie('user_power');
 		if(empty($user_power))
-				$this->view->errormsg='Sorry, you do not have the permission to visit this page';
+				$this->view->errormsg='对不起，您没有浏览此页面的权限';
 		else
 		{
 			$problemList=new EOJ_Model_UnCheckedProblem();
@@ -31,9 +31,9 @@ class UnCheckedProblemController extends Zend_Controller_Action
 						$page=1;
 					$id_min=$problemList->PCGetMinProblemID();
 					$id_max=$problemList->PCGetMaxProblemID();
-					$page_num=ceil(($id_max-$id_min+1)/50);
-					$EndID=$id_max-($page-1)*50;
-					$StartID=max($EndID-49,$id_min);
+					$page_num=ceil(($id_max-$id_min+1)/20);
+					$EndID=$id_max-($page-1)*20;
+					$StartID=max($EndID-19,$id_min);
 					
 					$this->view->Page_Num=$page_num;
 					$this->view->Result=$problemList->PCGetProblemList($StartID,$EndID);
@@ -55,7 +55,7 @@ class UnCheckedProblemController extends Zend_Controller_Action
         // action body
 		
 		if((1!=$this->getRequest()->getCookie('user_power'))&&(255!=$this->getRequest()->getCookie('user_power')))
-			$this->view->errormsg='Sorry, you do not have the permission to visit this page';
+			$this->view->errormsg='对不起，您没有浏览此页面的权限';
 		else
 		{
 			$form_problem=new EOJ_Form_Problem();
@@ -67,25 +67,25 @@ class UnCheckedProblemController extends Zend_Controller_Action
 				
 			$up_id=$this->_request->getParam('up_id');
 			if(!isset($up_id))
-				$this->view->errormsg='No such Problem';
+				$this->view->errormsg='没有这道问题';
 			else
 			{
 				$problem= new EOJ_Model_UnCheckedProblem();
 				if(!$problem->SetUploadID($up_id))
-					$this->view->errormsg='No such Problem';
+					$this->view->errormsg='没有这道问题';
 				else
 				{
-					$form_problem->getElement('ProblemTitle')->setValue($problem->GetproblemName());
-					$form_problem->getElement('ProblemDesc')->setValue($problem->Getdiscription());
-					$form_problem->getElement('ProblemTimelimit')->setValue($problem->GettimeLimit());
-					$form_problem->getElement('ProblemMemorylimit')->setValue($problem->GetmemoryLimit());
-					$form_problem->getElement('ProblemInputTips')->setValue($problem->GetinputTips());
-					$form_problem->getElement('ProblemOutputTips')->setValue($problem->GetoutputTips());
-					$form_problem->getElement('ProblemInputSample')->setValue($problem->GetsampleInput());
-					$form_problem->getElement('ProblemOutputSample')->setValue($problem->GetsampleOutput());
-					$form_problem->getElement('ProblemHint')->setValue($problem->GetHint());
-					$form_problem->getElement('ProblemLang')->setValue($problem->Getlanguage());
-					$form_problem->getElement('ProblemSpecJudge')->setValue($problem->GetSpecialJudge());
+						$form_problem->getElement('ProblemTitle')->setValue($problem->GetproblemName());
+						$form_problem->getElement('ProblemDesc')->setValue($problem->Getdiscription());
+						$form_problem->getElement('ProblemTimelimit')->setValue($problem->GettimeLimit());
+						$form_problem->getElement('ProblemMemorylimit')->setValue($problem->GetmemoryLimit());
+						$form_problem->getElement('ProblemInputTips')->setValue($problem->GetinputTips());
+						$form_problem->getElement('ProblemOutputTips')->setValue($problem->GetoutputTips());
+						$form_problem->getElement('ProblemInputSample')->setValue($problem->GetsampleInput());
+						$form_problem->getElement('ProblemOutputSample')->setValue($problem->GetsampleOutput());
+						$form_problem->getElement('ProblemHint')->setValue($problem->GetHint());
+						$form_problem->getElement('ProblemLang')->setValue($problem->Getlanguage());
+						$form_problem->getElement('ProblemSpecJudge')->setValue($problem->GetSpecialJudge());
 					
 	/*return info by SetUploadID list 
 	GetUpTime()
@@ -104,56 +104,57 @@ class UnCheckedProblemController extends Zend_Controller_Action
 	GetHint()
 	*/
 			
-					if($this->getRequest()->isPost())
-					{
-						if($form_problem->isValid($_POST))
+						if($this->getRequest()->isPost())
 						{
-							$problem_data=$form_problem->getValues();
+							if($form_problem->isValid($_POST))
+							{
+								$problem_data=$form_problem->getValues();
 					
 							//update problem cannot get enough information from SetUploadID
 						
-							$uploader=new EOJ_Model_ProblemPublisher();
+								$uploader=new EOJ_Model_ProblemPublisher();
 					
 							//$iuploader_id=$this->getRequest()->getCookie('user_id');
-							$up_id=$this->getRequest()->getParam('up_id');
-							$ip_title=$problem_data['ProblemTitle'];
-							$ip_desc=$problem_data['ProblemDesc'];
-							$ip_lang=$problem_data['ProblemLang'];
-							$ip_tlimt=$problem_data['ProblemTimelimit'];
-							$ip_mlimt=$problem_data['ProblemMemorylimit'];
-							$ip_input_tips=$problem_data['ProblemInputTips'];
-							$ip_output_tips=$problem_data['ProblemOutputTips'];
-							$ip_sampleinput=$problem_data['ProblemInputSample'];
-							$ip_sampleoutput=$problem_data['ProblemOutputSample'];
-							$ip_hint=$problem_data['ProblemHint'];
-							$ip_specjg=$problem_data['ProblemSpecJudge'];
+								$up_id=$this->getRequest()->getParam('up_id');
+								$ip_title=$problem_data['ProblemTitle'];
+								$ip_desc=$problem_data['ProblemDesc'];
+								$ip_lang=$problem_data['ProblemLang'];
+								$ip_tlimt=$problem_data['ProblemTimelimit'];
+								$ip_mlimt=$problem_data['ProblemMemorylimit'];
+								$ip_input_tips=$problem_data['ProblemInputTips'];
+								$ip_output_tips=$problem_data['ProblemOutputTips'];
+								$ip_sampleinput=$problem_data['ProblemInputSample'];
+								$ip_sampleoutput=$problem_data['ProblemOutputSample'];
+								$ip_hint=$problem_data['ProblemHint'];
+								$ip_specjg=$problem_data['ProblemSpecJudge'];
 							//proc requires up_id not uploader_id
 							//
-							$result=$uploader->UpdateUploadedProblem($up_id,$ip_title,$ip_desc,$ip_lang,$ip_tlimt,$ip_mlimt,$ip_input_tips,$ip_output_tips,$ip_sampleinput,$ip_sampleoutput,$ip_hint,$ip_specjg);
+								$result=$uploader->UpdateUploadedProblem($up_id,$ip_title,$ip_desc,$ip_lang,$ip_tlimt,$ip_mlimt,$ip_input_tips,$ip_output_tips,$ip_sampleinput,$ip_sampleoutput,$ip_hint,$ip_specjg);
 							
-							switch($result)
-							{
+								switch($result)
+								{
 								case 0:
-									$this->view->errormsg='Update Success';
+									$this->view->errormsg='上传成功';
 									break;
 								case 1:
-									$this->view->errormsg='Sql Error';
+									$this->view->errormsg='数据库错误';
 									break;
 								case -1:
-									$this->view->errormsg='Null Value';
+									$this->view->errormsg='有非法空值';
 									break;
 								case 2:
-									$this->view->errormsg='Same title exists';
+									$this->view->errormsg='已存在相同标题';
 									break;
 								case 3:
-									$this->view->errormsg='Update error';
+									$this->view->errormsg='上传失败';
 									break;
+								}
+							
 							}
-						
 						}
-					}
-				$this->view->form_problem=$form_problem;
+						$this->view->form_problem=$form_problem;
 				}
+				
 			}
 		}
     }
@@ -162,7 +163,7 @@ class UnCheckedProblemController extends Zend_Controller_Action
     {
         // action body
 		if((1!=$this->getRequest()->getCookie('user_power'))&&(255!=$this->getRequest()->getCookie('user_power')))
-			$this->view->errormsg='Sorry, you do not have the permission to visit this page';
+			$this->view->errormsg='对不起，您没有浏览此页面的权限';
 		else
 		{
 			$form_problem=new EOJ_Form_Problem();
@@ -198,10 +199,10 @@ class UnCheckedProblemController extends Zend_Controller_Action
 					switch($result)
 					{
 						case 0:
-							$this->view->errormsg='Database Error';
+							$this->view->errormsg='数据库错误';
 							break;
 						case -2:
-							$this->view->errormsg='Same Title Exists';
+							$this->view->errormsg='已存在相同标题';
 							break;
 						default:
 							$this->_redirect("/Un-Checked-Problem");
@@ -217,7 +218,7 @@ class UnCheckedProblemController extends Zend_Controller_Action
         // action body
 		$user_power=$this->getRequest()->getCookie('user_power');
 		if(!isset($user_power))
-				$this->view->errormsg='Sorry, you do not have the permission to visit this page';
+				$this->view->errormsg='对不起，您没有浏览此页面的权限';
 		else
 		{
 			if($this->getRequest()->isPost())
@@ -231,11 +232,11 @@ class UnCheckedProblemController extends Zend_Controller_Action
 						switch($checker->CheckProblem($this->_request->getParam('up_id'),1))
 						{
 							case 0:break;
-							case 1:$this->view->errormsg='Database error';break;
-							case -1:$this->view->errormsg='No such problem';break;
-							case 2:$this->view->errormsg='Already checked';break;
-							case 3:$this->view->errormsg='Unknown decision';break;
-							case 4:$this->view->errormsg='Update status fail';break;
+							case 1:$this->view->errormsg='数据库错误';break;
+							case -1:$this->view->errormsg='无此道问题';break;
+							case 2:$this->view->errormsg='问题已被判断';break;
+							case 3:$this->view->errormsg='未知决定';break;
+							case 4:$this->view->errormsg='更新失败';break;
 						}
 					}
 					else if($decision=='Decline')
@@ -243,11 +244,11 @@ class UnCheckedProblemController extends Zend_Controller_Action
 						switch($checker->CheckProblem($this->_request->getParam('up_id'),0))
 						{
 							case 0:break;
-							case 1:$this->view->errormsg='Database error';break;
-							case -1:$this->view->errormsg='No such problem';break;
-							case 2:$this->view->errormsg='Already checked';break;
-							case 3:$this->view->errormsg='Unknown decision';break;
-							case 4:$this->view->errormsg='Update status fail';break;
+							case 1:$this->view->errormsg='数据库错误';break;
+							case -1:$this->view->errormsg='无此道问题';break;
+							case 2:$this->view->errormsg='问题已被判断';break;
+							case 3:$this->view->errormsg='未知决定';break;
+							case 4:$this->view->errormsg='更新失败';break;
 						}
 					}
 				}
@@ -270,12 +271,12 @@ class UnCheckedProblemController extends Zend_Controller_Action
 		
 			$up_id=$this->_request->getParam('up_id');
 			if(!isset($up_id))
-				$this->view->errormsg='No such problem';
+				$this->view->errormsg='无此道问题';
 			else
 			{
 				$Problem=new EOJ_Model_UnCheckedProblem();
 				if(!$Problem->SetUploadID($up_id))
-					$this->view->errormsg='No such problem';
+					$this->view->errormsg='无此道问题';
 				else
 				{
 			/*

@@ -1,4 +1,8 @@
 <div id="view-content">
+	<div id="title"><h2 class="title">
+		<font size=6px color=#333399>上传题目</font>
+	</h2></div>
+	<div id="abc"></div>
 	<div>
 		<?php
 			if(isset($this->errormsg))
@@ -10,8 +14,8 @@
 		<?php
 			if(isset($this->form_problem))
 			{
-				echo $this->form_problem;
 				echo '<a href="/Un-Checked-Problem">return</a>';
+				echo $this->form_problem;
 			}
 		?>
 		<!-- problem form end -->

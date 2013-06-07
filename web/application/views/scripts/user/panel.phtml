@@ -3,22 +3,29 @@
 		
 		if($this->panel_user_name)
 		{
-			echo "Welcome!  ";
+			//echo "Welcome!&nbsp&nbsp";
 			if($this->panel_user_power)
 			{
-				echo '<a href="/'.$this->panel_user_power.'">'.$this->panel_user_power.'</a>   ' ;
+				if($this->panel_user_power=="系统管理员")
+					echo '<a href="/Admin">'.$this->panel_user_power.'</a>&nbsp&nbsp' ;
+				else
+					echo $this->panel_user_power,'&nbsp&nbsp';
+				echo $this->panel_user_name,'&nbsp&nbsp';
 			}
 			else
-				echo '<a href="/User">NormalUser</a>   ';
-			echo $this->panel_user_name,'   ';
+			{
+				//echo 'NormalUser&nbsp&nbsp';
+				echo '<a href="/User">',$this->panel_user_name,'</a>&nbsp&nbsp';
+				//echo $this->panel_user_name,'&nbsp&nbsp';
+			}
 			echo '<a href="/Logout">Log out</a>';
 		}
 		else
 		{
 			
-			echo '<a href="/Register">Register</a>    ';
-			echo '<a href="/Login?admin=true">Admin Login</a>   ';
-			echo '<a href="/Login">Log in</a>    ';
+			echo '<a href="/Register">Register</a>&nbsp&nbsp';
+			echo '<a href="/Login?admin=true">Admin Login</a>&nbsp&nbsp';
+			echo '<a href="/Login">Log in</a>&nbsp&nbsp';
 		}
 	?>
 </div>

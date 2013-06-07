@@ -23,15 +23,15 @@ class ChangePasswordController extends Zend_Controller_Action
 				$NewPassword2=$changeData['NewPassword2'];
 				
 				if(md5($OriginPassword)!=$this->getRequest()->getCookie('user_password'))
-					$this->view->errorMessage="Origin Password Error";
+					$this->view->errorMessage="原密码输入错误";
 				
 				else if(!preg_match("/^[a-zA-Z]\w{5,17}$/",$NewPassword1))
 				{
-					$this->view->errorMessage="Password do not match the requirement";
+					$this->view->errorMessage="新密码不符合密码格式";
 				}
 				
 				else if($NewPassword1!=$NewPassword2)
-					$this->view->errorMessage="Two Password not match";
+					$this->view->errorMessage="两次密码输入不匹配";
 					
 				else
 				{
@@ -43,7 +43,7 @@ class ChangePasswordController extends Zend_Controller_Action
 						$this->view->errorMessage=$errorcode;
 					else
 					{
-						$this->view->errorMessage="Password Change Success";
+						$this->view->errorMessage="更改密码成功";
 						$cookie_password = new Zend_Http_Cookie('user_password',md5($NewPassword1),'www.ecustoj.info');
 						$this->getResponse()->setHeader('Set-Cookie',$cookie_password->__toString());
 					}
