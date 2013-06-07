@@ -4,11 +4,11 @@ set character_set_database=utf8;
 set character_set_results=utf8;
 set character_set_server=utf8;
 
-CREATE USER eojapp IDENTIFIED BY 'ecust';
+CREATE USER eojapp@'localhost' IDENTIFIED BY 'ecust';
 
 CREATE DATABASE eojdb DEFAULT CHARSET=utf8;
 GRANT all privileges on eojdb.* 
-TO eojapp@'%';
+TO eojapp@'localhost';
 
 use eojdb;
 
