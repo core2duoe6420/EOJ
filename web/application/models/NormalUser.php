@@ -108,6 +108,12 @@ class EOJ_Model_NormalUser
 		$pw=md5($Pass_Word);
 		$ID=0;
 		$res=0;
+		$sqlquery="select * from eojuser where user_name='$UserN'";
+		$result=mysql_query($sqlquery,$this->connection) or die("Query Invalid:".mysql_error());
+		$row=mysql_fetch_array($result);
+		if($row!=null){
+			return false;
+		}
 		$sqlquery="call ADDEOJUSER('$UserN','$pw')";
 		$result= mysql_query($sqlquery,$this->connection) or die("Query Invalid:".mysql_error());
 		$row=mysql_fetch_array($result);

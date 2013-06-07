@@ -139,7 +139,7 @@ textarea{
 
 #header {
 	width: 900px;
-	height: 80px;
+	height: 110px;
 	margin: 0 auto 20px auto;
 	background-image:url(images/banner.jpg);
 	background-repeat:no-repeat;
@@ -148,7 +148,7 @@ textarea{
 #logo {
 	margin:0;
 	float: right;
-	height: 90px;
+	height: 110px;
 	width:300;
 }
 
@@ -181,7 +181,7 @@ textarea{
 
 #menu {
 	float: left;
-	padding-top: 20px;
+	padding-top: 120px;
 	width:900px;
 	margin: 0 auto 20px auto;
 }

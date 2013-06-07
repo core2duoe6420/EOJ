@@ -59,8 +59,9 @@ proc9: BEGIN
 	
 	SELECT COUNT(*) 
 	INTO vrow_c
-	FROM eojdb.UPLOADIT a
-	WHERE a.p_title = vp_title;
+	FROM eojdb.uploadit a
+	WHERE a.p_title = vp_title
+	AND iup_id <> a.up_id;
 	
 	-- judge whether it's unique title
 	IF vrow_c != 0
@@ -112,7 +113,7 @@ proc9: BEGIN
   
   /* start execution */
   START TRANSACTION;
-  UPDATE eojdb.UPLOADIT
+  UPDATE eojdb.uploadit
   SET p_title=vp_title, p_desc=ip_desc, p_lang=vp_lang, p_tlimt=ip_tlimt,
       p_mlimt=ip_mlimt, p_input_tips=ip_input_tips, p_output_tips=ip_output_tips,
 	  p_sampleinput=ip_sampleinput, p_sampleoutput=ip_sampleoutput, p_hint=ip_hint,p_specjg=vp_specjg

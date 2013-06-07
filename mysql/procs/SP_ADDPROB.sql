@@ -96,12 +96,12 @@ proc10: BEGIN
   
   /* start execution */
   START TRANSACTION;
-  INSERT INTO eojdb.PROBLEM(p_tlimt, p_mlimt, p_specjg, p_author)
+  INSERT INTO eojdb.problem(p_tlimt, p_mlimt, p_specjg, p_author)
   VALUES(ip_tlimt, ip_mlimt, vp_specjg, iuploader_id);
   
   SET op_id=LAST_INSERT_ID();
   
-  INSERT INTO eojdb.PROBLEM_MULTILANG(p_id, p_lang, p_title, p_desc, 
+  INSERT INTO eojdb.problem_multilang(p_id, p_lang, p_title, p_desc, 
     p_input_tips, p_output_tips, p_sampleinput, p_sampleoutput, p_hint)
   VALUES(op_id, vp_lang, vp_title, ip_desc, ip_input_tips,
          ip_output_tips, ip_sampleinput, ip_sampleoutput, ip_hint);

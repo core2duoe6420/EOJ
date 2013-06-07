@@ -1,4 +1,4 @@
-DELIMITER //
+﻿DELIMITER //
 CREATE PROCEDURE ADDUPER(
 IN iuser_name VARCHAR(255),
 IN iuser_passwd CHAR(32),
@@ -61,7 +61,7 @@ proc5: BEGIN
   
   /* start execution */
   START TRANSACTION;
-  INSERT INTO eojdb.UPLOADER(user_name, user_passwd, user_info, user_privis)
+  INSERT INTO eojdb.uploader(user_name, user_passwd, user_info, user_privis)
   VALUES(iuser_name, vuser_passwd, iuser_info, vuser_privis);
   COMMIT;
   

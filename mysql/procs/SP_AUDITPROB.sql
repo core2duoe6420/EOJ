@@ -1,4 +1,4 @@
-DELIMITER //
+﻿DELIMITER //
 CREATE PROCEDURE AUDITPROB(
 IN iup_id INT UNSIGNED,
 IN ijudge BOOLEAN)
@@ -21,7 +21,7 @@ proc8: BEGIN
     VALUES(8,CONCAT('failed update a uploadit record status ','When meet a mysql sql error'),1);
 	COMMIT;
   END;
-  /* end declare Exception Handlers */
+  /* end declare Exception Handlers*/
   
   -- judge whether exist null value
   IF iup_id IS NULL or ijudge IS NULL

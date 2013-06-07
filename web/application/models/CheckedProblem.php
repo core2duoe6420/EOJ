@@ -26,7 +26,7 @@ class EOJ_Model_CheckedProblem extends EOJ_Model_Problem
 			$this->sampleOutput=$row['p_sampleoutput'];
 			$this->source=$row['p_author'];
 			$this->inputTips=$row['p_input_tips'];
-			$this->output=$row['p_output_tips'];
+			$this->outputTips=$row['p_output_tips'];
 			$this->hint=$row['p_hint'];
 			mysql_close($this->connection);
 			return true;

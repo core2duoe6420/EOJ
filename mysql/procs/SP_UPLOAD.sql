@@ -63,7 +63,7 @@ proc7: BEGIN
 	
 	SELECT COUNT(*) 
 	INTO vrow_c
-	FROM eojdb.UPLOADIT a
+	FROM eojdb.uploadit a
 	WHERE a.p_title = vp_title;
 	
 	-- judge whether it's unique title
@@ -116,7 +116,7 @@ proc7: BEGIN
   
   /* start execution */
   START TRANSACTION;
-  INSERT INTO eojdb.UPLOADIT(uploader_id, p_title, p_desc, p_lang, 
+  INSERT INTO eojdb.uploadit(uploader_id, p_title, p_desc, p_lang, 
              p_tlimt, p_mlimt, p_input_tips, p_output_tips, p_sampleinput,
              p_sampleoutput, p_hint, p_specjg)
   VALUES(iuploader_id, vp_title, ip_desc, vp_lang, ip_tlimt, ip_mlimt, 

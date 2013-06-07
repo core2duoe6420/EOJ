@@ -40,7 +40,20 @@ class AdminController extends Zend_Controller_Action
 					$passWord=$admin_data['UserPassword'];
 					$userInformation=$admin_data['user_info'];
 					$power=$admin_data['AdminType'];
-					//$admin->AppointAdminstrator($userName,$userName,$passWord,$power);
+					switch($admin->AppointAdminstrator($userName,$passWord,$userInformation,$power))
+					{
+						case -1:
+							$this->view->result="数据库错误";
+							break;
+						case -2:
+							$this->view->result="已存在同名用户";
+							break;
+						case -3:
+							$this->view->result="存在非法空值";
+							break;
+						default:
+							$this->view->result="成功指派用户";
+					}
 				}
 			}
 		}

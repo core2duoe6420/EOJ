@@ -93,8 +93,6 @@ class EOJ_Model_SubmitCode
 					break;
 				case 3:
 				    $array[$row['run_id']]['run_result']="Runtime Error";
-				    break;
-				case 4:
 				    $array[$row['run_id']]['run_result']="Time Limit Exceeded";
 				    break;
 				case 5:
@@ -120,6 +118,10 @@ class EOJ_Model_SubmitCode
 	}
 	public function GetResult($ProblemID,$UserName,$Result,$language,$upbound=-1,$lowbound=-1){
 		//
+		$connection=mysql_connect("localhost","eojapp","ecust")
+		or die("Couldn't connect to server");
+		$db=mysql_select_db("eojdb",$connection)
+		or die("Couldn't select database");
 		$run_pro_sql = "select run_id,user_name,run_pid,run_result,run_mcost,run_tcost,run_codetype,run_codel,run_submitt from run,eojuser where eojuser.user_id=run.run_uid ";//
 		//
 		if($ProblemID!=0){
@@ -138,7 +140,7 @@ class EOJ_Model_SubmitCode
 			$run_pro_sql=$run_pro_sql." and run_id>='$lowbound' and run_id<='$upbound '";
 		}
 		$run_pro_sql=$run_pro_sql." order by run_id desc";
-		$result = mysql_query($run_pro_sql, $this->connect) or die("Query Invalid:".mysql_error());
+		$result = mysql_query($run_pro_sql, $connection) or die("Query Invalid:".mysql_error());
 		
 		while($row=mysql_fetch_array($result)){
 			$array[$row['run_id']]=$row;
@@ -185,6 +187,7 @@ class EOJ_Model_SubmitCode
 		if(!isset($array))
 		//select run_id,user_name,run_pid,run_result,run_mcost,run_tcost,run_codetype,run_codel,run_submitt from run,eojuser where eojuser.user_id=run.run_uid
 			$array=array('NULL'=>array('run_id'=>'NULL','user_name'=>'NULL','run_pid'=>'NULL','run_result'=>'NULL','run_mcost'=>'NULL','run_tcost'=>'NULL','run_codetype'=>'NULL','run_codel'=>'NULL','run_submitt'=>'NULL'));
+		mysql_close($connection);
 		return $array;
 	}
 	

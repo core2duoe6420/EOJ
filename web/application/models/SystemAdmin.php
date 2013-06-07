@@ -9,6 +9,12 @@ class EOJ_Model_SystemAdmin extends EOJ_Model_Adminstrator
 		$db=mysql_select_db("eojdb",$connection)
 		or die("Couldn't select database");
 		//
+		$callsql="select count(*) from uploader where user_name='$userName'";
+		$result = mysql_query($callsql, $connection) or die("daodiyoumeiyouyong:".mysql_error());
+		$row=mysql_fetch_array($result);
+		if($row[0]!=0)
+			return -2;
+
 		$pw=md5($passWord);
 		$callsql="call ADDUPER('$userName','$pw','$userInformation','$power')";
 		$result = mysql_query($callsql, $connection) or die("daodiyoumeiyouyong:".mysql_error());
