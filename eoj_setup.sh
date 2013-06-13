@@ -3,11 +3,15 @@ EOJ_FILE_PATH=/var/eoj_files
 LONG_BITS=`getconf LONG_BIT`
 REDHAT_VERSION=`cat /etc/redhat-release | sed 's/.*\([0-9]\)\.[0-9].*/\1/'`
 HTTP_CONF=/etc/httpd/conf/httpd.conf
+DOCUMENT_ROOT=/var/www/html
+
 if [ $REDHAT_VERSION = "6" ]
 then
 	SYSLOG=rsyslog
+	YUMLIST="php php-dom php-mysql"
 else
 	SYSLOG=syslog
+	YUMLIST="php53 php53-xml php53-mysql"
 fi
 
 #! test user
@@ -18,7 +22,7 @@ then
 fi
 
 #! system requirements
-yum install -y git wget unzip make gcc gcc-c++ libxml2 libxml2-devel mysql mysql-server mysql-devel php php-dom php-mysql httpd
+yum install -y git gcc gcc-c++ wget unzip make libxml2 libxml2-devel mysql mysql-server mysql-devel httpd $YUMLIST
 if [ $? != 0 ]
 then
 	echo "install system requirement fail"
@@ -27,7 +31,7 @@ fi
 
 #! clean existed file and dir
 rm -rf $EOJ_FILE_PATH
-mv /var/www/html /var/www/html.bak
+mv $DOCUMENT_ROOT $DOCUMENT_ROOT.bak
 rm -rf EOJ
 rm -f ZendFramework-1.12.0.zip
 
@@ -118,7 +122,7 @@ if [ $? != 0 ]
 then
 	echo "<VirtualHost *:80>
 	ServerName ecustoj.info
-    DocumentRoot /var/www/html/public
+    DocumentRoot $DOCUMENT_ROOT/public
     ServerAlias ecustoj.info
     RewriteEngine off
     <Location />
@@ -127,7 +131,7 @@ then
         RewriteRule !.(js|ico|gif|jpg|jpeg|pdf|png|css)$ /index.php
     </Location>
 
-    <Directory /var/www/html/public>
+    <Directory $DOCUMENT_ROOT/public>
 	Options FollowSymLinks Includes ExecCGI
         DirectoryIndex index.php
         AllowOverride All
@@ -138,9 +142,9 @@ then
 fi
 
 cd ..
-cp -r web /var/www/html
+cp -r web $DOCUMENT_ROOT
 cd ..
-cp -r ZendFramework-1.12.0/library /var/www/html/
+cp -r ZendFramework-1.12.0/library $DOCUMENT_ROOT/
 
 #! restart apache
 service httpd restart
@@ -156,6 +160,8 @@ service mysqld start
 mysql -u root -p << EOF
 DROP USER 'eojapp'@'localhost';
 DROP DATABASE IF EXISTS eojdb;
+EOF
+mysql -u root -p << EOF
 source mysql_tbls_views.sql
 EOF
 mysql -u eojapp -pecust << EOF
@@ -167,8 +173,7 @@ EOF
 
 if [ $? != 0 ]
 then
-	echo "mysql setup fail"
-	exit 1
+	echo "mysql setup fail. You need to check database"
 fi
 cd ..
 
@@ -194,7 +199,7 @@ cp eojdaemon/eojdaemon $EOJ_FILE_PATH
 cp eojjudge/eojjudge $EOJ_FILE_PATH
 cp eojdaemon/eoj.xml $EOJ_FILE_PATH
 #! set eoj.xml location to SubmitCode.php
-sed -i "s;\$EOJ_FILE_PATH;$EOJ_FILE_PATH;" /var/www/html/application/models/SubmitCode.php
+sed -i "s;\$EOJ_FILE_PATH;$EOJ_FILE_PATH;" $DOCUMENT_ROOT/application/models/SubmitCode.php
 
 #! start daemon
 $EOJ_FILE_PATH/eojdaemon
