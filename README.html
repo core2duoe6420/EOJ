@@ -1,0 +1,87 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>EOJ配置手册</title>
+	<style>
+	h1 {
+		text-align:center;
+	}
+	
+	ul {
+		list-style-type:square;
+	}
+	
+	code {
+		font-family:Courier New,Consolas;
+	}
+	</style>
+</head>
+<body>
+	<h1>EOJ配置手册</h1>
+	<blockquote>本手册将帮助您在一台服务器上安装EOJ。</blockquote>
+	<h2>前提条件</h2>
+	<ul>
+		<li>一台装有RHEL/CentOS Linux操作系统的电脑，推荐使用RHEL6</li>
+		<li>已连接到互联网</li>
+	</ul>
+	<blockquote>
+		<i>EOJ目前在RHEL5/6系列上测试通过，在更老的版本中不能保证正常运行。</i>
+		<br />
+		<i>我们强烈建议您在安装EOJ前更新系统：</i>
+		<blockquote>
+			<code># yum update</code>
+		</blockquote>
+		<i>由于RHEL5的更新源中缺少Git，因此需要添加额外的源。我们强烈建议您使用<a href="http://repoforge.org/use/">RepoForge</a>：</i>
+		<i>例如，在32位RHEL5上安装RepoForge，可以使用以下命令：</i>
+		<blockquote>
+			<code># wget http://pkgs.repoforge.org/rpmforge-release/rpmforge-release-0.5.3-1.el5.rf.i386.rpm<br />
+			# rpm -ivh rpmforge-release-0.5.3-1.el5.rf.i386.rpm
+			</code>
+		</blockquote>
+	</blockquote>
+	<h2>安装过程</h2>
+	<blockquote>
+		<p>您应该已经获得了由我们提供的安装脚本文件<strong>eoj_setup.sh</strong>。
+		EOJ的安装完全由该脚本自动化运行。脚本会自动从网络上下载Zend Framework以及EOJ的源代码。
+		并完成相应的配置。</p>
+		<p>您需要注意以下几点：</p>
+		<ul>
+			<li>您必须以<strong>root用户</strong>运行脚本
+			<li>EOJ会修改apache的默认网站/var/www/html，脚本会备份原网站到/var/www/html.bak，请您及时备份</li>
+			<li>EOJ会修改apache配置文件/etc/httpd/conf/httpd.conf，脚本会备份原配置文件到/etc/httpd/conf/httpd.conf.bak，请您及时备份</li>
+			<li>脚本安装过程中需要输入<strong>两次</strong>Mysql root密码</li>
+			<li>安装完成后，请您使用以下命令观察eojdaemon是否已经运行：
+				<blockquote><code># ps -ef | grep eoj</code></blockquote>
+				如果出现形如这样的一行，说明eojdaemon已成功运行：
+				<blockquote><code>root      6892     1  0 21:25 ?        00:00:00 /var/eoj_files/eojdaemon</code></blockquote>
+				否则，请您查看日志文件/var/log/eoj.log寻找错误原因。
+			</li>
+		</ul>
+	</blockquote>
+	<h2>已知问题</h2>
+	<blockquote>
+		<p>目前我们已经知道以下问题，但尚没有很好的解决方案：</p>
+		<ul>
+			<li>在RHEL5中，Mysql脚本过低，可能会产生如下错误：
+				<blockquote>
+				<code>ERROR 1227 (42000) at line 2 in file: 'mysql_triggers.sql': Access denied; you need the SUPER privilege for this operation
+				</code>
+				</blockquote>
+				如果您遇到了这个问题，可以尝试使用Mysql root用户执行EOJ/mysql/mysql_triggers.sql
+			</li>
+			<li>
+				在某些系统中，成功安装后浏览提交状态和提交代码时会出现如下错误：
+				<blockquote>
+				<code>Warning: DOMDocument::load(): I/O warning : failed to load external entity "/var/eoj_files/eoj.xml" 
+				in /var/www/html/application/models/SubmitCode.php on line 11 Notice: Trying to get property of non-object 
+				in /var/www/html/application/models/SubmitCode.php on line 13 
+				</code>
+				</blockquote>
+				目前我们还不知道产生该错误的原因。
+			</li>
+		</ul>
+	</blockquote>
+</body>
+</html>
