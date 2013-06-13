@@ -40,7 +40,7 @@
 #define ORIG_AX ORIG_RAX
 #endif
 
-static int check_syscall(long syscall)
+static int check_syscall(long syscall, struct request * req)
 {
 #ifdef __i386__
 	static long allows[] = { SYS_read, SYS_write, SYS_brk, SYS_exit, SYS_execve,
@@ -58,6 +58,8 @@ static int check_syscall(long syscall)
 	static int allowtime[SYSCALL_NR] = { [SYS_execve] = 1, [SYS_open] = 4 };
 	
 	if (syscall == -1) {
+		if(strcmp(req->cpl->name, "g++") == 0)
+			allowtime[SYS_open] = 10;
 		for (int i = 0; i < sizeof(allows) / sizeof(allows[0]); i++)
 			if (allowtime[allows[i]] == 0)
 				allowtime[allows[i]] = INT_MAX;
@@ -134,7 +136,7 @@ enum result execute(struct request * req, struct run_result * rused)
 	unsigned int ltime = req->time_limit, lmem = req->mem_limit;
 	
 	//reset syscall times
-	check_syscall(-1);
+	check_syscall(-1, req);
 	snprintf(outfile, EOJ_PATH_MAX, "%s%s", req->fname_nosx,
 	         req->cpl->execsuffix);
 	snprintf(complete_fname, EOJ_PATH_MAX, "%s%s", req->out_dir, outfile);
@@ -222,7 +224,7 @@ enum result execute(struct request * req, struct run_result * rused)
 //			break;
 //		}
 		orig_ax = ptrace(PTRACE_PEEKUSER, pid, WORDLEN * ORIG_AX, NULL );
-		if (orig_ax >= 0 && check_syscall(orig_ax)) {
+		if (orig_ax >= 0 && check_syscall(orig_ax, req)) {
 			eoj_log("run illegal system call %ld", orig_ax);
 			kill(pid, SIGKILL);
 			result = RUN_TIME_ERR;

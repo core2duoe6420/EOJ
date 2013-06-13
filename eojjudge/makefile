@@ -1,11 +1,11 @@
 CC=gcc
 CFLAGS=-std=gnu99 -c -I/usr/include/mysql -I/usr/include/libxml2
-LDFLAGS=-lpthread -lxml2 -lmysqlclient -L/usr/lib64/mysql
+LDFLAGS=-lpthread -lxml2 -lmysqlclient -L/usr/lib/mysql
 SOURCES=$(wildcard *.c)
 OBJS:=$(patsubst %.c,%.o,$(SOURCES))
 
 eojjudge:$(OBJS)
-	$(CC) $(OBJS) $(LDFLAGS) -o $@.out
+	$(CC) $(OBJS) $(LDFLAGS) -o $@
 
 -include $(SOURCES:.c=.d)
 
