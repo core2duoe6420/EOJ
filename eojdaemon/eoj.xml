@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <eoj>
-	<work_dir>/home/corei7/Project/eoj_files/work</work_dir>
-	<dest_dir>/home/corei7/Project/eoj_files/codes</dest_dir>
-	<input_dir>/home/corei7/Project/eoj_files/input</input_dir>
-	<answer_dir>/home/corei7/Project/eoj_files/answer</answer_dir>
-	<out_dir>/home/corei7/Project/eoj_files/tmp</out_dir>
-	<err_dir>/home/corei7/Project/eoj_files/err</err_dir>
-	<judge_exec>/home/corei7/Project/EOJ/eojjudge/Debug/eojjudge</judge_exec>
+	<work_dir>$EOJ_FILE_PATH/work</work_dir>
+	<dest_dir>$EOJ_FILE_PATH/codes</dest_dir>
+	<input_dir>$EOJ_FILE_PATH/input</input_dir>
+	<answer_dir>$EOJ_FILE_PATH/answer</answer_dir>
+	<out_dir>$EOJ_FILE_PATH/tmp</out_dir>
+	<err_dir>$EOJ_FILE_PATH/err</err_dir>
+	<judge_exec>$EOJ_FILE_PATH/eojjudge</judge_exec>
 	<concurrency>14</concurrency>
 	<compiler>
 		<id>1</id>
 		<name>gcc</name>
 		<suffix>.c</suffix>
 		<execsuffix>.out</execsuffix>
-		<execfile>/usr/local/bin/gcc</execfile>
+		<execfile>/usr/bin/gcc</execfile>
 		<param>-std=c99</param>
 		<param>-DEOJ</param>
 	</compiler>
@@ -22,7 +22,7 @@
 		<name>g++</name>
 		<suffix>.cc</suffix>
 		<execsuffix>.out</execsuffix>
-		<execfile>/usr/local/bin/g++</execfile>
+		<execfile>/usr/bin/g++</execfile>
 	</compiler>
 	<database>
 		<host>127.0.0.1</host>

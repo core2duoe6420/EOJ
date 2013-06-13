@@ -21,7 +21,7 @@ int main()
 	int daemon_ret;
 	do {
 		config_initial();
-		if (xml_config("/home/corei7/Project/EOJ/eojdaemon/eoj.xml"))
+		if (xml_config("$EOJ_FILE_PATH/eoj.xml"))
 			exit(1);
 		config_set_print();
 		param_initial();

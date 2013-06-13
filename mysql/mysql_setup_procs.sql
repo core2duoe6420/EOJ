@@ -1,14 +1,4 @@
 use eojdb;
-DROP procedure ADDANS;
-DROP Procedure ADDEOJUSER;
-DROP Procedure ADDMULTIVER;
-DROP Procedure ADDPROB;
-DROP Procedure ADDUPER;
-DROP Procedure AUDITPROB;
-DROP Procedure CHPASSWD;
-DROP Procedure UPDATEANS;
-DROP Procedure UPDATEUP;
-DROP Procedure UPLOAD;
 
 source procs/SP_ADDANS.sql
 source procs/SP_ADDEOJUSER.sql

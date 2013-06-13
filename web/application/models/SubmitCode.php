@@ -8,7 +8,7 @@ class EOJ_Model_SubmitCode
 	private $dom;
 	private function GetPara(){
 		$this->dom=new DOMDocument;
-		$this->dom->load("/eoj_files/eoj.xml");
+		$this->dom->load("$EOJ_FILE_PATH/eoj.xml");
 		//$this->xeoj=$dom->getElementsByTagName("eoj");
 		$this->WorkDirectionary=$this->dom->getElementsByTagName("work_dir")->item(0)->nodeValue;
 	}
