@@ -1,6 +1,6 @@
 CC=gcc
 CFLAGS=-std=gnu99 -c -I/usr/include/mysql -I/usr/include/libxml2
-LDFLAGS=-lpthread -lxml2 -lmysqlclient -L/usr/lib/mysql
+LDFLAGS=-lpthread -lxml2 -lmysqlclient -L/usr/lib64/mysql
 SOURCES=$(wildcard *.c)
 OBJS:=$(patsubst %.c,%.o,$(SOURCES))
 
